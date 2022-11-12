@@ -6,6 +6,10 @@ namespace Items
 {
     public enum ItemIdentity : short
     {
+        Айсберг = 0,
+        Аквариум = 1,
+        Акула = 2,
+        АкулаМолот = 3,
 
     }
 }

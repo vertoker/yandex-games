@@ -7,7 +7,15 @@ namespace Items
     [CreateAssetMenu(fileName = "Item", menuName = "Data/Item")]
     public class Item : ScriptableObject
     {
-        public string Name { get; set; }
-        public Sprite Sprite { get; set; }
+        [SerializeField] private string _name;
+        [SerializeField] private Sprite _sprite;
+
+        public string Name => _name;
+        public Sprite Sprite => _sprite;
+
+        public void Set(string name)
+        {
+            _name = name;
+        }
     }
 }
