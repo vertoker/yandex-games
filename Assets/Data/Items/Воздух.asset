@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: "\u0412\u043E\u0437\u0434\u0443\u0445"
   m_EditorClassIdentifier: 
   _name: "\u0412\u043E\u0437\u0434\u0443\u0445"
-  _sprite: {fileID: 0}
+  _sprite: {fileID: 21300000, guid: 78572053b47f32041831622a77c2c3a9, type: 3}

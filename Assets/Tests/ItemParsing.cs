@@ -14,7 +14,7 @@ public class ItemParsing
     private static string pathList = "E:\\Projects\\Unity\\Алхимия\\Assets\\Data\\list.txt";
     private static string pathItemsOut = "Assets\\Data\\Items";
     private static string pathRecipesOut = "Assets\\Data\\Recipes";
-    private static string pathSprites = "E:\\Projects\\Unity\\Алхимия\\Assets\\Sprites\\Items";
+    private static string pathSprites = "Sprites\\Items";
 
 
     [Test]
@@ -64,20 +64,13 @@ public class ItemParsing
         List<string> itemsNoDupes = items.Distinct().ToList();
         int length = itemsNoDupes.Count;
 
-        List<Sprite> sprites = new List<Sprite>();
-        for (int i = 0; i < length; i++)
-        {
-            string path = Path.Combine(pathSprites, itemsNoDupes[i] + ".png");
-            sprites.Add(LoadNewSprite(path));
-        }
-
         // Сохранение
 
         Dictionary<string, Item> itemsDictionary = new Dictionary<string, Item>();
         for (int i = 0; i < length; i++)
         {
             Item asset = ScriptableObject.CreateInstance<Item>();
-            asset.Set(itemsNoDupes[i], sprites[i]);
+            asset.Set(itemsNoDupes[i], Resources.Load<Sprite>(Path.Combine(pathSprites, itemsNoDupes[i])));
             itemsDictionary.Add(itemsNoDupes[i], asset);
             AssetDatabase.CreateAsset(asset, Path.Combine(pathItemsOut, itemsNoDupes[i] + ".asset"));
         }
@@ -94,18 +87,5 @@ public class ItemParsing
         }
 
         AssetDatabase.SaveAssets();
-    }
-
-    public static Sprite LoadNewSprite(string FilePath, float PixelsPerUnit = 100.0f, SpriteMeshType spriteType = SpriteMeshType.Tight)
-    {
-        // Load a PNG or JPG image from disk to a Texture2D, assign this texture to a new sprite and return its reference
-
-        Texture2D texture;
-        byte[] data;
-
-        data = File.ReadAllBytes(FilePath);
-        texture = new Texture2D(2, 2);
-        texture.LoadImage(data);
-        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0), PixelsPerUnit, 0, spriteType);
     }
 }
