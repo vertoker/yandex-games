@@ -13,9 +13,10 @@ namespace Items
         public string Name => _name;
         public Sprite Sprite => _sprite;
 
-        public void Set(string name)
+        public void Set(string name, Sprite sprite)
         {
             _name = name;
+            _sprite = sprite;
         }
     }
 }
