@@ -1,18 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class InputReceiver : MonoBehaviour
+namespace Scripts.UI
 {
-    // Start is called before the first frame update
-    void Start()
+    public class InputReceiver : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
-        
-    }
+        private UnityEvent<PointerEventData> onDownEvent = new UnityEvent<PointerEventData>();
+        private UnityEvent<PointerEventData> onDragEvent = new UnityEvent<PointerEventData>();
+        private UnityEvent<PointerEventData> onUpEvent = new UnityEvent<PointerEventData>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public event UnityAction<PointerEventData> OnDownUpdate
+        {
+            add => onDownEvent.AddListener(value);
+            remove => onDownEvent.RemoveListener(value);
+        }
+        public event UnityAction<PointerEventData> OnDragUpdate
+        {
+            add => onDragEvent.AddListener(value);
+            remove => onDragEvent.RemoveListener(value);
+        }
+        public event UnityAction<PointerEventData> OnUpUpdate
+        {
+            add => onUpEvent.AddListener(value);
+            remove => onUpEvent.RemoveListener(value);
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            onDownEvent.Invoke(eventData);
+        }
+        public void OnDrag(PointerEventData eventData)
+        {
+            onDragEvent.Invoke(eventData);
+        }
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            onUpEvent.Invoke(eventData);
+        }
     }
 }
