@@ -660,6 +660,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSpawner: {fileID: 1535555753}
+  successEffect: {fileID: 8868998532409263995, guid: 15d71773e1455cf45849d6e37d05939c, type: 3}
+  failEffect: {fileID: 89006166988625420, guid: 1a473db893c91e84190edcaa71d23106, type: 3}
   items:
   - {fileID: 11400000, guid: 9ca9abc5b4311884996f7b3a471e1461, type: 2}
   - {fileID: 11400000, guid: af7690558db0bef4ebe770e82dd327d9, type: 2}
@@ -1756,6 +1758,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c4ad22838e2643a4ebff165a5e96cb53, type: 2}
   - {fileID: 11400000, guid: 985fb2318ee7ed54cb1169cd980b3438, type: 2}
   - {fileID: 11400000, guid: b27fa6f946c45204184e7acec7bf8c1d, type: 2}
+  dependencies: []
   radius: 0.5
 --- !u!4 &1535555755
 Transform:

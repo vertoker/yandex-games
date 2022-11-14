@@ -14,7 +14,10 @@ namespace Scripts
         {
             float[] contactDistances = new float[collision.contacts.Length];
             for (int i = 0; i < collision.contacts.Length; i++)
+            {
                 contactDistances[i] = Vector2.Distance(collision.contacts[i].rigidbody.transform.position, transform.position);
+                Debug.Log(collision.contacts[i].collider.name);
+            }
             contactDistances.OrderBy(p => p);
 
             if (contactDistances.Length >= 3)
