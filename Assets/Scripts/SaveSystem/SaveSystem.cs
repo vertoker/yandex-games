@@ -8,8 +8,6 @@ namespace Scripts.SaveSystem
     {
         private static string TRUE = "true", FALSE = "false";
 
-        [SerializeField] private List<Items.Item> items;
-
         private static SaveSystem instance;
 
         private void Awake()
@@ -21,7 +19,7 @@ namespace Scripts.SaveSystem
         private void InitialSave()
         {
             PlayerPrefs.SetString("start", TRUE);
-            foreach (var item in items)
+            foreach (var item in ItemSpawner.Items)
             {
                 PlayerPrefs.SetString(item.Name, FALSE);
             }
@@ -40,7 +38,7 @@ namespace Scripts.SaveSystem
         public static string[] GetList()
         {
             List<string> list = new List<string>();
-            foreach (var item in instance.items)
+            foreach (var item in ItemSpawner.Items)
                 if (PlayerPrefs.GetString(item.Name) == TRUE)
                     list.Add(item.Name);
             return list.ToArray();

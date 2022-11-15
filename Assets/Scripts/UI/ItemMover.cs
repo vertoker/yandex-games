@@ -17,35 +17,41 @@ namespace Scripts.UI
         [SerializeField] Camera cam;
 
         [Space]
+        [SerializeField] private float distanceTriggerDrag = 0.3f;
         [SerializeField] private float radiusOffset = 0.2f;
         [SerializeField] private float lerpTimePos = 0.2f;
         [SerializeField] private float lerpTimeRot = 0.2f;
         [SerializeField] private float rotActiveTrigger = 0.1f;
-        
+        [SerializeField] private Vector2 offsetItemText = new Vector2(0f, -0.7f);
+
         private Transform activeItem;
+        private Vector3 startPosition;
         private Vector3 lastPosition;
         private Coroutine dragUpdate;
+
 
         private void OnEnable()
         {
             input.OnDownUpdate += OnDown;
             //input.OnDragUpdate += OnDrag;
             input.OnUpUpdate += OnUp;
+            //input.OnClickUpdate += OnClick;
         }
         private void OnDisable()
         {
             input.OnDownUpdate -= OnDown;
             //input.OnDragUpdate -= OnDrag;
             input.OnUpUpdate -= OnUp;
+            //input.OnClickUpdate -= OnClick;
         }
 
         private void OnDown(PointerEventData data)
-        {
+        { 
             var collider = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0.1f, mask).collider;
             if (collider != null)
             {
                 activeItem = collider.gameObject.transform;
-                lastPosition = activeItem.position;
+                lastPosition = startPosition = activeItem.position;
                 spawner.DisableItem(collider.gameObject);
                 dragUpdate = StartCoroutine(DragUpdate());
             }
@@ -71,6 +77,8 @@ namespace Scripts.UI
             var pos = Vector2.LerpUnclamped(activeItem.position, (Vector2)cam.ScreenToWorldPoint(Input.mousePosition) + offsetPosition, lerpTimePos);
             var rot = Quaternion.LerpUnclamped(activeItem.rotation, rotation, lerpTimeRot);
             activeItem.SetPositionAndRotation(pos, direction.magnitude > rotActiveTrigger ? rot : activeItem.rotation);
+            activeItem.GetChild(0).rotation = Quaternion.identity;
+            activeItem.GetChild(0).position = pos + offsetItemText;
         }
         private void OnUp(PointerEventData data)
         {
@@ -78,8 +86,13 @@ namespace Scripts.UI
                 return;
 
             StopCoroutine(dragUpdate);
-            activeItem.GetComponent<Item>().Activate();
-            activeItem.SetPositionAndRotation(cam.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
+            //activeItem.SetPositionAndRotation(cam.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
+
+            if ((lastPosition - startPosition).magnitude < distanceTriggerDrag)
+                ItemSpawner.CreateItem(activeItem.name, lastPosition);
+            else
+                activeItem.GetComponent<Item>().Activate();
+
             spawner.EnableItem(activeItem.gameObject);
             activeItem = null;
         }

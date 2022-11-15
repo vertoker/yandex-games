@@ -91,6 +91,7 @@ namespace Scripts.UI
             if (offTimer != null)
                 StopCoroutine(offTimer);
 
+            openStartEvent.Invoke();
             //layout.gameObject.SetActive(true);
             currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, openPosition, EasingType.InOutQuad, openTime));
             offTimer = StartCoroutine(OffTimer());
@@ -104,6 +105,7 @@ namespace Scripts.UI
             if (offTimer != null)
                 StopCoroutine(offTimer);
 
+            closeStartEvent.Invoke();
             currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, closePosition, EasingType.InOutQuad, closeTime));
             offTimer = StartCoroutine(OffTimer());
         }
@@ -120,6 +122,10 @@ namespace Scripts.UI
         private IEnumerator OffTimer()
         {
             yield return new WaitForSeconds(closeTime);
+            if (isOpen)
+                openEndEvent.Invoke();
+            else
+                closeEndEvent.Invoke();
             isOpen = !isOpen;
         }
         private IEnumerator TimeoutTimer()

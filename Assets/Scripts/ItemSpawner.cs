@@ -21,15 +21,30 @@ namespace Scripts
         [SerializeField] private List<Recipe> recipes;
         [SerializeField] private List<ItemDependence> dependencies;
 
+        [SerializeField] private Dictionary<string, Items.Item> itemDictionary;
+        [SerializeField] private Dictionary<string, Recipe> recipeDictionary;
+
         [SerializeField] private float radius = 0.5f;
 
         private List<GameObject> activeObjects = new List<GameObject>();
 
         private static ItemSpawner Instance;
 
+        public static List<Items.Item> Items => Instance.items;
+        public static Dictionary<string, Items.Item> ItemDictionary => Instance.itemDictionary;
+        public static Dictionary<string, Recipe> RecipeDictionary => Instance.recipeDictionary;
+
         private void Awake()
         {
             Instance = this;
+
+            itemDictionary = new Dictionary<string, Items.Item>();
+            for (int i = 0; i < items.Count; i++)
+                itemDictionary.Add(items[i].Name, items[i]);
+
+            recipeDictionary = new Dictionary<string, Recipe>();
+            for (int i = 0; i < items.Count; i++)
+                recipeDictionary.Add(recipes[i].Output.Name, recipes[i]);
         }
         private void Start()
         {
@@ -39,26 +54,34 @@ namespace Scripts
             CreateItem("Воздух");
         }
 
-        public void CreateItem(string name)
+        public static void CreateItem(string name)
         {
-            CreateItem(name, Math.GetRandomPointInCircle(radius));
+            CreateItem(name, Math.GetRandomPointInCircle(Instance.radius));
         }
-        public void CreateItem(string name, Vector2 position)
+        public static void CreateItem(string name, Vector2 position)
         {
-            var item = items.FirstOrDefault((Items.Item i) => { return i.Name == name; });
+            var item = Instance.items.FirstOrDefault((Items.Item i) => { return i.Name == name; });
             if (item != null)
             {
-                var obj = itemSpawner.Dequeue();
+                var obj = Instance.itemSpawner.Dequeue();
                 obj.transform.position = position;
                 obj.GetComponent<SpriteRenderer>().sprite = item.Sprite;
+                obj.transform.GetChild(0).GetComponent<TextMesh>().text = item.Name;
                 obj.name = item.Name;
-                activeObjects.Add(obj);
+                Instance.activeObjects.Add(obj);
                 SaveSystem.SaveSystem.Unlock(name);
             }
         }
-        public void DeleteItem()
+        public static void DeleteItem(GameObject obj)
         {
-
+            Instance.itemSpawner.Enqueue(obj);
+            Instance.activeObjects.Remove(obj);
+        }
+        public void DeleteAll()
+        {
+            for (int i = 0; i < activeObjects.Count; i++)
+                itemSpawner.Enqueue(activeObjects[i]);
+            activeObjects.Clear();
         }
 
         public void DisableItem(GameObject obj)
@@ -84,9 +107,9 @@ namespace Scripts
                     {
                         Debug.Log(recipe.Output.Name);
                         RecipeSuccess(recipe, position);
-                        Instance.itemSpawner.Enqueue(obj3);
-                        Instance.itemSpawner.Enqueue(obj2);
-                        Instance.itemSpawner.Enqueue(obj1);
+                        DeleteItem(obj3);
+                        DeleteItem(obj2);
+                        DeleteItem(obj1);
                         return;
                     }
                 }
@@ -98,8 +121,8 @@ namespace Scripts
                 {
                     Debug.Log(recipe.Output.Name);
                     RecipeSuccess(recipe, position);
-                    Instance.itemSpawner.Enqueue(obj2);
-                    Instance.itemSpawner.Enqueue(obj1);
+                    DeleteItem(obj2);
+                    DeleteItem(obj1);
                     return;
                 }
             }
@@ -108,7 +131,7 @@ namespace Scripts
         private static void RecipeSuccess(Recipe recipe, Vector2 position)
         {
             //Debug.Log(recipe.Output.Name);
-            Instance.CreateItem(recipe.Output.Name, position);
+            CreateItem(recipe.Output.Name, position);
             Destroy(Instantiate(Instance.successEffect, position, Quaternion.identity, Instance.transform), 1f);
         }
         private static void RecipeFail(Vector2 position)
@@ -132,7 +155,7 @@ namespace Scripts
             nameItem = EditorGUILayout.TextField(nameItem);
             if (GUILayout.Button("Spawn"))
             {
-                data.CreateItem(nameItem);
+                ItemSpawner.CreateItem(nameItem);
             }
         }
     }

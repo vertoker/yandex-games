@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfde8eb34eed77643bed0b7646579fcb, type: 3}
   m_Name: ItemPool
   m_EditorClassIdentifier: 
-  _object: {fileID: 7395203924164605746, guid: 1e7eb01fcb3511f4494af189ac602656, type: 3}
-  _startCapacity: 100
+  _object: {fileID: 3661008018480106199, guid: 6604509ae4a047c47a7832a65dbb88a3, type: 3}
+  _startCapacity: 150

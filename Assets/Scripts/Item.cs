@@ -30,18 +30,21 @@ namespace Scripts
             active = false;
 
             //Debug.Log("////////////////////////////////////////////////");
-            ContactData[] contactDistances = new ContactData[collision.contacts.Length];
+            List<ContactData> contactDistances = new List<ContactData>();
             for (int i = 0; i < collision.contacts.Length; i++)
             {
-                contactDistances[i] = new ContactData() 
+                if (collision.contacts[i].collider.CompareTag("Item"))
                 {
-                    distance = Vector2.Distance(collision.contacts[i].rigidbody.transform.position, transform.position),
-                    obj = collision.contacts[i].rigidbody.gameObject
-                };
+                    contactDistances.Add(new ContactData()
+                    {
+                        distance = Vector2.Distance(collision.contacts[i].rigidbody.transform.position, transform.position),
+                        obj = collision.contacts[i].rigidbody.gameObject
+                    });
+                }
             }
             contactDistances.OrderBy(p => p.distance);
 
-            if (contactDistances.Length >= 2)
+            if (contactDistances.Count >= 2)
             {
                 //Debug.Log(gameObject.name);
                 //Debug.Log(collision.contacts[0].collider.name);
@@ -49,7 +52,7 @@ namespace Scripts
                 var pos = (gameObject.transform.position + contactDistances[0].obj.transform.position + contactDistances[1].obj.transform.position) / 3f;
                 ItemSpawner.ExecuteRecipe(gameObject.name, contactDistances[0].obj.name, contactDistances[1].obj.name, pos, gameObject, contactDistances[0].obj, contactDistances[1].obj);
             }
-            else if (contactDistances.Length == 1)
+            else if (contactDistances.Count == 1)
             {
                 //Debug.Log(gameObject.name);
                 //Debug.Log(collision.contacts[0].collider.name);
