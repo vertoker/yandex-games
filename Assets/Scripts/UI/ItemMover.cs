@@ -24,18 +24,18 @@ namespace Scripts.UI
         
         private Transform activeItem;
         private Vector3 lastPosition;
-
+        private Coroutine dragUpdate;
 
         private void OnEnable()
         {
             input.OnDownUpdate += OnDown;
-            input.OnDragUpdate += OnDrag;
+            //input.OnDragUpdate += OnDrag;
             input.OnUpUpdate += OnUp;
         }
         private void OnDisable()
         {
             input.OnDownUpdate -= OnDown;
-            input.OnDragUpdate -= OnDrag;
+            //input.OnDragUpdate -= OnDrag;
             input.OnUpUpdate -= OnUp;
         }
 
@@ -47,10 +47,18 @@ namespace Scripts.UI
                 activeItem = collider.gameObject.transform;
                 lastPosition = activeItem.position;
                 spawner.DisableItem(collider.gameObject);
-                OnDrag(data);
+                dragUpdate = StartCoroutine(DragUpdate());
             }
         }
-        private void OnDrag(PointerEventData data)
+        private IEnumerator DragUpdate()
+        {
+            while (true)
+            {
+                yield return null;
+                OnDrag();
+            }
+        }
+        private void OnDrag()
         {
             if (activeItem == null)
                 return;
@@ -69,6 +77,8 @@ namespace Scripts.UI
             if (activeItem == null)
                 return;
 
+            StopCoroutine(dragUpdate);
+            activeItem.GetComponent<Item>().Activate();
             activeItem.SetPositionAndRotation(cam.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
             spawner.EnableItem(activeItem.gameObject);
             activeItem = null;

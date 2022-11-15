@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using Scripts.Items;
 using Scripts.Utils;
 using UnityEngine;
+using System.Linq;
 using Game.Pool;
-using UnityEngine.Events;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -54,6 +53,7 @@ namespace Scripts
                 obj.GetComponent<SpriteRenderer>().sprite = item.Sprite;
                 obj.name = item.Name;
                 activeObjects.Add(obj);
+                SaveSystem.SaveSystem.Unlock(name);
             }
         }
         public void DeleteItem()
@@ -82,6 +82,7 @@ namespace Scripts
                     var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
                     if (recipe != null)
                     {
+                        Debug.Log(recipe.Output.Name);
                         RecipeSuccess(recipe, position);
                         Instance.itemSpawner.Enqueue(obj3);
                         Instance.itemSpawner.Enqueue(obj2);
@@ -95,6 +96,7 @@ namespace Scripts
                 var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
                 if (recipe != null)
                 {
+                    Debug.Log(recipe.Output.Name);
                     RecipeSuccess(recipe, position);
                     Instance.itemSpawner.Enqueue(obj2);
                     Instance.itemSpawner.Enqueue(obj1);
@@ -105,11 +107,13 @@ namespace Scripts
         }
         private static void RecipeSuccess(Recipe recipe, Vector2 position)
         {
+            //Debug.Log(recipe.Output.Name);
             Instance.CreateItem(recipe.Output.Name, position);
             Destroy(Instantiate(Instance.successEffect, position, Quaternion.identity, Instance.transform), 1f);
         }
         private static void RecipeFail(Vector2 position)
         {
+            //Debug.Log("Fail");
             Destroy(Instantiate(Instance.failEffect, position, Quaternion.identity, Instance.transform), 1f);
         }
     }

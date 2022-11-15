@@ -22,6 +22,9 @@ namespace Scripts.Items
 
         public bool GetRecipe(string name1, string name2, string name3)
         {
+            //Debug.Log(_input);
+            //Debug.Log(_output);
+
             if (name3 != string.Empty)
             {
                 if (name1 == _input[0].Name && name2 == _input[1].Name && name3 == _input[2].Name ||

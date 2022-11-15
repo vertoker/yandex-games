@@ -37,8 +37,8 @@ public class ItemParsing
             string path = Path.Combine(pathSprites, itemsNoDupes[i] + ".png");
             if (!File.Exists(path))
             {
-                Debug.Log(string.Format("Файла под именем {0} не существует", path));
-                return;
+                //Debug.Log(string.Format("Файла под именем {0} не существует", path));
+                //return;
             }
         }
 

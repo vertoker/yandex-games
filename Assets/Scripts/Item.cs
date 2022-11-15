@@ -8,33 +8,70 @@ namespace Scripts
 {
     public class Item : MonoBehaviour
     {
-        private GameObject obj1, obj2, obj3;
+        [SerializeField] private bool contact = false;
+        [SerializeField] private bool active = false;
+        private Coroutine coroutine;
 
+        private void OnDisable()
+        {
+            if (coroutine != null)
+                StopCoroutine(coroutine);
+        }
+        public void Activate()
+        {
+            active = true;
+            coroutine = StartCoroutine(Counter());
+        }
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            float[] contactDistances = new float[collision.contacts.Length];
+            contact = true;
+            if (!active)
+                return;
+            active = false;
+
+            //Debug.Log("////////////////////////////////////////////////");
+            ContactData[] contactDistances = new ContactData[collision.contacts.Length];
             for (int i = 0; i < collision.contacts.Length; i++)
             {
-                contactDistances[i] = Vector2.Distance(collision.contacts[i].rigidbody.transform.position, transform.position);
-                Debug.Log(collision.contacts[i].collider.name);
+                contactDistances[i] = new ContactData() 
+                {
+                    distance = Vector2.Distance(collision.contacts[i].rigidbody.transform.position, transform.position),
+                    obj = collision.contacts[i].rigidbody.gameObject
+                };
             }
-            contactDistances.OrderBy(p => p);
+            contactDistances.OrderBy(p => p.distance);
 
-            if (contactDistances.Length >= 3)
+            if (contactDistances.Length >= 2)
             {
-                var pos = (collision.contacts[0].point + collision.contacts[1].point + collision.contacts[2].point) / 3f;
-                obj1 = collision.contacts[0].rigidbody.gameObject;
-                obj2 = collision.contacts[1].rigidbody.gameObject;
-                obj3 = collision.contacts[2].rigidbody.gameObject;
-                ItemSpawner.ExecuteRecipe(obj1.name, obj2.name, obj3.name, pos, obj1, obj2, obj3);
+                //Debug.Log(gameObject.name);
+                //Debug.Log(collision.contacts[0].collider.name);
+                //Debug.Log(collision.contacts[1].collider.name);
+                var pos = (gameObject.transform.position + contactDistances[0].obj.transform.position + contactDistances[1].obj.transform.position) / 3f;
+                ItemSpawner.ExecuteRecipe(gameObject.name, contactDistances[0].obj.name, contactDistances[1].obj.name, pos, gameObject, contactDistances[0].obj, contactDistances[1].obj);
             }
-            else if (contactDistances.Length == 2)
+            else if (contactDistances.Length == 1)
             {
-                var pos = (collision.contacts[0].point + collision.contacts[1].point) / 2f;
-                obj1 = collision.contacts[0].rigidbody.gameObject;
-                obj2 = collision.contacts[1].rigidbody.gameObject;
-                ItemSpawner.ExecuteRecipe(obj1.name, obj2.name, string.Empty, pos, obj1, obj2, null);
+                //Debug.Log(gameObject.name);
+                //Debug.Log(collision.contacts[0].collider.name);
+                var pos = (gameObject.transform.position + contactDistances[0].obj.transform.position) / 2f;
+                ItemSpawner.ExecuteRecipe(gameObject.name, contactDistances[0].obj.name, string.Empty, pos, gameObject, contactDistances[0].obj, null);
             }
+            if (gameObject.activeSelf)
+                coroutine = StartCoroutine(Counter());
+        }
+
+        IEnumerator Counter()
+        {
+            yield return new WaitForSeconds(0.25f);
+            if (contact)
+                active = false;
+            contact = false;
+        }
+
+        struct ContactData
+        {
+            public float distance;
+            public GameObject obj;
         }
     }
 }
