@@ -1,7 +1,8 @@
 using System.Collections;
 using Scripts.UI.ItemList;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
+using Scripts.Items;
 using TMPro;
 using System.Linq;
 
@@ -31,16 +32,20 @@ namespace Scripts.UI.RecipeList
             for (int i = 0; i < content.childCount; i++)
             {
                 icons[i] = new RecipeIcon(content.GetChild(i));
-                icons[i].Clear();
             }
         }
 
         private void UpdateRecipe()
         {
-            var list = SaveSystem.SaveSystem.GetList();
-            for (int i = 0; i < list.Length; i++)
-                icons[i].Update(ItemSpawner.ItemDictionary[list[i]]);
-            for (int i = list.Length; i < icons.Length; i++)
+            var list = SaveSystem.SaveSystem.GetList().ToList();
+            list.Remove("Вода");
+            list.Remove("Земля");
+            list.Remove("Огонь");
+            list.Remove("Воздух");
+
+            for (int i = 0; i < list.Count; i++)
+                icons[i].Update(ItemSpawner.RecipeDictionary[list[i]]);
+            for (int i = list.Count; i < icons.Length; i++)
                 icons[i].Clear();
         }
         public void UpdateSearch()
@@ -54,23 +59,13 @@ namespace Scripts.UI.RecipeList
             inputField.text = string.Empty;
         }
 
-        public void ClickItem(int id)
-        {
-            Debug.Log(icons[id].Name);
-            ItemSpawner.CreateItem(icons[id].Name);
-        }
-        public void BeginDragItem(int id)
-        {
-
-        }
-
         public IEnumerator SearchTask(string value)
         {
             yield return null;
             var list = SaveSystem.SaveSystem.GetList();
             list = list.Where(s => s.ToLower().Contains(value.ToLower())).ToArray();
             for (int i = 0; i < list.Length; i++)
-                icons[i].Update(ItemSpawner.ItemDictionary[list[i]]);
+                icons[i].Update(ItemSpawner.RecipeDictionary[list[i]]);
             for (int i = list.Length; i < icons.Length; i++)
                 icons[i].Clear();
         }
@@ -80,34 +75,52 @@ namespace Scripts.UI.RecipeList
     {
         private static Color transparent = new Color(1, 1, 1, 0);
 
-        private Image image0, image1, image2, image3;
-        private TMP_Text text0, text1, text2, text3;
+        private ItemIcon icon1, icon2, icon3, icon4;
+        private Image im1, im2, im3;
 
-        public string Name => text.text;
-
-        public RecipeIcon(Transform tr)
+        public RecipeIcon(Transform recipeParent)
         {
-            image = tr.GetComponent<Image>();
-            text = tr.GetChild(0).GetComponent<TMP_Text>();
+            icon1 = new ItemIcon(recipeParent.GetChild(0));
+            im1 = recipeParent.GetChild(1).GetComponent<Image>();
+            icon2 = new ItemIcon(recipeParent.GetChild(2));
+            im2 = recipeParent.GetChild(3).GetComponent<Image>();
+            icon3 = new ItemIcon(recipeParent.GetChild(4));
+            im3 = recipeParent.GetChild(5).GetComponent<Image>();
+            icon4 = new ItemIcon(recipeParent.GetChild(6));
         }
 
-        public void Update(Items.Item item)
+        public void Update(Recipe recipe)
         {
-            image.sprite = item.Sprite;
-            text.text = item.Name;
-            image.color = Color.white;
-            text.color = Color.white;
-            image.enabled = true;
-            text.enabled = true;
+            if (recipe.Input.Length == 3)
+            {
+                icon1.Update(recipe.Input[0]);
+                im1.color = Color.white;
+                icon2.Update(recipe.Input[1]);
+                im2.color = Color.white;
+                icon3.Update(recipe.Input[2]);
+                im3.color = Color.white;
+                icon4.Update(recipe.Output);
+            }
+            else
+            {
+                icon1.Clear();
+                im1.color = transparent;
+                icon2.Update(recipe.Input[0]);
+                im2.color = Color.white;
+                icon3.Update(recipe.Input[1]);
+                im3.color = Color.white;
+                icon4.Update(recipe.Output);
+            }
         }
         public void Clear()
         {
-            image.sprite = null;
-            text.text = string.Empty;
-            image.color = transparent;
-            text.color = transparent;
-            image.enabled = false;
-            text.enabled = false;
+            icon1.Clear();
+            im1.color = transparent;
+            icon2.Clear();
+            im2.color = transparent;
+            icon3.Clear();
+            im3.color = transparent;
+            icon4.Clear();
         }
     }
 }

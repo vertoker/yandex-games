@@ -34,6 +34,13 @@ namespace Scripts.SaveSystem
             if (PlayerPrefs.GetString(name) == FALSE)
                 PlayerPrefs.SetString(name, TRUE);
         }
+        public static void UnlockAll()
+        {
+            foreach (var item in ItemSpawner.Items)
+            {
+                PlayerPrefs.SetString(item.Name, TRUE);
+            }
+        }
 
         public static string[] GetList()
         {

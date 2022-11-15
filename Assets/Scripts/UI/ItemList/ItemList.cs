@@ -56,7 +56,7 @@ namespace Scripts.UI.ItemList
 
         public void ClickItem(int id)
         {
-            Debug.Log(icons[id].Name);
+            //Debug.Log(icons[id].Name);
             ItemSpawner.CreateItem(icons[id].Name);
         }
         public void BeginDragItem(int id)

@@ -43,7 +43,7 @@ namespace Scripts
                 itemDictionary.Add(items[i].Name, items[i]);
 
             recipeDictionary = new Dictionary<string, Recipe>();
-            for (int i = 0; i < items.Count; i++)
+            for (int i = 0; i < recipes.Count; i++)
                 recipeDictionary.Add(recipes[i].Output.Name, recipes[i]);
         }
         private void Start()
@@ -119,7 +119,7 @@ namespace Scripts
                 var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
                 if (recipe != null)
                 {
-                    Debug.Log(recipe.Output.Name);
+                    //Debug.Log(recipe.Output.Name);
                     RecipeSuccess(recipe, position);
                     DeleteItem(obj2);
                     DeleteItem(obj1);
