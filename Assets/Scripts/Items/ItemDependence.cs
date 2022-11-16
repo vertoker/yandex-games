@@ -8,15 +8,18 @@ namespace Scripts.Items
     public class ItemDependence : ScriptableObject
     {
         [SerializeField] private string _name;
-        [SerializeField] private string[] _dependencies;
+        [SerializeField] private string[] _dependencies2;
+        [SerializeField] private string[] _dependencies3;
 
         public string Name => _name;
-        public string[] Dependencies => _dependencies;
+        public string[] Dependencies2 => _dependencies2;
+        public string[] Dependencies3 => _dependencies3;
 
-        public void Set(string name, string[] dependencies)
+        public void Set(string name, string[] dependencies2, string[] dependencies3)
         {
             _name = name;
-            _dependencies = dependencies;
+            _dependencies2 = dependencies2;
+            _dependencies3 = dependencies3;
         }
     }
 }

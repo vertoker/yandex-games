@@ -6,9 +6,10 @@ using UnityEngine.Events;
 
 namespace Scripts.UI
 {
-    public class InputReceiver : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler, IPointerClickHandler
+    public class InputReceiver : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IDragHandler, IPointerUpHandler, IPointerClickHandler
     {
         private UnityEvent<PointerEventData> onDownEvent = new UnityEvent<PointerEventData>();
+        private UnityEvent<PointerEventData> onBeginDragEvent = new UnityEvent<PointerEventData>();
         private UnityEvent<PointerEventData> onDragEvent = new UnityEvent<PointerEventData>();
         private UnityEvent<PointerEventData> onUpEvent = new UnityEvent<PointerEventData>();
         private UnityEvent<PointerEventData> onClickEvent = new UnityEvent<PointerEventData>();
@@ -17,6 +18,11 @@ namespace Scripts.UI
         {
             add => onDownEvent.AddListener(value);
             remove => onDownEvent.RemoveListener(value);
+        }
+        public event UnityAction<PointerEventData> OnBeginDragUpdate
+        {
+            add => onBeginDragEvent.AddListener(value);
+            remove => onBeginDragEvent.RemoveListener(value);
         }
         public event UnityAction<PointerEventData> OnDragUpdate
         {
@@ -37,6 +43,10 @@ namespace Scripts.UI
         public void OnPointerDown(PointerEventData eventData)
         {
             onDownEvent.Invoke(eventData);
+        }
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            onBeginDragEvent.Invoke(eventData);
         }
         public void OnDrag(PointerEventData eventData)
         {

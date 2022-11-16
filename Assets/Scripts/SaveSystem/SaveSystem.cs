@@ -17,7 +17,7 @@ namespace Scripts.SaveSystem
 
         public static string NextItemName => PlayerPrefs.GetString("next_item");
 
-        private void Awake()
+        private void Start()
         {
             instance = this;
             if (!PlayerPrefs.HasKey("start"))

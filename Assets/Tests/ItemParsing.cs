@@ -90,20 +90,25 @@ public class ItemParsing
             AssetDatabase.CreateAsset(asset, Path.Combine(pathRecipesOut, str1[0] + ".asset"));
         }
 
-        Dictionary<string, List<string>> dependenciesNew = new Dictionary<string, List<string>>();
+        Dictionary<string, List<string>> dependencies2New = new Dictionary<string, List<string>>();
+        Dictionary<string, List<string>> dependencies3New = new Dictionary<string, List<string>>();
         foreach (string item in itemsNoDupes)
         {
-            dependenciesNew.Add(item, new List<string>());
+            dependencies2New.Add(item, new List<string>());
+            dependencies3New.Add(item, new List<string>());
             foreach (KeyValuePair<string, List<string>> entry in dependenciesOld)
             {
                 //Debug.Log(string.Join(' ', entry.Value.Contains(item)));
                 if (entry.Value.Contains(item))
                 {
-                    dependenciesNew[item].Add(entry.Key);
+                    if (entry.Value.Count == 2)
+                        dependencies2New[item].Add(entry.Key);
+                    else
+                        dependencies3New[item].Add(entry.Key);
                 }
             }
             ItemDependence asset = ScriptableObject.CreateInstance<ItemDependence>();
-            asset.Set(item, dependenciesNew[item].ToArray());
+            asset.Set(item, dependencies2New[item].ToArray(), dependencies3New[item].ToArray());
             AssetDatabase.CreateAsset(asset, Path.Combine(pathItemDependenciesOut, item + ".asset"));
         }
 

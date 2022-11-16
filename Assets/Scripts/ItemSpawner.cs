@@ -5,6 +5,7 @@ using Scripts.Utils;
 using UnityEngine;
 using System.Linq;
 using Game.Pool;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -77,8 +78,8 @@ namespace Scripts
                 obj.transform.GetChild(0).GetComponent<TextMesh>().text = item.Name;
                 obj.name = item.Name;
                 Instance.activeObjects.Add(obj);
-                createEvent.Invoke(item.Name);
                 SaveSystem.SaveSystem.Unlock(name);
+                createEvent.Invoke(item.Name);
             }
         }
         public static void DeleteItem(GameObject obj)
@@ -107,44 +108,95 @@ namespace Scripts
             var dependence1 = Instance.dependencies.FirstOrDefault(x => x.Name == item1);
             var dependence2 = Instance.dependencies.FirstOrDefault(x => x.Name == item2);
             var dependence3 = Instance.dependencies.FirstOrDefault(x => x.Name == item2);
+            bool use1 = false, use2 = false, use3 = false;
 
-            if (item3 != string.Empty)
+            foreach (var item in dependence1.Dependencies3)
             {
-                foreach (var item in dependence3.Dependencies)
-                {
-                    var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
-                    if (recipe != null)
-                    {
-                        Debug.Log(recipe.Output.Name);
-                        RecipeSuccess(recipe, position);
-                        DeleteItem(obj3);
-                        DeleteItem(obj2);
-                        DeleteItem(obj1);
-                        return;
-                    }
-                }
-            }
-            foreach (var item in dependence2.Dependencies)
-            {
-                var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
-                if (recipe != null)
+                if (RecipeDictionary[item].GetRecipe(item1, item2, item3, out use1, out use2, out use3))
                 {
                     //Debug.Log(recipe.Output.Name);
-                    RecipeSuccess(recipe, position);
-                    DeleteItem(obj2);
-                    DeleteItem(obj1);
+                    RecipeSuccess(RecipeDictionary[item], position);
+                    if (use1)
+                        DeleteItem(obj1);
+                    if (use2)
+                        DeleteItem(obj2);
+                    if (use3)
+                        DeleteItem(obj3);
                     return;
                 }
             }
-            foreach (var item in dependence1.Dependencies)
+            foreach (var item in dependence2.Dependencies3)
             {
-                var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
-                if (recipe != null)
+                if (RecipeDictionary[item].GetRecipe(item1, item2, item3, out use1, out use2, out use3))
                 {
                     //Debug.Log(recipe.Output.Name);
-                    RecipeSuccess(recipe, position);
-                    DeleteItem(obj2);
-                    DeleteItem(obj1);
+                    RecipeSuccess(RecipeDictionary[item], position);
+                    if (use1)
+                        DeleteItem(obj1);
+                    if (use2)
+                        DeleteItem(obj2);
+                    if (use3)
+                        DeleteItem(obj3);
+                    return;
+                }
+            }
+            foreach (var item in dependence3.Dependencies3)
+            {
+                if (RecipeDictionary[item].GetRecipe(item1, item2, item3, out use1, out use2, out use3))
+                {
+                    //Debug.Log(recipe.Output.Name);
+                    RecipeSuccess(RecipeDictionary[item], position);
+                    if (use1)
+                        DeleteItem(obj1);
+                    if (use2)
+                        DeleteItem(obj2);
+                    if (use3)
+                        DeleteItem(obj3);
+                    return;
+                }
+            }
+            foreach (var item in dependence1.Dependencies2)
+            {
+                if (RecipeDictionary[item].GetRecipe(item1, item2, item3, out use1, out use2, out use3))
+                {
+                    //Debug.Log(recipe.Output.Name);
+                    RecipeSuccess(RecipeDictionary[item], position);
+                    if (use1)
+                        DeleteItem(obj1);
+                    if (use2)
+                        DeleteItem(obj2);
+                    if (use3)
+                        DeleteItem(obj3);
+                    return;
+                }
+            }
+            foreach (var item in dependence2.Dependencies2)
+            {
+                if (RecipeDictionary[item].GetRecipe(item1, item2, item3, out use1, out use2, out use3))
+                {
+                    //Debug.Log(recipe.Output.Name);
+                    RecipeSuccess(RecipeDictionary[item], position);
+                    if (use1)
+                        DeleteItem(obj1);
+                    if (use2)
+                        DeleteItem(obj2);
+                    if (use3)
+                        DeleteItem(obj3);
+                    return;
+                }
+            }
+            foreach (var item in dependence3.Dependencies2)
+            {
+                if (RecipeDictionary[item].GetRecipe(item1, item2, item3, out use1, out use2, out use3))
+                {
+                    //Debug.Log(recipe.Output.Name);
+                    RecipeSuccess(RecipeDictionary[item], position);
+                    if (use1)
+                        DeleteItem(obj1);
+                    if (use2)
+                        DeleteItem(obj2);
+                    if (use3)
+                        DeleteItem(obj3);
                     return;
                 }
             }

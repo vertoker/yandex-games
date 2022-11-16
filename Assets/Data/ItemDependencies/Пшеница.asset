@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: "\u041F\u0448\u0435\u043D\u0438\u0446\u0430"
   m_EditorClassIdentifier: 
   _name: "\u041F\u0448\u0435\u043D\u0438\u0446\u0430"
-  _dependencies:
+  _dependencies2:
   - "\u041A\u0443\u0440\u0438\u0446\u0430"
   - "\u041C\u0443\u043A\u0430"
   - "\u041C\u044B\u0448\u044C"
   - "\u041F\u0438\u0432\u043E"
   - "\u0425\u043E\u043C\u044F\u043A"
+  _dependencies3: []

@@ -8,7 +8,7 @@ namespace Scripts.Game
     {
         public void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.GetComponent<Item>() != null)
+            if (collision.CompareTag("Item"))
             {
                 ItemSpawner.DeleteItem(collision.transform.gameObject);
             }

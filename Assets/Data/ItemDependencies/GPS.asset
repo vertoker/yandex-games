@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: GPS
   m_EditorClassIdentifier: 
   _name: GPS
-  _dependencies: []
+  _dependencies2: []
+  _dependencies3: []

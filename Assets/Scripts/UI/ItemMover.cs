@@ -3,22 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Scripts.Items;
-using UnityEngine.UI;
+using UnityEngine.Events;
 using UnityEditor.PackageManager;
 using static UnityEditor.PlayerSettings;
 using UnityEngine.Experimental.AI;
+using Scripts.Game;
+using System.Linq;
 
 namespace Scripts.UI
 {
     public class ItemMover : MonoBehaviour
     {
+        [SerializeField] private BaseItemSelector itemSelector;
         [SerializeField] private InputReceiver input;
         [SerializeField] private ItemSpawner spawner;
         [SerializeField] LayerMask mask;
         [SerializeField] Camera cam;
 
         [Space]
-        [SerializeField] private float doubleClockTime = 0.3f;
+        [SerializeField] private float timeWaitSelector = 1f;
         [SerializeField] private float distanceTriggerDrag = 0.3f;
         [SerializeField] private float radiusOffset = 0.2f;
         [SerializeField] private float lerpTimePos = 0.2f;
@@ -29,33 +32,50 @@ namespace Scripts.UI
         private Transform activeItem;
         private Vector3 startPosition;
         private Vector3 lastPosition;
-        private Coroutine dragUpdate;//, doubleClickTimer;
-        //private bool isClicked = false;
+        private Coroutine dragUpdate;
+        private Coroutine selectorTrigger;
+        private bool isPressed = false;
+
+        private static UnityEvent<Transform> activeItemEvent = new UnityEvent<Transform>();
+        public static event UnityAction<Transform> ActiveItemUpdate
+        {
+            add => activeItemEvent.AddListener(value);
+            remove => activeItemEvent.RemoveListener(value);
+        }
 
         private void OnEnable()
         {
             input.OnDownUpdate += OnDown;
-            //input.OnDragUpdate += OnDrag;
+            input.OnBeginDragUpdate += OnBeginDrag;
             input.OnUpUpdate += OnUp;
-            //input.OnClickUpdate += OnClick;
+            TriggerMover.TouchesUpdate += TriggerOnUp;
+
         }
         private void OnDisable()
         {
             input.OnDownUpdate -= OnDown;
-            //input.OnDragUpdate -= OnDrag;
+            input.OnBeginDragUpdate -= OnBeginDrag;
             input.OnUpUpdate -= OnUp;
-            //input.OnClickUpdate -= OnClick;
+            TriggerMover.TouchesUpdate -= TriggerOnUp;
         }
 
         private void OnDown(PointerEventData data)
-        { 
+        {
+            isPressed = true;
+            if (selectorTrigger != null)
+                StopCoroutine(selectorTrigger);
             var collider = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0.1f, mask).collider;
             if (collider != null)
             {
                 activeItem = collider.gameObject.transform;
+                activeItemEvent.Invoke(activeItem);
+                spawner.DisableItem(activeItem.gameObject);
                 lastPosition = startPosition = activeItem.position;
-                spawner.DisableItem(collider.gameObject);
                 dragUpdate = StartCoroutine(DragUpdate());
+            }
+            else
+            {
+                selectorTrigger = StartCoroutine(SelectorTrigger());
             }
         }
         private IEnumerator DragUpdate()
@@ -66,6 +86,16 @@ namespace Scripts.UI
                 OnDrag();
             }
         }
+        private IEnumerator SelectorTrigger()
+        {
+            yield return new WaitForSeconds(timeWaitSelector);
+            if ((cam.ScreenToWorldPoint(Input.mousePosition) - startPosition).magnitude > distanceTriggerDrag && isPressed)
+                itemSelector.Activate();
+        }
+        private void OnBeginDrag(PointerEventData data)
+        {
+
+        }
         private void OnDrag()
         {
             if (activeItem == null)
@@ -73,7 +103,6 @@ namespace Scripts.UI
 
             var direction = activeItem.position - lastPosition;
             float angle = Mathf.Atan2(direction.y, direction.x);
-            //Debug.Log(direction.magnitude);
             lastPosition = activeItem.position;
             GetCoordPhysicOffset(angle, radiusOffset, out Vector2 offsetPosition, out Quaternion rotation);
             var pos = Vector2.LerpUnclamped(activeItem.position, (Vector2)cam.ScreenToWorldPoint(Input.mousePosition) + offsetPosition, lerpTimePos);
@@ -84,46 +113,62 @@ namespace Scripts.UI
         }
         private void OnUp(PointerEventData data)
         {
+            isPressed = false;
             if (activeItem == null)
                 return;
 
             StopCoroutine(dragUpdate);
-            //activeItem.SetPositionAndRotation(cam.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
+            if (selectorTrigger != null)
+                StopCoroutine(selectorTrigger);
 
             if ((lastPosition - startPosition).magnitude < distanceTriggerDrag)
             {
                 ItemSpawner.CreateItem(activeItem.name, lastPosition);
-                /*if (doubleClickTimer != null)
-                    StopCoroutine(doubleClickTimer);
-                if (isClicked)
-                {
-                    ItemSpawner.CreateItem(activeItem.name, lastPosition);
-                }
-                else
-                {
-                    isClicked = true;
-                    doubleClickTimer = StartCoroutine(DoubleClickTimer());
-                }*/
             }
-            else
-            {
-                activeItem.GetComponent<Item>().Activate();
-            }
+        }
 
+        private void TriggerOnUp(List<Collider2D> list)
+        {
+            if (activeItem == null)
+                return;
+
+            //Debug.Log(list.Count);
+            List<ContactData> cd = new List<ContactData>();
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].CompareTag("Item"))
+                {
+                    cd.Add(new ContactData()
+                    {
+                        distance = Vector2.Distance(list[i].gameObject.transform.position, transform.position),
+                        tr = list[i].transform
+                    });
+                }
+            }
+            cd.OrderBy(p => p.distance);
+
+            if (cd.Count >= 3)
+            {
+                var pos = (cd[0].tr.position + cd[1].tr.position + cd[2].tr.position) / 3f;
+                ItemSpawner.ExecuteRecipe(cd[0].tr.name, cd[1].tr.name, cd[2].tr.name, pos, cd[0].tr.gameObject, cd[1].tr.gameObject, cd[2].tr.gameObject);
+            }
+            else if (cd.Count == 2)
+            {
+                var pos = (cd[0].tr.position + cd[1].tr.position) / 2f;
+                ItemSpawner.ExecuteRecipe(cd[0].tr.name, cd[1].tr.name, string.Empty, pos, cd[0].tr.gameObject, cd[1].tr.gameObject, null);
+            }
             spawner.EnableItem(activeItem.gameObject);
-            activeItem = null;
+        }
+        struct ContactData
+        {
+            public float distance;
+            public Transform tr;
         }
 
         private static void GetCoordPhysicOffset(float angle, float radius, out Vector2 offsetPosition, out Quaternion rotation)
         {
             offsetPosition = new Vector2(Mathf.Cos(angle - 90f), Mathf.Sin(angle - 90f)) * radius;
             rotation = Quaternion.Euler(0f, 0f, angle * Mathf.Rad2Deg - 90f);
-        }
-
-        private IEnumerator DoubleClickTimer()
-        {
-            yield return new WaitForSeconds(doubleClockTime);
-            //isClicked = false;
         }
     }
 }

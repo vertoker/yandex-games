@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: "\u0421\u043F\u0443\u0442\u043D\u0438\u043A"
   m_EditorClassIdentifier: 
   _name: "\u0421\u043F\u0443\u0442\u043D\u0438\u043A"
-  _dependencies:
+  _dependencies2: []
+  _dependencies3:
   - GPS
