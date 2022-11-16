@@ -28,6 +28,8 @@ namespace Scripts.UI
         [SerializeField] private float lerpTimeRot = 0.2f;
         [SerializeField] private float rotActiveTrigger = 0.1f;
         [SerializeField] private Vector2 offsetItemText = new Vector2(0f, -0.7f);
+        [SerializeField] private Vector2 offsetShadowOn = new Vector2(0.1f, -0.1f);
+        [SerializeField] private Vector2 offsetShadowOff = new Vector2(0.2f, -0.2f);
 
         private Transform activeItem;
         private Vector3 startPosition;
@@ -110,6 +112,7 @@ namespace Scripts.UI
             activeItem.SetPositionAndRotation(pos, direction.magnitude > rotActiveTrigger ? rot : activeItem.rotation);
             activeItem.GetChild(0).rotation = Quaternion.identity;
             activeItem.GetChild(0).position = pos + offsetItemText;
+            activeItem.GetChild(1).position = pos + offsetShadowOn;
         }
         private void OnUp(PointerEventData data)
         {
@@ -125,6 +128,8 @@ namespace Scripts.UI
             {
                 ItemSpawner.CreateItem(activeItem.name, lastPosition);
             }
+
+            activeItem.GetChild(1).position = activeItem.position + (Vector3)offsetShadowOff;
         }
 
         private void TriggerOnUp(List<Collider2D> list)

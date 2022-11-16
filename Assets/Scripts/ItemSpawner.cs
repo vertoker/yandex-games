@@ -76,6 +76,8 @@ namespace Scripts
                 obj.transform.position = position;
                 obj.GetComponent<SpriteRenderer>().sprite = item.Sprite;
                 obj.transform.GetChild(0).GetComponent<TextMesh>().text = item.Name;
+                obj.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = item.Sprite;
+
                 obj.name = item.Name;
                 Instance.activeObjects.Add(obj);
                 SaveSystem.SaveSystem.Unlock(name);
