@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine.Events;
 using Scripts.Items;
 using Scripts.Utils;
 using UnityEngine;
@@ -28,11 +29,18 @@ namespace Scripts
 
         private List<GameObject> activeObjects = new List<GameObject>();
 
+
         private static ItemSpawner Instance;
+        private static UnityEvent<string> createEvent = new UnityEvent<string>();
 
         public static List<Items.Item> Items => Instance.items;
         public static Dictionary<string, Items.Item> ItemDictionary => Instance.itemDictionary;
         public static Dictionary<string, Recipe> RecipeDictionary => Instance.recipeDictionary;
+        public static event UnityAction<string> CreateUpdate
+        {
+            add => createEvent.AddListener(value);
+            remove => createEvent.RemoveListener(value);
+        }
 
         private void Awake()
         {
@@ -69,6 +77,7 @@ namespace Scripts
                 obj.transform.GetChild(0).GetComponent<TextMesh>().text = item.Name;
                 obj.name = item.Name;
                 Instance.activeObjects.Add(obj);
+                createEvent.Invoke(item.Name);
                 SaveSystem.SaveSystem.Unlock(name);
             }
         }
@@ -97,10 +106,11 @@ namespace Scripts
         {
             var dependence1 = Instance.dependencies.FirstOrDefault(x => x.Name == item1);
             var dependence2 = Instance.dependencies.FirstOrDefault(x => x.Name == item2);
+            var dependence3 = Instance.dependencies.FirstOrDefault(x => x.Name == item2);
 
             if (item3 != string.Empty)
             {
-                foreach (var item in dependence2.Dependencies)
+                foreach (var item in dependence3.Dependencies)
                 {
                     var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
                     if (recipe != null)
@@ -112,6 +122,18 @@ namespace Scripts
                         DeleteItem(obj1);
                         return;
                     }
+                }
+            }
+            foreach (var item in dependence2.Dependencies)
+            {
+                var recipe = Instance.recipes.FirstOrDefault(x => x.GetRecipe(item1, item2, item3));
+                if (recipe != null)
+                {
+                    //Debug.Log(recipe.Output.Name);
+                    RecipeSuccess(recipe, position);
+                    DeleteItem(obj2);
+                    DeleteItem(obj1);
+                    return;
                 }
             }
             foreach (var item in dependence1.Dependencies)

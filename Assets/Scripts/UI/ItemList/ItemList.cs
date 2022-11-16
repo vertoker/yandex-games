@@ -12,31 +12,36 @@ namespace Scripts.UI.ItemList
         [SerializeField] private Transform content;
         [SerializeField] private AnimatorUI listWindowAnimator;
         [SerializeField] private TMP_InputField inputField;
+
+        private RectTransform self;
         private ItemIcon[] icons;
         private Coroutine searchUpdate;
 
         private void OnEnable()
         {
             listWindowAnimator.OpenStartEvent += UpdateList;
-            listWindowAnimator.CloseEndEvent += Close;
+            //listWindowAnimator.CloseEndEvent += Close;
         }
         private void OnDisable()
         {
             listWindowAnimator.OpenStartEvent -= UpdateList;
-            listWindowAnimator.CloseEndEvent -= Close;
+            //listWindowAnimator.CloseEndEvent -= Close;
         }
         private void Start()
         {
+            self = GetComponent<RectTransform>();
             icons = new ItemIcon[content.childCount];
             for (int i = 0; i < content.childCount; i++)
             {
                 icons[i] = new ItemIcon(content.GetChild(i));
                 icons[i].Clear();
             }
+            UpdateList();
         }
 
         private void UpdateList()
         {
+            self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
             var list = SaveSystem.SaveSystem.GetList();
             for (int i = 0; i < list.Length; i++)
                 icons[i].Update(ItemSpawner.ItemDictionary[list[i]]);
@@ -49,9 +54,16 @@ namespace Scripts.UI.ItemList
                 StopCoroutine(searchUpdate);
             searchUpdate = StartCoroutine(SearchTask(inputField.text));
         }
-        public void Close()
+        public void Clear()
         {
-            inputField.text = string.Empty;
+            if (inputField.text.Length != 0)
+            {
+                inputField.text = string.Empty;
+            }
+            else
+            {
+                listWindowAnimator.Close();
+            }
         }
 
         public void ClickItem(int id)

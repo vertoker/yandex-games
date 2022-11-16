@@ -9,7 +9,7 @@ namespace Scripts.UI
     {
         [SerializeField] private float defaultValue = 1f;
         [SerializeField] private string key;
-        [SerializeField] private Slider slider;
+        [SerializeField] private UnityEngine.UI.Slider slider;
         [Space]
         [SerializeField] private Image icon;
         [SerializeField] private Sprite on, off;

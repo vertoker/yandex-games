@@ -5,47 +5,68 @@ using UnityEngine;
 using Scripts.Items;
 using TMPro;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Scripts.UI.RecipeList
 {
     public class RecipeList : MonoBehaviour
     {
+        [SerializeField] private Slider slider;
         [SerializeField] private Transform content;
         [SerializeField] private AnimatorUI listWindowAnimator;
         [SerializeField] private TMP_InputField inputField;
+
         private RecipeIcon[] icons;
         private Coroutine searchUpdate;
+        private List<string> list;
+        private RectTransform self;
 
         private void OnEnable()
         {
             listWindowAnimator.OpenStartEvent += UpdateRecipe;
-            listWindowAnimator.CloseEndEvent += Close;
+            //listWindowAnimator.CloseEndEvent += Close;
+            slider.SliderUpdate += UpdateSlider;
         }
         private void OnDisable()
         {
             listWindowAnimator.OpenStartEvent -= UpdateRecipe;
-            listWindowAnimator.CloseEndEvent -= Close;
+            //listWindowAnimator.CloseEndEvent -= Close;
+            slider.SliderUpdate -= UpdateSlider;
         }
         private void Start()
         {
+            self = GetComponent<RectTransform>();
             icons = new RecipeIcon[content.childCount];
             for (int i = 0; i < content.childCount; i++)
             {
                 icons[i] = new RecipeIcon(content.GetChild(i));
             }
+            UpdateRecipe();
         }
 
-        private void UpdateRecipe()
+        public void UpdateRecipe()
         {
-            var list = SaveSystem.SaveSystem.GetList().ToList();
+            self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
+            list = SaveSystem.SaveSystem.GetList().ToList();
             list.Remove("Вода");
             list.Remove("Земля");
             list.Remove("Огонь");
             list.Remove("Воздух");
+            slider.Initialize(Mathf.FloorToInt(list.Count / 10f) + 1);
+            slider.FullUp();
+        }
+        private void UpdateSlider(int currentPage, int pageCount)
+        {
+            List<string> showList;
 
-            for (int i = 0; i < list.Count; i++)
-                icons[i].Update(ItemSpawner.RecipeDictionary[list[i]]);
-            for (int i = list.Count; i < icons.Length; i++)
+            if (list.Count - icons.Length >= currentPage * icons.Length)
+                showList = list.GetRange(currentPage * icons.Length, icons.Length);
+            else
+                showList = list.GetRange(currentPage * icons.Length, list.Count - currentPage * icons.Length);
+
+            for (int i = 0; i < showList.Count; i++)
+                icons[i].Update(ItemSpawner.RecipeDictionary[showList[i]]);
+            for (int i = showList.Count; i < icons.Length; i++)
                 icons[i].Clear();
         }
         public void UpdateSearch()
@@ -54,20 +75,32 @@ namespace Scripts.UI.RecipeList
                 StopCoroutine(searchUpdate);
             searchUpdate = StartCoroutine(SearchTask(inputField.text));
         }
-        public void Close()
+        public void Clear()
         {
-            inputField.text = string.Empty;
+            if (inputField.text.Length != 0)
+            {
+                inputField.text = string.Empty;
+            }
+            else
+            {
+                listWindowAnimator.Close();
+            }
         }
 
         public IEnumerator SearchTask(string value)
         {
             yield return null;
-            var list = SaveSystem.SaveSystem.GetList();
-            list = list.Where(s => s.ToLower().Contains(value.ToLower())).ToArray();
-            for (int i = 0; i < list.Length; i++)
-                icons[i].Update(ItemSpawner.RecipeDictionary[list[i]]);
-            for (int i = list.Length; i < icons.Length; i++)
-                icons[i].Clear();
+
+            self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
+            list = SaveSystem.SaveSystem.GetList().ToList();
+            list.Remove("Вода");
+            list.Remove("Земля");
+            list.Remove("Огонь");
+            list.Remove("Воздух");
+
+            list = list.Where(s => s.ToLower().Contains(value.ToLower())).ToList();
+            slider.Initialize(Mathf.FloorToInt(list.Count / 10f) + 1);
+            slider.FullUp();
         }
     }
 

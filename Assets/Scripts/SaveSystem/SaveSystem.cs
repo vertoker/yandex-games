@@ -1,14 +1,21 @@
+using Scripts.Items;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Progress;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Scripts.SaveSystem
 {
     public class SaveSystem : MonoBehaviour
     {
-        private static string TRUE = "true", FALSE = "false";
+        [SerializeField] private ItemRoadmap roadmap;
+        private static string TRUE = "true", FALSE = "false", ONLYRECIPE = "only_recipe";
 
         private static SaveSystem instance;
+
+        public static string NextItemName => PlayerPrefs.GetString("next_item");
 
         private void Awake()
         {
@@ -19,6 +26,7 @@ namespace Scripts.SaveSystem
         private void InitialSave()
         {
             PlayerPrefs.SetString("start", TRUE);
+            PlayerPrefs.SetString("next_item", "Камень");
             foreach (var item in ItemSpawner.Items)
             {
                 PlayerPrefs.SetString(item.Name, FALSE);
@@ -32,7 +40,10 @@ namespace Scripts.SaveSystem
         public static void Unlock(string name)
         {
             if (PlayerPrefs.GetString(name) == FALSE)
+            {
                 PlayerPrefs.SetString(name, TRUE);
+                GetNextItem();
+            }
         }
         public static void UnlockAll()
         {
@@ -50,5 +61,33 @@ namespace Scripts.SaveSystem
                     list.Add(item.Name);
             return list.ToArray();
         }
+
+        public static void GetNextItem()
+        {
+            for (int i = 4; i < instance.roadmap.List.Count; i++)
+            {
+                if (PlayerPrefs.GetString(instance.roadmap.List[i]) == FALSE)
+                {
+                    PlayerPrefs.SetString("next_item", instance.roadmap.List[i]);
+                    break;
+                }
+            }
+        }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(SaveSystem))]
+    class EditorSaveSystem : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            SaveSystem data = (SaveSystem)target;
+            if (GUILayout.Button("Reset"))
+            {
+                PlayerPrefs.DeleteAll();
+            }
+        }
+    }
+#endif
 }

@@ -6,6 +6,7 @@ using Scripts.Items;
 using UnityEngine.UI;
 using UnityEditor.PackageManager;
 using static UnityEditor.PlayerSettings;
+using UnityEngine.Experimental.AI;
 
 namespace Scripts.UI
 {
@@ -17,6 +18,7 @@ namespace Scripts.UI
         [SerializeField] Camera cam;
 
         [Space]
+        [SerializeField] private float doubleClockTime = 0.3f;
         [SerializeField] private float distanceTriggerDrag = 0.3f;
         [SerializeField] private float radiusOffset = 0.2f;
         [SerializeField] private float lerpTimePos = 0.2f;
@@ -27,8 +29,8 @@ namespace Scripts.UI
         private Transform activeItem;
         private Vector3 startPosition;
         private Vector3 lastPosition;
-        private Coroutine dragUpdate;
-
+        private Coroutine dragUpdate;//, doubleClickTimer;
+        //private bool isClicked = false;
 
         private void OnEnable()
         {
@@ -89,9 +91,24 @@ namespace Scripts.UI
             //activeItem.SetPositionAndRotation(cam.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity);
 
             if ((lastPosition - startPosition).magnitude < distanceTriggerDrag)
+            {
                 ItemSpawner.CreateItem(activeItem.name, lastPosition);
+                /*if (doubleClickTimer != null)
+                    StopCoroutine(doubleClickTimer);
+                if (isClicked)
+                {
+                    ItemSpawner.CreateItem(activeItem.name, lastPosition);
+                }
+                else
+                {
+                    isClicked = true;
+                    doubleClickTimer = StartCoroutine(DoubleClickTimer());
+                }*/
+            }
             else
+            {
                 activeItem.GetComponent<Item>().Activate();
+            }
 
             spawner.EnableItem(activeItem.gameObject);
             activeItem = null;
@@ -101,6 +118,12 @@ namespace Scripts.UI
         {
             offsetPosition = new Vector2(Mathf.Cos(angle - 90f), Mathf.Sin(angle - 90f)) * radius;
             rotation = Quaternion.Euler(0f, 0f, angle * Mathf.Rad2Deg - 90f);
+        }
+
+        private IEnumerator DoubleClickTimer()
+        {
+            yield return new WaitForSeconds(doubleClockTime);
+            //isClicked = false;
         }
     }
 }
