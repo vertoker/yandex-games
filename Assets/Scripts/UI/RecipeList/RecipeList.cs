@@ -50,9 +50,20 @@ namespace Scripts.UI.RecipeList
             list.Remove("Земля");
             list.Remove("Огонь");
             list.Remove("Воздух");
-            slider.maxValue = Mathf.FloorToInt(list.Count / 10f);
-            slider.maxValue = slider.maxValue < 1 ? 1 : slider.maxValue;
-            slider.value = 1f;
+
+            int listCount = Mathf.FloorToInt((float)list.Count / icons.Length) + 1;
+            if (listCount > 2)
+            {
+                slider.maxValue = listCount;
+                slider.value = 1;
+            }
+            else
+            {
+                slider.maxValue = 2f;
+                slider.value = 1;
+            }
+            slider.interactable = listCount > 1;
+            slider.onValueChanged.Invoke(1);
         }
         public void UpdateSlider()
         {
@@ -76,14 +87,8 @@ namespace Scripts.UI.RecipeList
         }
         public void Clear()
         {
-            if (inputField.text.Length != 0)
-            {
-                inputField.text = string.Empty;
-            }
-            else
-            {
-                listWindowAnimator.Close();
-            }
+            inputField.text = string.Empty;
+            listWindowAnimator.Close();
         }
 
         public IEnumerator SearchTask(string value)
@@ -99,9 +104,20 @@ namespace Scripts.UI.RecipeList
             value = value.ToLower();
 
             list = list.Where(s => ItemSpawner.RecipeDictionary[s].Contains(value)).ToList();
-            slider.maxValue = Mathf.FloorToInt(list.Count / 10f);
-            slider.maxValue = slider.maxValue < 1 ? 1 : slider.maxValue;
-            slider.value = 1f;
+
+            int listCount = Mathf.FloorToInt((float)list.Count / icons.Length) + 1;
+            if (listCount > 2)
+            {
+                slider.maxValue = listCount;
+                slider.value = 1;
+            }
+            else
+            {
+                slider.maxValue = 2f;
+                slider.value = 1;
+            }
+            slider.interactable = listCount > 1;
+            slider.onValueChanged.Invoke(1);
         }
     }
 
@@ -163,13 +179,20 @@ namespace Scripts.UI.RecipeList
         }
         public void Clear()
         {
-            icon1.Clear();
+            bg.color = transparent;
             im1.color = transparent;
-            icon2.Clear();
             im2.color = transparent;
-            icon3.Clear();
             im3.color = transparent;
+
+            icon1.Clear();
+            icon2.Clear();
+            icon3.Clear();
             icon4.Clear();
+
+            icon1.SetActive(false);
+            icon2.SetActive(false);
+            icon3.SetActive(false);
+            icon4.SetActive(false);
         }
     }
 }

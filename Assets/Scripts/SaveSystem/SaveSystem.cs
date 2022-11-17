@@ -21,6 +21,7 @@ namespace Scripts.SaveSystem
         }
 
         public static string NextItemName => PlayerPrefs.GetString("next_item");
+        public static int CountOpenedItems => PlayerPrefs.GetInt("count_opened");
 
         public static string GetString(string value)
         {
@@ -38,6 +39,8 @@ namespace Scripts.SaveSystem
         {
             PlayerPrefs.SetString("start", TRUE);
             PlayerPrefs.SetString("next_item", "Камень");
+            PlayerPrefs.SetInt("count_opened", 4);
+
             foreach (var item in ItemSpawner.Items)
             {
                 PlayerPrefs.SetString(item.Name, FALSE);
@@ -53,6 +56,7 @@ namespace Scripts.SaveSystem
             if (GetString(name) != TRUE)
             {
                 PlayerPrefs.SetString(name, TRUE);
+                PlayerPrefs.SetInt("count_opened", PlayerPrefs.GetInt("count_opened") + 1);
                 GetNextItem();
             }
         }
@@ -107,6 +111,11 @@ namespace Scripts.SaveSystem
             if (!contains)
                 PlayerPrefs.SetString("next_item", string.Empty);
             recipeUnlockEvent.Invoke(GetString("next_item"));
+        }
+
+        public static void ResetAll()
+        {
+            PlayerPrefs.DeleteAll();
         }
     }
 

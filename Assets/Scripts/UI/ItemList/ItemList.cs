@@ -56,14 +56,8 @@ namespace Scripts.UI.ItemList
         }
         public void Clear()
         {
-            if (inputField.text.Length != 0)
-            {
-                inputField.text = string.Empty;
-            }
-            else
-            {
-                listWindowAnimator.Close();
-            }
+            inputField.text = string.Empty;
+            listWindowAnimator.Close();
         }
 
         public void ClickItem(int id)

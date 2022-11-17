@@ -15,7 +15,7 @@ namespace Scripts.UI
         }
         public void SliderUpdate()
         {
-            text.text = string.Format("{0} / {1}", slider.value, slider.maxValue);
+            text.text = slider.interactable ? string.Format("{0} / {1}", slider.value, slider.maxValue) : "1 / 1";
         }
     }
 }
