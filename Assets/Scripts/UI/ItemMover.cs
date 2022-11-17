@@ -35,6 +35,7 @@ namespace Scripts.UI
         private Vector3 lastPosition;
         private Coroutine dragUpdate;
         private Coroutine selectorTrigger;
+        private Coroutine createDublicate;
         private bool isPressed = false;
         private bool canDublicate = true;
 
@@ -63,6 +64,7 @@ namespace Scripts.UI
 
         private void OnDown(PointerEventData data)
         {
+            activeItem = null;
             isPressed = true;
             if (selectorTrigger != null)
                 StopCoroutine(selectorTrigger);
@@ -128,7 +130,9 @@ namespace Scripts.UI
             {
                 canDublicate = false;
                 ItemSpawner.CreateItem(activeItem.name, lastPosition);
-                StartCoroutine(TriggerCreateDublicateUp());
+                if (createDublicate != null)
+                    StopCoroutine(createDublicate);
+                createDublicate = StartCoroutine(TriggerCreateDublicateUp());
             }
 
             activeItem.GetChild(1).position = activeItem.position + (Vector3)offsetShadowOff;
@@ -141,6 +145,10 @@ namespace Scripts.UI
         private void TriggerOnUp(List<Collider2D> list)
         {
             if (activeItem == null)
+                return;
+            spawner.EnableItem(activeItem.gameObject);
+
+            if (!canDublicate)
                 return;
 
             //Debug.Log(list.Count);
@@ -168,7 +176,6 @@ namespace Scripts.UI
                 var pos = (cd[0].tr.position + cd[1].tr.position) / 2f;
                 ItemSpawner.ExecuteRecipe(cd[0].tr.name, cd[1].tr.name, string.Empty, pos, cd[0].tr.gameObject, cd[1].tr.gameObject, null);
             }
-            spawner.EnableItem(activeItem.gameObject);
         }
         struct ContactData
         {
