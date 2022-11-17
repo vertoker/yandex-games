@@ -11,6 +11,7 @@ namespace Scripts.UI.RecipeList
 {
     public class RecipeList : MonoBehaviour
     {
+        [SerializeField] private Camera cam;
         [SerializeField] private Slider slider;
         [SerializeField] private Transform content;
         [SerializeField] private AnimatorUI listWindowAnimator;
@@ -24,12 +25,12 @@ namespace Scripts.UI.RecipeList
         private void OnEnable()
         {
             listWindowAnimator.OpenStartEvent += UpdateRecipe;
-            //listWindowAnimator.CloseEndEvent += Close;
+            listWindowAnimator.CloseEndEvent += Clear;
         }
         private void OnDisable()
         {
             listWindowAnimator.OpenStartEvent -= UpdateRecipe;
-            //listWindowAnimator.CloseEndEvent -= Close;
+            listWindowAnimator.CloseEndEvent -= Clear;
         }
         private void Start()
         {
@@ -44,7 +45,7 @@ namespace Scripts.UI.RecipeList
 
         public void UpdateRecipe()
         {
-            self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
+            self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
             list = SaveSystem.SaveSystem.GetListRecipes().ToList();
             list.Remove("Вода");
             list.Remove("Земля");
@@ -85,17 +86,20 @@ namespace Scripts.UI.RecipeList
                 StopCoroutine(searchUpdate);
             searchUpdate = StartCoroutine(SearchTask(inputField.text));
         }
-        public void Clear()
+        public void Close()
+        {
+            listWindowAnimator.Close();
+        }
+        private void Clear()
         {
             inputField.text = string.Empty;
-            listWindowAnimator.Close();
         }
 
         public IEnumerator SearchTask(string value)
         {
             yield return null;
 
-            self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
+            self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
             list = SaveSystem.SaveSystem.GetListRecipes().ToList();
             list.Remove("Вода");
             list.Remove("Земля");

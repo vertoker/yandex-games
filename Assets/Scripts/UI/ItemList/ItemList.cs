@@ -9,6 +9,7 @@ namespace Scripts.UI.ItemList
 {
     public class ItemList : MonoBehaviour
     {
+        [SerializeField] private Camera cam;
         [SerializeField] private Transform content;
         [SerializeField] private AnimatorUI listWindowAnimator;
         [SerializeField] private TMP_InputField inputField;
@@ -20,12 +21,12 @@ namespace Scripts.UI.ItemList
         private void OnEnable()
         {
             listWindowAnimator.OpenStartEvent += UpdateList;
-            //listWindowAnimator.CloseEndEvent += Close;
+            listWindowAnimator.CloseEndEvent += Clear;
         }
         private void OnDisable()
         {
             listWindowAnimator.OpenStartEvent -= UpdateList;
-            //listWindowAnimator.CloseEndEvent -= Close;
+            listWindowAnimator.CloseEndEvent -= Clear;
         }
         private void Start()
         {
@@ -41,7 +42,7 @@ namespace Scripts.UI.ItemList
 
         private void UpdateList()
         {
-            self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
+            self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
             var list = SaveSystem.SaveSystem.GetList();
             for (int i = 0; i < list.Length; i++)
                 icons[i].Update(ItemSpawner.ItemDictionary[list[i]]);
@@ -54,10 +55,13 @@ namespace Scripts.UI.ItemList
                 StopCoroutine(searchUpdate);
             searchUpdate = StartCoroutine(SearchTask(inputField.text));
         }
-        public void Clear()
+        public void Close()
+        {
+            listWindowAnimator.Close();
+        }
+        private void Clear()
         {
             inputField.text = string.Empty;
-            listWindowAnimator.Close();
         }
 
         public void ClickItem(int id)

@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using UnityEngine;
 using Scripts.UI;
 using UnityEngine.EventSystems;
-using UnityEditor.DeviceSimulation;
 using UnityEngine.UI;
 
 namespace Scripts.Game

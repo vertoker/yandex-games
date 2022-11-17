@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Scripts.Items;
 using UnityEngine.Events;
-using UnityEditor.PackageManager;
-using static UnityEditor.PlayerSettings;
 using UnityEngine.Experimental.AI;
 using Scripts.Game;
 using System.Linq;
@@ -21,6 +19,7 @@ namespace Scripts.UI
         [SerializeField] Camera cam;
 
         [Space]
+        [SerializeField] private float timeWaitDublicate = 0.5f;
         [SerializeField] private float timeWaitSelector = 1f;
         [SerializeField] private float distanceTriggerDrag = 0.3f;
         [SerializeField] private float radiusOffset = 0.2f;
@@ -37,6 +36,7 @@ namespace Scripts.UI
         private Coroutine dragUpdate;
         private Coroutine selectorTrigger;
         private bool isPressed = false;
+        private bool canDublicate = true;
 
         private static UnityEvent<Transform> activeItemEvent = new UnityEvent<Transform>();
         public static event UnityAction<Transform> ActiveItemUpdate
@@ -124,14 +124,20 @@ namespace Scripts.UI
             if (selectorTrigger != null)
                 StopCoroutine(selectorTrigger);
 
-            if ((lastPosition - startPosition).magnitude < distanceTriggerDrag)
+            if ((lastPosition - startPosition).magnitude < distanceTriggerDrag && canDublicate)
             {
+                canDublicate = false;
                 ItemSpawner.CreateItem(activeItem.name, lastPosition);
+                StartCoroutine(TriggerCreateDublicateUp());
             }
 
             activeItem.GetChild(1).position = activeItem.position + (Vector3)offsetShadowOff;
         }
-
+        private IEnumerator TriggerCreateDublicateUp()
+        {
+            yield return new WaitForSeconds(timeWaitDublicate);
+            canDublicate = true;
+        }
         private void TriggerOnUp(List<Collider2D> list)
         {
             if (activeItem == null)
