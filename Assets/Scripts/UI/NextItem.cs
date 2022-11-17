@@ -16,16 +16,17 @@ namespace Scripts.UI
         }
         private void OnEnable()
         {
-            ItemSpawner.CreateUpdate += UpdateNextText;
+            SaveSystem.SaveSystem.RecipeUnlock += UpdateNextText;
         }
         private void OnDisable()
         {
-            ItemSpawner.CreateUpdate -= UpdateNextText;
+            SaveSystem.SaveSystem.RecipeUnlock -= UpdateNextText;
         }
 
         private void UpdateNextText(string itemName)
         {
-            text.text = textExplanation + SaveSystem.SaveSystem.NextItemName;
+            var name = SaveSystem.SaveSystem.NextItemName;
+            text.text = name == string.Empty ? string.Empty : textExplanation + name;
         }
     }
 }

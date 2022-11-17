@@ -103,6 +103,12 @@ namespace Scripts.UI.ItemList
             text = tr.GetChild(0).GetComponent<TMP_Text>();
         }
 
+        public void SetActive(bool active)
+        {
+            image.raycastTarget = active;
+            text.raycastTarget = active;
+        }
+
         public void Update(Items.Item item)
         {
             image.sprite = item.Sprite;

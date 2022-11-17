@@ -1,3 +1,4 @@
+using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
@@ -12,17 +13,9 @@ namespace Scripts.UI
         {
             text = GetComponent<TMP_Text>();
         }
-        private void OnEnable()
+        public void SliderUpdate()
         {
-            slider.SliderUpdate += SliderUpdate;
-        }
-        private void OnDisable()
-        {
-            slider.SliderUpdate -= SliderUpdate;
-        }
-        private void SliderUpdate(int currentPage, int pagesCount)
-        {
-            text.text = string.Format("{0} / {1}", currentPage + 1, pagesCount);
+            text.text = string.Format("{0} / {1}", slider.value, slider.maxValue);
         }
     }
 }

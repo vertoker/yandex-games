@@ -1,27 +1,38 @@
-using Scripts.Items;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.Events;
+using Scripts.Items;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Scripts.SaveSystem
 {
     public class SaveSystem : MonoBehaviour
     {
         [SerializeField] private ItemRoadmap roadmap;
-        private static string TRUE = "true", FALSE = "false", ONLYRECIPE = "only_recipe";
+        public static string TRUE = "true", FALSE = "false", ONLYRECIPE = "only_recipe";
 
         private static SaveSystem instance;
+        private static UnityEvent<string> recipeUnlockEvent = new UnityEvent<string>();
+        public static event UnityAction<string> RecipeUnlock
+        {
+            add => recipeUnlockEvent.AddListener(value);
+            remove => recipeUnlockEvent.RemoveListener(value);
+        }
 
         public static string NextItemName => PlayerPrefs.GetString("next_item");
+
+        public static string GetString(string value)
+        {
+            return PlayerPrefs.GetString(value);
+        }
 
         private void Start()
         {
             instance = this;
             if (!PlayerPrefs.HasKey("start"))
                 InitialSave();
+            recipeUnlockEvent.Invoke(GetString("next_item"));
         }
         private void InitialSave()
         {
@@ -39,9 +50,17 @@ namespace Scripts.SaveSystem
         }
         public static void Unlock(string name)
         {
-            if (PlayerPrefs.GetString(name) == FALSE)
+            if (GetString(name) != TRUE)
             {
                 PlayerPrefs.SetString(name, TRUE);
+                GetNextItem();
+            }
+        }
+        public static void UnlockNextRecipe()
+        {
+            if (GetString("next_item") != string.Empty)
+            {
+                PlayerPrefs.SetString(GetString("next_item"), ONLYRECIPE);
                 GetNextItem();
             }
         }
@@ -57,21 +76,37 @@ namespace Scripts.SaveSystem
         {
             List<string> list = new List<string>();
             foreach (var item in ItemSpawner.Items)
-                if (PlayerPrefs.GetString(item.Name) == TRUE)
+                if (GetString(item.Name) == TRUE)
+                    list.Add(item.Name);
+            return list.ToArray();
+        }
+        public static string[] GetListRecipes()
+        {
+            List<string> list = new List<string>();
+            foreach (var item in ItemSpawner.Items)
+                if (GetString(item.Name) == ONLYRECIPE)
+                    list.Add(item.Name);
+            foreach (var item in ItemSpawner.Items)
+                if (GetString(item.Name) == TRUE)
                     list.Add(item.Name);
             return list.ToArray();
         }
 
         public static void GetNextItem()
         {
+            bool contains = false;
             for (int i = 4; i < instance.roadmap.List.Count; i++)
             {
-                if (PlayerPrefs.GetString(instance.roadmap.List[i]) == FALSE)
+                if (GetString(instance.roadmap.List[i]) == FALSE)
                 {
                     PlayerPrefs.SetString("next_item", instance.roadmap.List[i]);
+                    contains = true;
                     break;
                 }
             }
+            if (!contains)
+                PlayerPrefs.SetString("next_item", string.Empty);
+            recipeUnlockEvent.Invoke(GetString("next_item"));
         }
     }
 

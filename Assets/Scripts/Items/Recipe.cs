@@ -20,6 +20,16 @@ namespace Scripts.Items
             _input = input;
         }
 
+        public bool Contains(string value)
+        {
+            if (_output.Name.ToLower().Contains(value))
+                return true;
+            foreach (var item in _input)
+                if (item.Name.ToLower().Contains(value))
+                    return true;
+            return false;
+        }
+
         public bool GetRecipe(string name1, string name2, string name3, out bool use1, out bool use2, out bool use3)
         {
             //Debug.Log(name3 != string.Empty ? "2" : "3" + "x" + _input.Length.ToString());

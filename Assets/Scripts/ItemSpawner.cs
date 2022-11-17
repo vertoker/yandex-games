@@ -32,16 +32,10 @@ namespace Scripts
 
 
         private static ItemSpawner Instance;
-        private static UnityEvent<string> createEvent = new UnityEvent<string>();
 
         public static List<Items.Item> Items => Instance.items;
         public static Dictionary<string, Items.Item> ItemDictionary => Instance.itemDictionary;
         public static Dictionary<string, Recipe> RecipeDictionary => Instance.recipeDictionary;
-        public static event UnityAction<string> CreateUpdate
-        {
-            add => createEvent.AddListener(value);
-            remove => createEvent.RemoveListener(value);
-        }
 
         private void Awake()
         {
@@ -81,7 +75,6 @@ namespace Scripts
                 obj.name = item.Name;
                 Instance.activeObjects.Add(obj);
                 SaveSystem.SaveSystem.Unlock(name);
-                createEvent.Invoke(item.Name);
             }
         }
         public static void DeleteItem(GameObject obj)

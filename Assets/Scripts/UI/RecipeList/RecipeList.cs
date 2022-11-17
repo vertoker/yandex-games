@@ -25,13 +25,11 @@ namespace Scripts.UI.RecipeList
         {
             listWindowAnimator.OpenStartEvent += UpdateRecipe;
             //listWindowAnimator.CloseEndEvent += Close;
-            slider.SliderUpdate += UpdateSlider;
         }
         private void OnDisable()
         {
             listWindowAnimator.OpenStartEvent -= UpdateRecipe;
             //listWindowAnimator.CloseEndEvent -= Close;
-            slider.SliderUpdate -= UpdateSlider;
         }
         private void Start()
         {
@@ -47,22 +45,23 @@ namespace Scripts.UI.RecipeList
         public void UpdateRecipe()
         {
             self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
-            list = SaveSystem.SaveSystem.GetList().ToList();
+            list = SaveSystem.SaveSystem.GetListRecipes().ToList();
             list.Remove("Вода");
             list.Remove("Земля");
             list.Remove("Огонь");
             list.Remove("Воздух");
-            slider.Initialize(Mathf.FloorToInt(list.Count / 10f) + 1);
-            slider.FullUp();
+            slider.maxValue = Mathf.FloorToInt(list.Count / 10f);
+            slider.maxValue = slider.maxValue < 1 ? 1 : slider.maxValue;
+            slider.value = 1f;
         }
-        private void UpdateSlider(int currentPage, int pageCount)
+        public void UpdateSlider()
         {
             List<string> showList;
 
-            if (list.Count - icons.Length >= currentPage * icons.Length)
-                showList = list.GetRange(currentPage * icons.Length, icons.Length);
+            if (list.Count - icons.Length >= ((int)slider.value - 1) * icons.Length)
+                showList = list.GetRange(((int)slider.value - 1) * icons.Length, icons.Length);
             else
-                showList = list.GetRange(currentPage * icons.Length, list.Count - currentPage * icons.Length);
+                showList = list.GetRange(((int)slider.value - 1) * icons.Length, list.Count - ((int)slider.value - 1) * icons.Length);
 
             for (int i = 0; i < showList.Count; i++)
                 icons[i].Update(ItemSpawner.RecipeDictionary[showList[i]]);
@@ -92,27 +91,31 @@ namespace Scripts.UI.RecipeList
             yield return null;
 
             self.sizeDelta = new Vector2(1080f * (Screen.width / Screen.height), 1080f);
-            list = SaveSystem.SaveSystem.GetList().ToList();
+            list = SaveSystem.SaveSystem.GetListRecipes().ToList();
             list.Remove("Вода");
             list.Remove("Земля");
             list.Remove("Огонь");
             list.Remove("Воздух");
+            value = value.ToLower();
 
-            list = list.Where(s => s.ToLower().Contains(value.ToLower())).ToList();
-            slider.Initialize(Mathf.FloorToInt(list.Count / 10f) + 1);
-            slider.FullUp();
+            list = list.Where(s => ItemSpawner.RecipeDictionary[s].Contains(value)).ToList();
+            slider.maxValue = Mathf.FloorToInt(list.Count / 10f);
+            slider.maxValue = slider.maxValue < 1 ? 1 : slider.maxValue;
+            slider.value = 1f;
         }
     }
 
     public struct RecipeIcon
     {
         private static Color transparent = new Color(1, 1, 1, 0);
+        private static Color gold = new Color(0.8f, 0.6f, 0.2f, 0.2f);
 
         private ItemIcon icon1, icon2, icon3, icon4;
-        private Image im1, im2, im3;
+        private Image bg, im1, im2, im3;
 
         public RecipeIcon(Transform recipeParent)
         {
+            bg = recipeParent.GetComponent<Image>();
             icon1 = new ItemIcon(recipeParent.GetChild(0));
             im1 = recipeParent.GetChild(1).GetComponent<Image>();
             icon2 = new ItemIcon(recipeParent.GetChild(2));
@@ -124,26 +127,39 @@ namespace Scripts.UI.RecipeList
 
         public void Update(Recipe recipe)
         {
+            bool isRecipeTrue = SaveSystem.SaveSystem.GetString(recipe.Output.Name) != SaveSystem.SaveSystem.ONLYRECIPE;
             if (recipe.Input.Length == 3)
             {
-                icon1.Update(recipe.Input[0]);
                 im1.color = Color.white;
-                icon2.Update(recipe.Input[1]);
                 im2.color = Color.white;
-                icon3.Update(recipe.Input[2]);
                 im3.color = Color.white;
+
+                icon1.Update(recipe.Input[0]);
+                icon2.Update(recipe.Input[1]);
+                icon3.Update(recipe.Input[2]);
                 icon4.Update(recipe.Output);
             }
             else
             {
-                icon1.Clear();
                 im1.color = transparent;
-                icon2.Update(recipe.Input[0]);
                 im2.color = Color.white;
-                icon3.Update(recipe.Input[1]);
                 im3.color = Color.white;
+
+                icon1.Clear();
+                icon2.Update(recipe.Input[0]);
+                icon3.Update(recipe.Input[1]);
                 icon4.Update(recipe.Output);
             }
+
+            icon1.SetActive(isRecipeTrue);
+            icon2.SetActive(isRecipeTrue);
+            icon3.SetActive(isRecipeTrue);
+            icon4.SetActive(isRecipeTrue);
+
+            if (isRecipeTrue)
+                bg.color = transparent;
+            else
+                bg.color = gold;
         }
         public void Clear()
         {
