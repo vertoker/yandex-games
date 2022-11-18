@@ -45,7 +45,7 @@ namespace Scripts.UI.RecipeList
 
         public void UpdateRecipe()
         {
-            self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
+            //self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
             list = SaveSystem.SaveSystem.GetListRecipes().ToList();
             list.Remove("Вода");
             list.Remove("Земля");
@@ -99,7 +99,7 @@ namespace Scripts.UI.RecipeList
         {
             yield return null;
 
-            self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
+            // self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
             list = SaveSystem.SaveSystem.GetListRecipes().ToList();
             list.Remove("Вода");
             list.Remove("Земля");

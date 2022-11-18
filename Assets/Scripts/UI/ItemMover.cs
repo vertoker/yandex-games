@@ -50,6 +50,7 @@ namespace Scripts.UI
         {
             input.OnDownUpdate += OnDown;
             input.OnBeginDragUpdate += OnBeginDrag;
+            input.OnDragUpdate += OnDrag;
             input.OnUpUpdate += OnUp;
             TriggerMover.TouchesUpdate += TriggerOnUp;
 
@@ -58,6 +59,7 @@ namespace Scripts.UI
         {
             input.OnDownUpdate -= OnDown;
             input.OnBeginDragUpdate -= OnBeginDrag;
+            input.OnDragUpdate -= OnDrag;
             input.OnUpUpdate -= OnUp;
             TriggerMover.TouchesUpdate -= TriggerOnUp;
         }
@@ -66,9 +68,10 @@ namespace Scripts.UI
         {
             activeItem = null;
             isPressed = true;
+            pressPosition = data.pointerCurrentRaycast.screenPosition;
             if (selectorTrigger != null)
                 StopCoroutine(selectorTrigger);
-            var collider = Physics2D.Raycast(cam.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0.1f, mask).collider;
+            var collider = Physics2D.Raycast(cam.ScreenToWorldPoint(data.pointerCurrentRaycast.screenPosition), Vector2.zero, 0.1f, mask).collider;
             if (collider != null)
             {
                 activeItem = collider.gameObject.transform;
@@ -79,7 +82,7 @@ namespace Scripts.UI
             }
             else
             {
-                selectorTrigger = StartCoroutine(SelectorTrigger());
+                selectorTrigger = StartCoroutine(SelectorTrigger(data.pointerCurrentRaycast.screenPosition));
             }
         }
         private IEnumerator DragUpdate()
@@ -90,16 +93,23 @@ namespace Scripts.UI
                 OnDrag();
             }
         }
-        private IEnumerator SelectorTrigger()
+        private IEnumerator SelectorTrigger(Vector2 pressPosition)
         {
             yield return new WaitForSeconds(timeWaitSelector);
-            if ((cam.ScreenToWorldPoint(Input.mousePosition) - startPosition).magnitude > distanceTriggerDrag && isPressed)
-                itemSelector.Activate();
+            if ((cam.ScreenToWorldPoint(pressPosition) - startPosition).magnitude > distanceTriggerDrag && isPressed)
+                itemSelector.Activate(pressPosition);
         }
+
+        private Vector2 pressPosition;
         private void OnBeginDrag(PointerEventData data)
         {
-
+            pressPosition = data.pointerCurrentRaycast.screenPosition;
         }
+        private void OnDrag(PointerEventData data)
+        {
+            pressPosition = data.pointerCurrentRaycast.screenPosition;
+        }
+
         private void OnDrag()
         {
             if (activeItem == null)
@@ -109,7 +119,7 @@ namespace Scripts.UI
             float angle = Mathf.Atan2(direction.y, direction.x);
             lastPosition = activeItem.position;
             GetCoordPhysicOffset(angle, radiusOffset, out Vector2 offsetPosition, out Quaternion rotation);
-            var pos = Vector2.LerpUnclamped(activeItem.position, (Vector2)cam.ScreenToWorldPoint(Input.mousePosition) + offsetPosition, lerpTimePos);
+            var pos = Vector2.LerpUnclamped(activeItem.position, (Vector2)cam.ScreenToWorldPoint(pressPosition) + offsetPosition, lerpTimePos);
             var rot = Quaternion.LerpUnclamped(activeItem.rotation, rotation, lerpTimeRot);
             activeItem.SetPositionAndRotation(pos, direction.magnitude > rotActiveTrigger ? rot : activeItem.rotation);
             activeItem.GetChild(0).rotation = Quaternion.identity;

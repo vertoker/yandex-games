@@ -14,13 +14,21 @@ namespace Scripts.Game
 
         [SerializeField] private Vector2 pixelBorders;
         [SerializeField] private Vector2 borders;
-        [SerializeField] private float aspect;
 
         private Transform edgeLeft, edgeRight;
         private Transform cornerLeft, cornerLeftCenter;
         private Transform cornerRight, cornerRightCenter;
 
-        private void Start()
+        private void OnEnable()
+        {
+            ScreenCaller.ScreenOrientationChanged += ScreenUpdate;
+        }
+        private void OnDisable()
+        {
+            ScreenCaller.ScreenOrientationChanged -= ScreenUpdate;
+        }
+
+        private void Awake()
         {
             edgeLeft = transform.GetChild(0);
             edgeRight = transform.GetChild(1);
@@ -28,8 +36,14 @@ namespace Scripts.Game
             cornerLeftCenter = transform.GetChild(3);
             cornerRightCenter = transform.GetChild(4);
             cornerRight = transform.GetChild(5);
+        }
 
-            aspect = (float)Screen.width / Screen.height;
+        private void ScreenUpdate(bool vertical, float aspect)
+        {
+            transform.eulerAngles = vertical ? new Vector3(0f, 0f, 90f) : Vector3.zero;
+
+            if (vertical)
+                aspect = 1f / aspect;
             borders = new Vector2(5f * aspect, 5f);
             pixelBorders = borders * pixelPerUnit;
 
@@ -41,11 +55,6 @@ namespace Scripts.Game
             cornerRight.localPosition = new Vector3((pixelBorders.x - xCornerSizePixel / 2f) / pixelPerUnit, 0f);
             cornerLeftCenter.localPosition = new Vector3(xCornerSizePixel / 2f / -pixelPerUnit, 0f);
             cornerRightCenter.localPosition = new Vector3(xCornerSizePixel / 2f / pixelPerUnit, 0f);
-        }
-
-        private void Update()
-        {
-            
         }
     }
 }

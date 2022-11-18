@@ -42,7 +42,7 @@ namespace Scripts.UI.ItemList
 
         private void UpdateList()
         {
-            self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
+            //self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
             var list = SaveSystem.SaveSystem.GetList();
             for (int i = 0; i < list.Length; i++)
                 icons[i].Update(ItemSpawner.ItemDictionary[list[i]]);

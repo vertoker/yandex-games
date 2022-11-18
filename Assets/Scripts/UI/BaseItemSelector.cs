@@ -42,14 +42,14 @@ namespace Scripts.UI
         }
         public void Down(PointerEventData data)
         {
-            startScreenPos = ScreenToCanvasPoint(Input.mousePosition);
+            startScreenPos = ScreenToCanvasPoint(data.pointerCurrentRaycast.screenPosition);
         }
         public void Drag(PointerEventData data)
         {
             if (!active)
                 return;
 
-            Vector2 delta = ScreenToCanvasPoint(Input.mousePosition) - startScreenPos;
+            Vector2 delta = ScreenToCanvasPoint(data.pointerCurrentRaycast.screenPosition) - startScreenPos;
             foreach (var active in actives)
                 active.enabled = false;
             if (delta.magnitude < distanceSelect)
@@ -78,10 +78,10 @@ namespace Scripts.UI
             Deactivate();
         }
 
-        public void Activate()
+        public void Activate(Vector2 pressPosition)
         {
-            GetComponent<RectTransform>().anchoredPosition = ScreenToCanvasPoint(Input.mousePosition);
-            spawnPos = cam.ScreenToWorldPoint(Input.mousePosition);
+            GetComponent<RectTransform>().anchoredPosition = ScreenToCanvasPoint(pressPosition);
+            spawnPos = cam.ScreenToWorldPoint(pressPosition);
             foreach (var image in images)
                 image.enabled = true;
             foreach (var active in actives)

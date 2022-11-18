@@ -59,7 +59,7 @@ namespace Scripts.Game
 
         private void Down(PointerEventData data)
         {
-            transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = cam.ScreenToWorldPoint(data.pointerCurrentRaycast.screenPosition);
             self.enabled = true;
         }
         private void GetActiveItem(Transform transform)
@@ -68,7 +68,7 @@ namespace Scripts.Game
         }
         private void Drag(PointerEventData data)
         {
-            transform.position = cam.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = cam.ScreenToWorldPoint(data.pointerCurrentRaycast.screenPosition);
         }
         private void Up(PointerEventData data)
         {
