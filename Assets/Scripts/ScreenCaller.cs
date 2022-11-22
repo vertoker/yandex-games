@@ -10,6 +10,7 @@ namespace Scripts
         [SerializeField] private float updateTime = 0.25f;
         [SerializeField] private Camera cam;
         private ScreenOrientation currentOrientation;
+        private float screenSizeX, screenSizeY;
 
         private static UnityEvent<bool, float> screenOrientationEvent = new UnityEvent<bool, float>();
 
@@ -22,6 +23,8 @@ namespace Scripts
         private void Start()
         {
             currentOrientation = Screen.orientation;
+            screenSizeX = Screen.width;
+            screenSizeY = Screen.height;
             Debug.Log("Flip to " + currentOrientation.ToString());
             var isVertical = currentOrientation == ScreenOrientation.Portrait || currentOrientation == ScreenOrientation.PortraitUpsideDown;
             cam.orthographicSize = isVertical ? 5 / cam.aspect : 5;
@@ -35,9 +38,11 @@ namespace Scripts
             while (true)
             {
                 yield return new WaitForSeconds(updateTime);
-                if (currentOrientation != Screen.orientation)
+                if (currentOrientation != Screen.orientation || screenSizeX != Screen.width || screenSizeY != Screen.height)
                 {
                     currentOrientation = Screen.orientation;
+                    screenSizeX = Screen.width;
+                    screenSizeY = Screen.height;
                     Debug.Log("Flip to " + currentOrientation.ToString());
                     var isVertical = currentOrientation == ScreenOrientation.Portrait || currentOrientation == ScreenOrientation.PortraitUpsideDown;
                     cam.orthographicSize = isVertical ? 5 / cam.aspect : 5;

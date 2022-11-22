@@ -68,11 +68,21 @@ namespace Scripts.SaveSystem
                 GetNextItem();
             }
         }
+        public static bool GetUnlocked()
+        {
+            foreach (var item in ItemSpawner.Items)
+            {
+                if (PlayerPrefs.GetString(item.Name) == FALSE)
+                    return false;
+            }
+            return true;
+        }
         public static void UnlockAll()
         {
             foreach (var item in ItemSpawner.Items)
             {
-                PlayerPrefs.SetString(item.Name, TRUE);
+                if (PlayerPrefs.GetString(item.Name) == FALSE)
+                    PlayerPrefs.SetString(item.Name, ONLYRECIPE);
             }
         }
 
