@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using UnityEngine.Events;
+using Scripts.Audio;
 using Scripts.Items;
 using Scripts.Utils;
 using UnityEngine;
 using System.Linq;
 using Game.Pool;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -75,7 +74,7 @@ namespace Scripts
                 obj.name = item.Name;
                 Instance.activeObjects.Add(obj);
                 SaveSystem.SaveSystem.Unlock(name);
-                AudioCaller.Call(AudioType.Fail);
+                AudioResourcesPlay.Play("Fail");
             }
         }
         public static void DeleteItem(GameObject obj)
@@ -203,13 +202,13 @@ namespace Scripts
             //Debug.Log(recipe.Output.Name);
             CreateItem(recipe.Output.Name, position);
             Destroy(Instantiate(Instance.successEffect, position, Quaternion.identity, Instance.transform), 1f);
-            AudioCaller.Call(AudioType.Success);
+            AudioResourcesPlay.Play("Success");
         }
         private static void RecipeFail(Vector2 position)
         {
             //Debug.Log("Fail");
             Destroy(Instantiate(Instance.failEffect, position, Quaternion.identity, Instance.transform), 1f);
-            AudioCaller.Call(AudioType.Fail);
+            AudioResourcesPlay.Play("Fail");
         }
     }
 

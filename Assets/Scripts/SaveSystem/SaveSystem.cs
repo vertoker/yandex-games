@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine.Events;
 using Scripts.Items;
 using UnityEditor;
 using UnityEngine;
+using YG;
 
 namespace Scripts.SaveSystem
 {
@@ -56,7 +56,9 @@ namespace Scripts.SaveSystem
             if (GetString(name) != TRUE)
             {
                 PlayerPrefs.SetString(name, TRUE);
-                PlayerPrefs.SetInt("count_opened", PlayerPrefs.GetInt("count_opened") + 1);
+                int count_opened = PlayerPrefs.GetInt("count_opened") + 1;
+                PlayerPrefs.SetInt("count_opened", count_opened);
+                YandexGame.NewLeaderboardScores("BestOfInventing", count_opened);
                 GetNextItem();
             }
         }

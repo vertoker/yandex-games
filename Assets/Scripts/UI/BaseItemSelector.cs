@@ -14,6 +14,7 @@ namespace Scripts.UI
         [SerializeField] private Camera cam;
         private Image[] images, actives;
         private bool active = false;
+        private bool vertical = false;
         private Vector2 startScreenPos;
         private Vector2 spawnPos;
 
@@ -22,12 +23,14 @@ namespace Scripts.UI
             input.OnDownUpdate += Down;
             input.OnDragUpdate += Drag;
             input.OnUpUpdate += Up;
+            ScreenCaller.ScreenOrientationChanged += ScreenUpdate;
         }
         private void OnDisable()
         {
             input.OnDownUpdate -= Down;
             input.OnDragUpdate -= Drag;
             input.OnUpUpdate -= Up;
+            ScreenCaller.ScreenOrientationChanged -= ScreenUpdate;
         }
         private void Start()
         {
@@ -97,11 +100,23 @@ namespace Scripts.UI
             active = false;
         }
 
+        private void ScreenUpdate(bool vertical, float aspect)
+        {
+            this.vertical = vertical;
+        }
         private Vector2 ScreenToCanvasPoint(Vector2 screenPoint)
         {
-            float xSize = 1080f * ((float)Screen.width / Screen.height);
-            float x = screenPoint.x / Screen.width * xSize - xSize / 2f;
-            float y = screenPoint.y / Screen.height * 1080f - 540f;
+            float maxSize, x, y;
+            if (vertical)
+            {
+                maxSize = 1080f * ((float)Screen.height / Screen.width);
+                y = screenPoint.y / Screen.height * maxSize - maxSize / 2f;
+                x = screenPoint.x / Screen.width * 1080f - 540f;
+                return new Vector2(x, y);
+            }
+            maxSize = 1080f * ((float)Screen.width / Screen.height);
+            x = screenPoint.x / Screen.width * maxSize - maxSize / 2f;
+            y = screenPoint.y / Screen.height * 1080f - 540f;
             return new Vector2(x, y);
         }
     }

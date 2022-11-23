@@ -51,6 +51,8 @@ namespace Scripts.UI
             remove => closeEndEvent.RemoveListener(value);
         }
 
+        public bool IsOpen => isOpen;
+
         private void Awake()
         {
             //layout.gameObject.SetActive(isOpen);

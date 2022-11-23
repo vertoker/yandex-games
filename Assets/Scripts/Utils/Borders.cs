@@ -9,6 +9,7 @@ namespace Scripts.Utils
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private float _boldness = 2f;
+        private bool active = false;
         private Transform[] boxes;
         private Transform trashbag;
 
@@ -26,8 +27,15 @@ namespace Scripts.Utils
             for (int i = 0; i < 4; i++)
                 boxes[i] = transform.GetChild(i);
             trashbag = transform.GetChild(4);
+        }
+        private void UpdateBoxes(bool vertical)
+        {
+            Vector2 innerSize;
+            if (vertical)
+                innerSize = new Vector2(_camera.orthographicSize * 2f, _camera.orthographicSize * 2f * _camera.aspect);
+            else
+                innerSize = new Vector2(_camera.orthographicSize * 2f * _camera.aspect, _camera.orthographicSize * 2f);
 
-            Vector2 innerSize = new Vector2(_camera.orthographicSize * 2f * _camera.aspect, _camera.orthographicSize * 2f);
             boxes[0].localScale = new Vector3(innerSize.x + _boldness * 2f, _boldness, 1f);
             boxes[0].localPosition = new Vector3(0f, (innerSize.y + _boldness) / 2f, 0f);
             boxes[1].localScale = new Vector3(innerSize.x + _boldness * 2f, _boldness, 1f);
@@ -37,11 +45,16 @@ namespace Scripts.Utils
             boxes[3].localScale = new Vector3(_boldness, innerSize.y + _boldness * 2f, 1f);
             boxes[3].localPosition = new Vector3(-(innerSize.x + _boldness) / 2f, 0f, 0f);
 
+            if (active)
+                return;
+            active = true;
+
             for (int i = 0; i < 4; i++)
                 boxes[i].gameObject.SetActive(true);
         }
         private void ScreenUpdate(bool vertical, float aspect)
         {
+            UpdateBoxes(vertical);
             transform.eulerAngles = vertical ? new Vector3(0f, 0f, 90f) : Vector3.zero;
             var y = (Screen.orientation == ScreenOrientation.LandscapeRight || Screen.orientation == ScreenOrientation.LandscapeLeft) ? -4.4f : 4.4f;
             trashbag.localPosition = new Vector3(0f, y, 0f);
