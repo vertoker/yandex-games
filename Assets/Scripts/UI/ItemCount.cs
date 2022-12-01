@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using YG;
 
 namespace Scripts.UI
 {
@@ -18,11 +18,13 @@ namespace Scripts.UI
         }
         private void OnEnable()
         {
+            YandexGame.GetDataEvent += UpdateCountText;
             SaveSystem.SaveSystem.RecipeUnlock += UpdateCountText;
             ScreenCaller.ScreenOrientationChanged += DescriptionUpdate;
         }
         private void OnDisable()
         {
+            YandexGame.GetDataEvent -= UpdateCountText;
             SaveSystem.SaveSystem.RecipeUnlock -= UpdateCountText;
             ScreenCaller.ScreenOrientationChanged -= DescriptionUpdate;
         }
@@ -30,9 +32,9 @@ namespace Scripts.UI
         private void DescriptionUpdate(bool vertical, float aspect)
         {
             includeDescription = !vertical;
-            UpdateCountText("1000-7?");
+            UpdateCountText();
         }
-        private void UpdateCountText(string itemName)
+        public void UpdateCountText()
         {
             text.text = includeDescription ? 
                 string.Format("{0}\n{1} / 550", description, SaveSystem.SaveSystem.CountOpenedItems) :

@@ -6,6 +6,7 @@ using Scripts.Items;
 using TMPro;
 using System.Linq;
 using System.Collections.Generic;
+using YG;
 
 namespace Scripts.UI.RecipeList
 {
@@ -26,11 +27,13 @@ namespace Scripts.UI.RecipeList
         {
             listWindowAnimator.OpenStartEvent += UpdateRecipe;
             listWindowAnimator.CloseEndEvent += Clear;
+            SaveSystem.SaveSystem.DataLoaded += UpdateRecipe;
         }
         private void OnDisable()
         {
             listWindowAnimator.OpenStartEvent -= UpdateRecipe;
             listWindowAnimator.CloseEndEvent -= Clear;
+            SaveSystem.SaveSystem.DataLoaded -= UpdateRecipe;//YandexGame.GetDataEvent
         }
         private void Start()
         {
@@ -40,7 +43,7 @@ namespace Scripts.UI.RecipeList
             {
                 icons[i] = new RecipeIcon(content.GetChild(i));
             }
-            UpdateRecipe();
+            //UpdateRecipe();
         }
 
         public void UpdateRecipe()
@@ -147,7 +150,7 @@ namespace Scripts.UI.RecipeList
 
         public void Update(Recipe recipe)
         {
-            bool isRecipeTrue = SaveSystem.SaveSystem.GetString(recipe.Output.Name) != SaveSystem.SaveSystem.ONLYRECIPE;
+            bool isRecipeTrue = YandexGame.savesData.items[recipe.Output.Name] != SaveSystem.SaveSystem.ONLYRECIPE;
             if (recipe.Input.Length == 3)
             {
                 im1.color = Color.white;

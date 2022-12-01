@@ -6,6 +6,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using Scripts;
 
 namespace YG
 {
@@ -99,7 +102,7 @@ namespace YG
 
         static void Message(string message)
         {
-            if (_debug) Debug.Log(message);
+            //if (_debug) Debug.Log(message);
         }
 
         void FirstСalls()
@@ -136,58 +139,32 @@ namespace YG
         
         public static void SaveLocal()
         {
-            string path = Application.dataPath + "/YandexGame/WorkingData/";
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-                Message("Save Unity Editor: Create New Directory");
-            }
-            else Message("Save Unity Editor");
-
-            FileStream fs = new FileStream(path + "saveyg.yg", FileMode.Create);
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(fs, savesData);
-            fs.Close();
+            Debug.Log("Save");
+            Debug.Log(JsonConvert.SerializeObject(savesData));
+            PlayerPrefs.SetString("data", JsonConvert.SerializeObject(savesData));
         }
 
         public static void LoadLocal()
         {
-            string path = Application.dataPath + "/YandexGame/WorkingData/";
-            Message("Load Unity Editor");
-
-            if (File.Exists(path + "saveyg.yg")) // если файл есть
+            if (PlayerPrefs.HasKey("data"))
             {
-                FileStream fs = new FileStream(path + "saveyg.yg", FileMode.Open);
-                BinaryFormatter formatter = new BinaryFormatter();
-                try // загрузка
-                {
-                    savesData = (SavesYG)formatter.Deserialize(fs);
-                    _SDKEnabled = true;
-                    GetDataEvent?.Invoke();
-                    SwitchLangEvent?.Invoke(savesData.language);
-                }
-                catch (Exception e) // если файл поломан
-                {
-                    Debug.Log(e.Message);
-                    ResetSaveProgress();
-                }
-                finally
-                {
-                    fs.Close();
-                } 
+                Debug.Log("Load");
+                Debug.Log(PlayerPrefs.GetString("data"));
+                savesData = JsonConvert.DeserializeObject<SavesYG>(PlayerPrefs.GetString("data"));
             }
-            else ResetSaveProgress();
+            else
+                ResetSaveProgress();
         }
 #endif
 
         public static void ResetSaveProgress()
         {
-            Message("Reset Save Progress");
+            Debug.Log("Reset Save Progress");
+            //_SDKEnabled = true;
+            PlayerPrefs.DeleteAll();
 #if UNITY_EDITOR
-            savesData = new SavesYG { isFirstSession = false };
+            savesData = new SavesYG { isFirstSession = true };
 
-            _SDKEnabled = true;
             SwitchLangEvent?.Invoke(savesData.language);
             GetDataEvent?.Invoke();
 #else
@@ -198,12 +175,15 @@ namespace YG
 
         public static void SaveProgress()
         {
+            //Debug.Log(_SDKEnabled);
+#if UNITY_EDITOR
+            SaveLocal();
+#endif
+
             if (_SDKEnabled)
             {
 #if !UNITY_EDITOR
                 SaveCloud(false);
-#else
-                SaveLocal();
 #endif
             }
         }
@@ -216,9 +196,9 @@ namespace YG
             LoadLocal();
 #endif
         }
-        #endregion Player Data        
+#endregion Player Data        
 
-        #region SiteLock
+#region SiteLock
         [DllImport("__Internal")]
         private static extern string GetURLFromPage();
 
@@ -261,12 +241,12 @@ namespace YG
             AudioListener.volume = 0;
             AudioListener.pause = true;
         }
-        #endregion SiteLock
+#endregion SiteLock
 
 
         // Sending messages
 
-        #region Authorization Check
+#region Authorization Check
         [DllImport("__Internal")]
         private static extern void AuthorizationCheck(string playerPhotoSize, bool scopes);
 
@@ -278,9 +258,9 @@ namespace YG
             SetAuthorization(@"{""playerAuth""" + ": " + @"""resolved""," + @"""playerName""" + ": " + @"""Ivan"", " + @"""playerId""" + ": " + @"""tOpLpSh7i8QG8Voh/SuPbeS4NKTj1OxATCTKQF92H4c="", " + @"""playerPhoto""" + ": " + @"""https://drive.google.com/u/0/uc?id=1TCoEwiiUvIiQwAMbKcBssneWkmsoofuI&export=download""}");
 #endif
         }
-        #endregion Authorization Check
+#endregion Authorization Check
 
-        #region Init Leaderboard
+#region Init Leaderboard
         [DllImport("__Internal")]
         private static extern void InitLeaderboard();
 
@@ -293,9 +273,9 @@ namespace YG
             Message("Initialization Leaderboards");
 #endif
         }
-        #endregion Init Leaderboard
+#endregion Init Leaderboard
 
-        #region Open Auth Dialog
+#region Open Auth Dialog
         [DllImport("__Internal")]
         private static extern void OpenAuthDialog(string playerPhotoSize, bool scopes);
 
@@ -318,16 +298,16 @@ namespace YG
             Message("Open Auth Dialog");
 #endif
         }
-        #endregion Open Auth Dialog
+#endregion Open Auth Dialog
 
-        #region Save end Load Cloud
+#region Save end Load Cloud
         [DllImport("__Internal")]
         private static extern void SaveYG(string jsonData, bool flush);
 
         public static void SaveCloud(bool flush)
         {
             Message("Load YG");
-            SaveYG(JsonUtility.ToJson(savesData), flush);
+            SaveYG(JsonConvert.SerializeObject(savesData), flush);
         }
 
         [DllImport("__Internal")]
@@ -338,9 +318,9 @@ namespace YG
             Message("Load YG");
             LoadYG();
         }
-        #endregion Save end Load Cloud
+#endregion Save end Load Cloud
 
-        #region Fullscren Ad Show
+#region Fullscren Ad Show
         [DllImport("__Internal")]
         private static extern void FullAdShow();
 
@@ -388,9 +368,9 @@ namespace YG
             CloseFullscreen();
         }
 #endif
-        #endregion Fullscreen Ad Show
+#endregion Fullscreen Ad Show
 
-        #region Rewarded Video Show
+#region Rewarded Video Show
         [DllImport("__Internal")]
         private static extern void RewardedShow(int id);
 
@@ -432,9 +412,9 @@ namespace YG
             RewardVideo(id);
         }
 #endif
-        #endregion Rewarded Video Show
+#endregion Rewarded Video Show
 
-        #region Language
+#region Language
         [DllImport("__Internal")]
         private static extern void LanguageRequest();
 
@@ -465,9 +445,9 @@ namespace YG
 
             SwitchLangEvent?.Invoke(language);
         }
-        #endregion Language
+#endregion Language
 
-        #region Requesting Environment Data
+#region Requesting Environment Data
         [DllImport("__Internal")]
         private static extern void RequestingEnvironmentData();
 
@@ -478,9 +458,9 @@ namespace YG
 #endif
             Message("Requesting Envirolopment Data");
         }
-        #endregion Requesting Environment Data
+#endregion Requesting Environment Data
 
-        #region URL
+#region URL
         public void _OnURL_Yandex_DefineDomain(string url)
         {
             Message("URL yandex.DefineDomain");
@@ -497,9 +477,9 @@ namespace YG
             Message("Any URL");
             Application.OpenURL(url);
         }
-        #endregion URL
+#endregion URL
 
-        #region Leaderboard
+#region Leaderboard
         [DllImport("__Internal")]
         private static extern void SetLeaderboardScores(string nameLB, int score);
 
@@ -562,9 +542,9 @@ namespace YG
             Message("Get Leaderboard - " + nameLB);
 #endif
         }
-        #endregion Leaderboard
+#endregion Leaderboard
 
-        #region Payments
+#region Payments
         [DllImport("__Internal")]
         private static extern void BuyPaymentsInternal(string id);
 
@@ -660,9 +640,9 @@ namespace YG
 
         public void _DeleteAllPurchases() => DeleteAllPurchases();
 
-        #endregion Payments
+#endregion Payments
 
-        #region Review Show
+#region Review Show
         [DllImport("__Internal")]
         private static extern void ReviewInternal();
 
@@ -685,9 +665,9 @@ namespace YG
         {
             GameObject.Find("YandexGame").GetComponent<YandexGame>()._ReviewShow(authDialog);
         }
-        #endregion Review Show
+#endregion Review Show
 
-        #region Prompt
+#region Prompt
         [DllImport("__Internal")]
         private static extern void PromptShowInternal();
 
@@ -705,9 +685,9 @@ namespace YG
 #endif
         }
         public void _PromptShow() => PromptShow();
-        #endregion Prompt
+#endregion Prompt
 
-        #region Sticky Ad
+#region Sticky Ad
         [DllImport("__Internal")]
         private static extern void StickyAdActivityInternal(bool activity);
 
@@ -721,12 +701,12 @@ namespace YG
         }
 
         public void _StickyAdActivity(bool activity) => StickyAdActivity(activity);
-        #endregion Sticky Ad
+#endregion Sticky Ad
 
 
         // Receiving messages
 
-        #region Fullscren Ad
+#region Fullscren Ad
         public static Action OpenFullAdEvent;
         public void OpenFullscreen()
         {
@@ -742,9 +722,9 @@ namespace YG
             CloseFullscreenAd.Invoke();
             CloseFullAdEvent?.Invoke();
         }
-        #endregion Fullscren Ad
+#endregion Fullscren Ad
 
-        #region Rewarded Video
+#region Rewarded Video
         public static Action OpenVideoEvent;
         public void OpenVideo()
         {
@@ -775,9 +755,9 @@ namespace YG
             ErrorVideoAd.Invoke();
             ErrorVideoEvent?.Invoke();
         }
-        #endregion Rewarded Video
+#endregion Rewarded Video
 
-        #region Authorization
+#region Authorization
         JsonAuth jsonAuth = new JsonAuth();
 
         public void SetAuthorization(string data)
@@ -818,16 +798,16 @@ namespace YG
 #endif
             }
         }
-        #endregion Set Authorization
+#endregion Set Authorization
 
-        #region Loading progress
+#region Loading progress
         public void SetLoadSaves(string data)
         {
             data = data.Remove(0, 2);
             data = data.Remove(data.Length - 2, 2);
             data = data.Replace(@"\", "");
 
-            savesData = JsonUtility.FromJson<SavesYG>(data);
+            savesData = JsonConvert.DeserializeObject<SavesYG>(data);
             Message("Load YG Complete");
 
             _SDKEnabled = true;
@@ -842,7 +822,7 @@ namespace YG
         public void ResetSaveCloud()
         {
             Message("Reset Save Progress");
-            savesData = new SavesYG { isFirstSession = false };
+            savesData = new SavesYG { isFirstSession = true };
 
             if (infoYG.LocalizationEnable &&
                 (infoYG.callingLanguageCheck == InfoYG.CallingLanguageCheck.FirstLaunchOnly ||
@@ -852,9 +832,9 @@ namespace YG
             _SDKEnabled = true;
             GetDataEvent?.Invoke();
         }
-        #endregion Loading progress
+#endregion Loading progress
 
-        #region Language
+#region Language
         public void SetLanguage(string language)
         {
             string lang = "en";
@@ -970,16 +950,16 @@ namespace YG
 
             SwitchLangEvent?.Invoke(lang);
         }
-        #endregion Language
+#endregion Language
 
-        #region Environment Data
+#region Environment Data
         public void SetEnvironmentData(string data)
         {
             EnvironmentData = JsonUtility.FromJson<JsonEnvironmentData>(data);
         }
-        #endregion Environment Data
+#endregion Environment Data
 
-        #region Leaderboard
+#region Leaderboard
         public delegate void UpdateLB(
             string name,
             string description,
@@ -1022,9 +1002,9 @@ namespace YG
             UpdateLbEvent?.Invoke("initialized", "no data", rank, photo, playersName, scorePlayers, _auth);
             _initializedLB = true;
         }
-        #endregion Leaderboard
+#endregion Leaderboard
 
-        #region Payments
+#region Payments
         public static Action GetPaymentsEvent;
 
         public void PaymentsEntries(string data)
@@ -1080,9 +1060,9 @@ namespace YG
             PurchaseFailed?.Invoke();
             PurchaseFailedEvent?.Invoke(id);
         }
-        #endregion Payments
+#endregion Payments
 
-        #region Review
+#region Review
         public static Action<bool> ReviewSentEvent;
         public void ReviewSent(string feedbackSent)
         {
@@ -1092,9 +1072,9 @@ namespace YG
             ReviewSentEvent?.Invoke(sent);
             if (sent) ReviewDo?.Invoke();
         }
-        #endregion Review
+#endregion Review
 
-        #region Prompt
+#region Prompt
         public static Action PromptSuccessEvent;
         public void OnPromptSuccess()
         {
@@ -1105,12 +1085,12 @@ namespace YG
             PromptSuccessEvent?.Invoke();
             EnvironmentData.promptCanShow = false;
         }
-        #endregion Prompt
+#endregion Prompt
 
 
         // The rest
 
-        #region Update
+#region Update
         int delayFirstCalls = -1;
         static float timerShowAd;
 
@@ -1127,9 +1107,9 @@ namespace YG
                     FirstСalls();
             }
         }
-        #endregion Update
+#endregion Update
 
-        #region Json
+#region Json
         public class JsonAuth
         {
             public string playerAuth;
@@ -1173,7 +1153,7 @@ namespace YG
             public string[] priceValue;
             public int[] purchased;
         }
-        #endregion Json
+#endregion Json
     }
 
     public class Purchase

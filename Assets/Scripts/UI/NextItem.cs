@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using YG;
 
 namespace Scripts.UI
 {
     public class NextItem : MonoBehaviour
     {
         [SerializeField] private string textExplanation = "Следующий предмет: ";
+        [SerializeField] private string textNotation = "Посмотрите рекламу и разблокируйте следующий рецепт";
         private TMP_Text text;
+        private bool activeNotation = false;
 
         private void Start()
         {
@@ -16,17 +19,28 @@ namespace Scripts.UI
         }
         private void OnEnable()
         {
+            YandexGame.GetDataEvent += UpdateNextText;
             SaveSystem.SaveSystem.RecipeUnlock += UpdateNextText;
         }
         private void OnDisable()
         {
+            YandexGame.GetDataEvent -= UpdateNextText;
             SaveSystem.SaveSystem.RecipeUnlock -= UpdateNextText;
         }
 
-        private void UpdateNextText(string itemName)
+        public void ActivateNotation()
         {
-            var name = SaveSystem.SaveSystem.NextItemName;
-            text.text = name == string.Empty ? string.Empty : textExplanation + name;
+            activeNotation = true;
+            UpdateNextText();
+        }
+        public void DeactivateNotation()
+        {
+            activeNotation = false;
+            UpdateNextText();
+        }
+        public void UpdateNextText()
+        {
+            text.text = activeNotation ? textNotation : textExplanation + SaveSystem.SaveSystem.NextItemName;
         }
     }
 }

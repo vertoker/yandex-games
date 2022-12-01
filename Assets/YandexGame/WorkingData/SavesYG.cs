@@ -1,4 +1,6 @@
 ﻿
+using System.Collections.Generic;
+
 namespace YG
 {
     [System.Serializable]
@@ -10,8 +12,8 @@ namespace YG
         public bool promptDone;
 
         // Ваши сохранения
-        public int money = 1;
-        public string newPlayerName = "Hello!";
-        public bool[] openLevels = new bool[3];
+        public Dictionary<string, string> items;
+        public string nextItem;
+        public int countOpened;
     }
 }

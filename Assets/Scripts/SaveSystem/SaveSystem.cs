@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.Events;
 using Scripts.Items;
 using UnityEditor;
 using UnityEngine;
 using YG;
+using System.Linq;
 
 namespace Scripts.SaveSystem
 {
@@ -13,68 +15,74 @@ namespace Scripts.SaveSystem
         public static string TRUE = "true", FALSE = "false", ONLYRECIPE = "only_recipe";
 
         private static SaveSystem instance;
-        private static UnityEvent<string> recipeUnlockEvent = new UnityEvent<string>();
-        public static event UnityAction<string> RecipeUnlock
+        private static UnityEvent recipeUnlockEvent = new UnityEvent();
+        public static event UnityAction RecipeUnlock
         {
             add => recipeUnlockEvent.AddListener(value);
             remove => recipeUnlockEvent.RemoveListener(value);
         }
 
-        public static string NextItemName => PlayerPrefs.GetString("next_item");
-        public static int CountOpenedItems => PlayerPrefs.GetInt("count_opened");
-
-        public static string GetString(string value)
+        private static UnityEvent dataLoadedEvent = new UnityEvent();
+        public static event UnityAction DataLoaded
         {
-            return PlayerPrefs.GetString(value);
+            add => dataLoadedEvent.AddListener(value);
+            remove => dataLoadedEvent.RemoveListener(value);
         }
+
+        public static string NextItemName => YandexGame.savesData.nextItem;
+        public static int CountOpenedItems => YandexGame.savesData.countOpened;
 
         private void Start()
         {
             instance = this;
-            if (!PlayerPrefs.HasKey("start"))
+            YandexGame.LoadProgress();
+            if (YandexGame.savesData.isFirstSession)
                 InitialSave();
-            recipeUnlockEvent.Invoke(GetString("next_item"));
+            dataLoadedEvent.Invoke();
+#if UNITY_EDITOR
+            recipeUnlockEvent.Invoke();
+#endif
         }
         private void InitialSave()
         {
-            PlayerPrefs.SetString("start", TRUE);
-            PlayerPrefs.SetString("next_item", "Камень");
-            PlayerPrefs.SetInt("count_opened", 4);
+            YandexGame.savesData.isFirstSession = false;
+            YandexGame.savesData.nextItem = "Камень";
+            YandexGame.savesData.countOpened = 4;
 
+            YandexGame.savesData.items = new Dictionary<string, string>();
             foreach (var item in ItemSpawner.Items)
-            {
-                PlayerPrefs.SetString(item.Name, FALSE);
-            }
-            PlayerPrefs.SetString("Вода", TRUE);
-            PlayerPrefs.SetString("Земля", TRUE);
-            PlayerPrefs.SetString("Огонь", TRUE);
-            PlayerPrefs.SetString("Воздух", TRUE);
-            PlayerPrefs.Save();
+                YandexGame.savesData.items.Add(item.Name, FALSE);
+            YandexGame.savesData.items["Вода"] = TRUE;
+            YandexGame.savesData.items["Земля"] = TRUE;
+            YandexGame.savesData.items["Огонь"] = TRUE;
+            YandexGame.savesData.items["Воздух"] = TRUE;
+            YandexGame.SaveProgress();
+            //YandexGame.LoadProgress();
         }
         public static void Unlock(string name)
         {
-            if (GetString(name) != TRUE)
+            //Debug.Log(YandexGame.savesData.items[name]);
+            if (YandexGame.savesData.items[name] != TRUE)
             {
-                PlayerPrefs.SetString(name, TRUE);
-                int count_opened = PlayerPrefs.GetInt("count_opened") + 1;
-                PlayerPrefs.SetInt("count_opened", count_opened);
-                YandexGame.NewLeaderboardScores("BestOfInventing", count_opened);
+                YandexGame.savesData.items[name] = TRUE;
+                YandexGame.savesData.countOpened++;
+                YandexGame.NewLeaderboardScores("BestOfInventing", YandexGame.savesData.countOpened);
                 GetNextItem();
             }
         }
         public static void UnlockNextRecipe()
         {
-            if (GetString("next_item") != string.Empty)
+            if (YandexGame.savesData.nextItem != string.Empty)
             {
-                PlayerPrefs.SetString(GetString("next_item"), ONLYRECIPE);
+                YandexGame.savesData.items[YandexGame.savesData.nextItem] = ONLYRECIPE;
                 GetNextItem();
             }
         }
-        public static bool GetUnlocked()
+        public static bool GetUnlocked()//38 42
         {
             foreach (var item in ItemSpawner.Items)
             {
-                if (PlayerPrefs.GetString(item.Name) == FALSE)
+                if (YandexGame.savesData.items[item.Name] == FALSE)
                     return false;
             }
             return true;
@@ -83,27 +91,34 @@ namespace Scripts.SaveSystem
         {
             foreach (var item in ItemSpawner.Items)
             {
-                if (PlayerPrefs.GetString(item.Name) == FALSE)
-                    PlayerPrefs.SetString(item.Name, ONLYRECIPE);
+                if (YandexGame.savesData.items[item.Name] == FALSE)
+                    YandexGame.savesData.items[item.Name] = ONLYRECIPE;
             }
+            YandexGame.SaveProgress();
         }
 
         public static string[] GetList()
         {
+            /*return YandexGame.savesData.items.Keys.Where((string key) => { return key == TRUE; }).ToArray();*/
+
             List<string> list = new List<string>();
             foreach (var item in ItemSpawner.Items)
-                if (GetString(item.Name) == TRUE)
+                if (YandexGame.savesData.items[item.Name] == TRUE)
                     list.Add(item.Name);
             return list.ToArray();
         }
         public static string[] GetListRecipes()
         {
+            /*return YandexGame.savesData.items.Keys.Where((string key) => { return key == ONLYRECIPE; })
+                .Concat(YandexGame.savesData.items.Keys.Where((string key) => { return key == TRUE; }).ToArray())
+                .ToArray();*/
+
             List<string> list = new List<string>();
             foreach (var item in ItemSpawner.Items)
-                if (GetString(item.Name) == ONLYRECIPE)
+                if (YandexGame.savesData.items[item.Name] == ONLYRECIPE)
                     list.Add(item.Name);
             foreach (var item in ItemSpawner.Items)
-                if (GetString(item.Name) == TRUE)
+                if (YandexGame.savesData.items[item.Name] == TRUE)
                     list.Add(item.Name);
             return list.ToArray();
         }
@@ -113,21 +128,23 @@ namespace Scripts.SaveSystem
             bool contains = false;
             for (int i = 4; i < instance.roadmap.List.Count; i++)
             {
-                if (GetString(instance.roadmap.List[i]) == FALSE)
+                if (YandexGame.savesData.items[instance.roadmap.List[i]] == FALSE)
                 {
-                    PlayerPrefs.SetString("next_item", instance.roadmap.List[i]);
+                    YandexGame.savesData.nextItem = instance.roadmap.List[i];
                     contains = true;
                     break;
                 }
             }
             if (!contains)
-                PlayerPrefs.SetString("next_item", string.Empty);
-            recipeUnlockEvent.Invoke(GetString("next_item"));
+                YandexGame.savesData.nextItem = string.Empty;
+            //Debug.Log(YandexGame.savesData.nextItem);
+            YandexGame.SaveProgress();
+            recipeUnlockEvent.Invoke();
         }
 
         public static void ResetAll()
         {
-            PlayerPrefs.DeleteAll();
+            YandexGame.ResetSaveProgress();
         }
     }
 

@@ -18,11 +18,11 @@ namespace Scripts
         [SerializeField] private GameObject successEffect;
         [SerializeField] private GameObject failEffect;
 
-        [SerializeField] private List<Items.Item> items;
+        [SerializeField] private List<Item> items;
         [SerializeField] private List<Recipe> recipes;
         [SerializeField] private List<ItemDependence> dependencies;
 
-        [SerializeField] private Dictionary<string, Items.Item> itemDictionary;
+        [SerializeField] private Dictionary<string, Item> itemDictionary;
         [SerializeField] private Dictionary<string, Recipe> recipeDictionary;
 
         [SerializeField] private float radius = 0.5f;
@@ -32,10 +32,11 @@ namespace Scripts
 
         private static ItemSpawner Instance;
 
-        public static List<Items.Item> Items => Instance.items;
-        public static Dictionary<string, Items.Item> ItemDictionary => Instance.itemDictionary;
+        public static List<Item> Items => Instance.items;
+        public static Dictionary<string, Item> ItemDictionary => Instance.itemDictionary;
         public static Dictionary<string, Recipe> RecipeDictionary => Instance.recipeDictionary;
 
+        [RuntimeInitializeOnLoadMethod]
         private void Awake()
         {
             Instance = this;
@@ -50,17 +51,17 @@ namespace Scripts
         }
         private void Start()
         {
-            CreateItem("Вода");
-            CreateItem("Огонь");
-            CreateItem("Земля");
-            CreateItem("Воздух");
+            CreateItem("Вода", true);
+            CreateItem("Огонь", true);
+            CreateItem("Земля", true);
+            CreateItem("Воздух", true);
         }
 
-        public static void CreateItem(string name)
+        public static void CreateItem(string name, bool startSpawn = false)
         {
-            CreateItem(name, Math.GetRandomPointInCircle(Instance.radius));
+            CreateItem(name, Math.GetRandomPointInCircle(Instance.radius), startSpawn);
         }
-        public static void CreateItem(string name, Vector2 position)
+        public static void CreateItem(string name, Vector2 position, bool startSpawn = false)
         {
             var item = Instance.items.FirstOrDefault((Items.Item i) => { return i.Name == name; });
             if (item != null)
@@ -73,8 +74,11 @@ namespace Scripts
 
                 obj.name = item.Name;
                 Instance.activeObjects.Add(obj);
-                SaveSystem.SaveSystem.Unlock(name);
-                AudioResourcesPlay.Play("Fail");
+                if (!startSpawn)
+                {
+                    SaveSystem.SaveSystem.Unlock(name);
+                    AudioResourcesPlay.Play("Fail");
+                }
             }
         }
         public static void DeleteItem(GameObject obj)

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using YG;
+using Scripts.SaveSystem;
 
 namespace Scripts.UI.ItemList
 {
@@ -22,11 +24,13 @@ namespace Scripts.UI.ItemList
         {
             listWindowAnimator.OpenStartEvent += UpdateList;
             listWindowAnimator.CloseEndEvent += Clear;
+            SaveSystem.SaveSystem.DataLoaded += UpdateList;
         }
         private void OnDisable()
         {
             listWindowAnimator.OpenStartEvent -= UpdateList;
             listWindowAnimator.CloseEndEvent -= Clear;
+            SaveSystem.SaveSystem.DataLoaded += UpdateList;
         }
         private void Start()
         {
@@ -37,13 +41,14 @@ namespace Scripts.UI.ItemList
                 icons[i] = new ItemIcon(content.GetChild(i));
                 icons[i].Clear();
             }
-            UpdateList();
+            //UpdateList();
         }
 
         private void UpdateList()
         {
             //self.sizeDelta = new Vector2(1080f * cam.aspect, 1080f);
             var list = SaveSystem.SaveSystem.GetList();
+            //Debug.Log("UpdateList " + list.Count().ToString());
             for (int i = 0; i < list.Length; i++)
                 icons[i].Update(ItemSpawner.ItemDictionary[list[i]]);
             for (int i = list.Length; i < icons.Length; i++)
