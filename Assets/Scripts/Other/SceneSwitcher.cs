@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Linq;
 using System;
+using YG;
 
 using Scripts.Game;
-using System.Linq;
 
 namespace Scripts.Other
 {
@@ -19,11 +20,12 @@ namespace Scripts.Other
 
         private void OnEnable()
         {
-            Inializator.InitializationComplete += InitializationLoad;
+            YandexGame.GetDataEvent += InitializationLoad;
+            //Inializator.InitializationComplete += InitializationLoad;
         }
         private void OnDisable()
         {
-            Inializator.InitializationComplete -= InitializationLoad;
+            YandexGame.GetDataEvent -= InitializationLoad;
         }
         private void Awake()
         {
@@ -37,10 +39,18 @@ namespace Scripts.Other
         public static void LoadLocation(Location target)
         {
             var condition = self.conditions.FirstOrDefault((LocationSwitchCondition lc) => { return lc.source == currentActive && lc.target == target; });
-
+            if (condition.source != Location.None)
+            {
+                SceneManager.UnloadSceneAsync((int)condition.source);
+            }
+            if (condition.target != Location.None)
+            {
+                SceneManager.LoadSceneAsync((int)condition.target, LoadSceneMode.Additive);
+            }
         }
     }
 
+    [Serializable]
     public struct LocationSwitchCondition
     {
         public Location source;
