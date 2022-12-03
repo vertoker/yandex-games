@@ -11,4 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Locations/Village.unity
     guid: 9c08f603fb6e6e642b71786d7cc337b5
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
+      guid: 63779dab37791fa44b51823f931e33d5, type: 2}
