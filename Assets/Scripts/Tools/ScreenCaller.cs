@@ -21,7 +21,6 @@ namespace Scripts.Tools
             screenSizeY = Screen.height;
             Debug.Log("Flip to " + currentOrientation.ToString());
             var isVertical = currentOrientation == ScreenOrientation.Portrait || currentOrientation == ScreenOrientation.PortraitUpsideDown;
-            cam.orthographicSize = isVertical ? 5 / cam.aspect : 5;
             ScreenOrientationChanged?.Invoke(isVertical, cam.aspect);
 
             StartCoroutine(CheckForChange());
@@ -39,7 +38,7 @@ namespace Scripts.Tools
                     screenSizeY = Screen.height;
                     Debug.Log("Flip to " + currentOrientation.ToString());
                     var isVertical = currentOrientation == ScreenOrientation.Portrait || currentOrientation == ScreenOrientation.PortraitUpsideDown;
-                    cam.orthographicSize = isVertical ? 5 / cam.aspect : 5;
+                    //cam.orthographicSize = isVertical ? 5 / cam.aspect : 5;
                     ScreenOrientationChanged?.Invoke(isVertical, cam.aspect);
                 }
             }

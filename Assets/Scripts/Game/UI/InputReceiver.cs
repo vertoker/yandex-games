@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using System;
 
-namespace Scripts.UI
+namespace Scripts.Game.UI
 {
     public class InputReceiver : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IDragHandler, IPointerUpHandler, IPointerClickHandler
     {

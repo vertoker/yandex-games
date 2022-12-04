@@ -1,9 +1,9 @@
-using Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+using Scripts.Game.UI;
 using Scripts.Tools;
 
 namespace Scripts.Game.Controller
