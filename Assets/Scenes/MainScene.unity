@@ -509,9 +509,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeLerp: 0.05
-  heigth: 8
-  offsetPosition: {x: 0, y: -8}
-  offsetRotation: {x: 0, y: 0, z: 0}
+  heigth: 10
+  minDistance: 6
+  maxDistance: 8
   target: {fileID: 2740260083738967717}
 --- !u!1 &1387736510
 GameObject:
@@ -721,6 +721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystickBorder: 250
   controller: {fileID: 3264138498315199520}
+  cam: {fileID: 963194228}
 --- !u!1 &1602948957
 GameObject:
   m_ObjectHideFlags: 0

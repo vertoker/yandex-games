@@ -12,6 +12,7 @@ namespace Scripts.Game.Controller
     {
         [SerializeField] private float joystickBorder = 800f;
         [SerializeField] private PersonController controller;
+        [SerializeField] private Transform cam;
 
         private bool vertical;
         private Vector2 startScreenPos;
@@ -65,7 +66,7 @@ namespace Scripts.Game.Controller
                 updater = null;
             }
             currentDirection.Normalize();
-            controller.Move(currentDirection / 100f);
+            controller.Move(Math.RotateVector(currentDirection / 100f, -cam.eulerAngles.y));
             startScreenPos = currentDirection = Vector2.zero;
         }
         private IEnumerator UpdateJoystick()
@@ -73,7 +74,7 @@ namespace Scripts.Game.Controller
             while (true)
             {
                 yield return null;
-                controller.Move(currentDirection);
+                controller.Move(Math.RotateVector(currentDirection,- cam.eulerAngles.y));
             }
         }
 
