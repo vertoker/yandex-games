@@ -25107,10 +25107,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positions:
-  - {x: 3, y: -6, z: -66}
-  - {x: 3, y: -7, z: -66}
+  - {x: 3, y: -6.5, z: -66}
+  - {x: 3, y: -6.6, z: -66}
   currentTargetPosition: 0
-  speed: 0.01
+  speed: 0.002
   beginOnStart: 1
 --- !u!1 &2134640941
 GameObject:

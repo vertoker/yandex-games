@@ -23,7 +23,6 @@ namespace Scripts.Game
         {
             var delta = target.position - self.position;
             var currentDistance = Mathf.Sqrt(delta.x * delta.x + delta.z * delta.z);
-            Debug.Log(currentDistance);
             if (currentDistance < minDistance)
             {
                 delta = delta / currentDistance * minDistance;
