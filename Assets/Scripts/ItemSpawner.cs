@@ -22,6 +22,7 @@ namespace Scripts
         [SerializeField] private List<Recipe> recipes;
         [SerializeField] private List<ItemDependence> dependencies;
 
+        [SerializeField] private Dictionary<string, string> defaultItemDictionary;
         [SerializeField] private Dictionary<string, Item> itemDictionary;
         [SerializeField] private Dictionary<string, Recipe> recipeDictionary;
 
@@ -33,6 +34,7 @@ namespace Scripts
         private static ItemSpawner Instance;
 
         public static List<Item> Items => Instance.items;
+        public static Dictionary<string, string> DefaultItemDictionary => Instance.defaultItemDictionary;
         public static Dictionary<string, Item> ItemDictionary => Instance.itemDictionary;
         public static Dictionary<string, Recipe> RecipeDictionary => Instance.recipeDictionary;
 
@@ -41,9 +43,18 @@ namespace Scripts
         {
             Instance = this;
 
-            itemDictionary = new Dictionary<string, Items.Item>();
+            itemDictionary = new Dictionary<string, Item>();
+            defaultItemDictionary = new Dictionary<string, string>();
             for (int i = 0; i < items.Count; i++)
+            {
                 itemDictionary.Add(items[i].Name, items[i]);
+                defaultItemDictionary.Add(items[i].Name, SaveSystem.SaveSystem.FALSE);
+            }
+            defaultItemDictionary["Вода"] = SaveSystem.SaveSystem.TRUE;
+            defaultItemDictionary["Огонь"] = SaveSystem.SaveSystem.TRUE;
+            defaultItemDictionary["Земля"] = SaveSystem.SaveSystem.TRUE;
+            defaultItemDictionary["Воздух"] = SaveSystem.SaveSystem.TRUE;
+
 
             recipeDictionary = new Dictionary<string, Recipe>();
             for (int i = 0; i < recipes.Count; i++)

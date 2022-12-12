@@ -12,7 +12,7 @@ namespace Scripts
 
         public void OpenKeyboard()
         {
-            TouchScreenKeyboard.Open(string.Empty);
+            TouchScreenKeyboard.Open(string.Empty, TouchScreenKeyboardType.Default, true, false, false, false, "Введите элемент");
         }
         private void Update()
         {

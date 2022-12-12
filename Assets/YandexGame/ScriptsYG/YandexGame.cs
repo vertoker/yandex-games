@@ -163,7 +163,7 @@ namespace YG
             //_SDKEnabled = true;
             PlayerPrefs.DeleteAll();
 #if UNITY_EDITOR
-            savesData = new SavesYG { isFirstSession = true };
+            savesData = new SavesYG { isFirstSession = true, items = ItemSpawner.DefaultItemDictionary };
 
             SwitchLangEvent?.Invoke(savesData.language);
             GetDataEvent?.Invoke();
@@ -808,6 +808,11 @@ namespace YG
             data = data.Replace(@"\", "");
 
             savesData = JsonConvert.DeserializeObject<SavesYG>(data);
+            if (savesData == null)
+            {
+                ResetSaveCloud();
+                return;
+            }
             Message("Load YG Complete");
 
             _SDKEnabled = true;
@@ -822,7 +827,7 @@ namespace YG
         public void ResetSaveCloud()
         {
             Message("Reset Save Progress");
-            savesData = new SavesYG { isFirstSession = true };
+            savesData = new SavesYG { isFirstSession = true, items = ItemSpawner.DefaultItemDictionary };
 
             if (infoYG.LocalizationEnable &&
                 (infoYG.callingLanguageCheck == InfoYG.CallingLanguageCheck.FirstLaunchOnly ||

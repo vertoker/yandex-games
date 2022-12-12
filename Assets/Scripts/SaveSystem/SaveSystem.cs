@@ -42,6 +42,7 @@ namespace Scripts.SaveSystem
 #if UNITY_EDITOR
             recipeUnlockEvent.Invoke();
 #endif
+            GetNextItem(false);
         }
         private void InitialSave()
         {
@@ -123,7 +124,7 @@ namespace Scripts.SaveSystem
             return list.ToArray();
         }
 
-        public static void GetNextItem()
+        public static void GetNextItem(bool save = true)
         {
             bool contains = false;
             for (int i = 4; i < instance.roadmap.List.Count; i++)
@@ -136,10 +137,25 @@ namespace Scripts.SaveSystem
                 }
             }
             if (!contains)
-                YandexGame.savesData.nextItem = string.Empty;
+            {
+                for (int i = 4; i < instance.roadmap.List.Count; i++)
+                {
+                    if (YandexGame.savesData.items[instance.roadmap.List[i]] == ONLYRECIPE)
+                    {
+                        YandexGame.savesData.nextItem = instance.roadmap.List[i];
+                        contains = true;
+                        break;
+                    }
+                }
+            }
+            if (!contains)
+                YandexGame.savesData.nextItem = "Вы всё открыли!!!";
             //Debug.Log(YandexGame.savesData.nextItem);
-            YandexGame.SaveProgress();
-            recipeUnlockEvent.Invoke();
+            if (save)
+            {
+                YandexGame.SaveProgress();
+                recipeUnlockEvent.Invoke();
+            }
         }
 
         public static void ResetAll()

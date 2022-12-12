@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scopes: 1
   playerPhotoSize: 0
-  leaderboardEnable: 0
+  leaderboardEnable: 1
   fullscreenAdChallenge: 0
   fullscreenAdInterval: 140
   durationOfAdSimulation: 0.5
