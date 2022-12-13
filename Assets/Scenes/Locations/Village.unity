@@ -22047,7 +22047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1829282879}
   m_Layer: 0
-  m_Name: Base
+  m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25060,6 +25060,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f0bffe5e2a5628a43b44d79eb80d709a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1152114388761639011, guid: f0bffe5e2a5628a43b44d79eb80d709a,
         type: 3}
