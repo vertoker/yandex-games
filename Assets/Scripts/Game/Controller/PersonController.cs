@@ -43,7 +43,11 @@ namespace Scripts.Game.Controller
         {
             animator.EndAction();
         }
-        public void SwitchTool(ToolType type = ToolType.Empty, ToolMaterial material = ToolMaterial.Wood)
+        public void SwitchTool(ToolType type = ToolType.Empty)
+        {
+            handler.SwitchTool(type, ToolMaterial.Diamond);
+        }
+        public void SwitchTool(ToolType type = ToolType.Empty, ToolMaterial material = ToolMaterial.Diamond)
         {
             handler.SwitchTool(type, material);
         }
