@@ -3,22 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using YG;
 
 namespace Scripts.Location.Extraction
 {
     public class ResourceCaller : MonoBehaviour
     {
         [SerializeField] private ToolType toolType;
+        public ToolType ToolType => toolType;
 
-        private void OnTriggerEnter(Collider other)
+        public void TriggerEnter(Collider other)
         {
             if (other.CompareTag("Person"))
-                other.GetComponent<PersonController>().SwitchTool(toolType);
+                other.GetComponent<PersonController>().SwitchTool(toolType, YandexGame.savesData.data.GetMaterial(toolType));
         }
-        private void OnTriggerExit(Collider other)
+        public void TriggerExit(Collider other)
         {
             if (other.CompareTag("Person"))
-                other.GetComponent<PersonController>().SwitchTool(ToolType.Empty);
+                other.GetComponent<PersonController>().SwitchTool(ToolType.Empty, YandexGame.savesData.data.GetMaterial(toolType));
         }
     }
 }

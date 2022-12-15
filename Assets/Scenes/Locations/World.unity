@@ -1766,7 +1766,6 @@ GameObject:
   - component: {fileID: 268361470}
   - component: {fileID: 268361471}
   - component: {fileID: 268361472}
-  - component: {fileID: 268361473}
   m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
@@ -1811,22 +1810,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 268361469}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fa93d7afa344f4db665f7d2c4652fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 38d5292d90d1f2544924bd62bca76d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &268361473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 268361469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toolType: 4
 --- !u!1 &268918479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3770,8 +3756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 683532112}
   - component: {fileID: 683532113}
-  - component: {fileID: 683532114}
-  - component: {fileID: 683532115}
+  - component: {fileID: 683532118}
   m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
@@ -3807,7 +3792,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &683532114
+--- !u!114 &683532118
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3816,22 +3801,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 683532111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fa93d7afa344f4db665f7d2c4652fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 38d5292d90d1f2544924bd62bca76d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &683532115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683532111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toolType: 4
 --- !u!1 &692458807
 GameObject:
   m_ObjectHideFlags: 0
@@ -4843,7 +4815,6 @@ GameObject:
   - component: {fileID: 828523996}
   - component: {fileID: 828523997}
   - component: {fileID: 828523998}
-  - component: {fileID: 828523999}
   m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
@@ -4888,22 +4859,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 828523995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fa93d7afa344f4db665f7d2c4652fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 38d5292d90d1f2544924bd62bca76d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &828523999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 828523995}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toolType: 4
 --- !u!1 &875095520
 GameObject:
   m_ObjectHideFlags: 0
@@ -5012,7 +4970,6 @@ GameObject:
   - component: {fileID: 876585591}
   - component: {fileID: 876585592}
   - component: {fileID: 876585593}
-  - component: {fileID: 876585594}
   m_Layer: 7
   m_Name: Trigger
   m_TagString: Untagged
@@ -5057,22 +5014,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 876585590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62fa93d7afa344f4db665f7d2c4652fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 38d5292d90d1f2544924bd62bca76d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &876585594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 876585590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toolType: 2
 --- !u!1 &877924880
 GameObject:
   m_ObjectHideFlags: 0
@@ -11784,6 +11728,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450652889569318}
+  - component: {fileID: 919132148900790943}
+  - component: {fileID: 919132148900790942}
+  - component: {fileID: 919132148900790941}
   m_Layer: 7
   m_Name: gravel
   m_TagString: Untagged
@@ -11791,6 +11738,55 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132148900790941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148900790940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7732c9cef133c45b983c8391192b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 120
+  damages: 180000001e000000280000003c00000078000000
+  timeRespawn: 5
+  animRespawnLength: 0.5
+  animDespawnLength: 0.5
+  animExtractImpactLength: 0.2
+  shakeAngle: {x: 3, y: 3}
+  disableHeigth: -1.5
+  mesh: {fileID: 3879000298206870467}
+  currentHealth: 0
+  mainCaller: {fileID: 828523998}
+--- !u!114 &919132148900790942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148900790940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73aaba5acc837564a8f9f3db5b2f259c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extractionStartTime: 0.25
+--- !u!114 &919132148900790943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148900790940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 4
 --- !u!1 &919132149004309425
 GameObject:
   m_ObjectHideFlags: 0
@@ -11800,6 +11796,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450652676409611}
+  - component: {fileID: 919132149004309428}
+  - component: {fileID: 919132149004309427}
+  - component: {fileID: 919132149004309426}
   m_Layer: 7
   m_Name: sand
   m_TagString: Untagged
@@ -11807,6 +11806,55 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132149004309426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149004309425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7732c9cef133c45b983c8391192b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 120
+  damages: 180000001e000000280000003c00000078000000
+  timeRespawn: 5
+  animRespawnLength: 0.5
+  animDespawnLength: 0.5
+  animExtractImpactLength: 0.2
+  shakeAngle: {x: 3, y: 3}
+  disableHeigth: -1.5
+  mesh: {fileID: 5201435390612759026}
+  currentHealth: 0
+  mainCaller: {fileID: 268361472}
+--- !u!114 &919132149004309427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149004309425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73aaba5acc837564a8f9f3db5b2f259c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extractionStartTime: 0.25
+--- !u!114 &919132149004309428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149004309425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 4
 --- !u!1 &919132149166655516
 GameObject:
   m_ObjectHideFlags: 0
@@ -11816,6 +11864,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450653688074918}
+  - component: {fileID: 919132149166655519}
+  - component: {fileID: 919132149166655518}
+  - component: {fileID: 919132149166655517}
   m_Layer: 7
   m_Name: dirt
   m_TagString: Untagged
@@ -11823,6 +11874,55 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132149166655517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149166655516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7732c9cef133c45b983c8391192b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 120
+  damages: 180000001e000000280000003c00000078000000
+  timeRespawn: 5
+  animRespawnLength: 0.5
+  animDespawnLength: 0.5
+  animExtractImpactLength: 0.2
+  shakeAngle: {x: 3, y: 3}
+  disableHeigth: -1.5
+  mesh: {fileID: 2164672179469741040}
+  currentHealth: 0
+  mainCaller: {fileID: 683532118}
+--- !u!114 &919132149166655518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149166655516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73aaba5acc837564a8f9f3db5b2f259c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extractionStartTime: 0.25
+--- !u!114 &919132149166655519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149166655516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 4
 --- !u!1 &919132149562920818
 GameObject:
   m_ObjectHideFlags: 0
@@ -11832,6 +11932,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450653300004296}
+  - component: {fileID: 919132149562920821}
+  - component: {fileID: 919132149562920820}
+  - component: {fileID: 919132149562920819}
   m_Layer: 7
   m_Name: wheat
   m_TagString: Untagged
@@ -11839,6 +11942,55 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132149562920819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149562920818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7732c9cef133c45b983c8391192b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 120
+  damages: 180000001e000000280000003c00000078000000
+  timeRespawn: 5
+  animRespawnLength: 0.5
+  animDespawnLength: 0.5
+  animExtractImpactLength: 0.2
+  shakeAngle: {x: 3, y: 3}
+  disableHeigth: -1.5
+  mesh: {fileID: 6976268574789242046}
+  currentHealth: 0
+  mainCaller: {fileID: 876585593}
+--- !u!114 &919132149562920820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149562920818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73aaba5acc837564a8f9f3db5b2f259c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extractionStartTime: 0.25
+--- !u!114 &919132149562920821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149562920818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 461d7fc9ef195124da98a663b8ebcc5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toolType: 2
 --- !u!23 &1080362567027199185
 MeshRenderer:
   m_ObjectHideFlags: 0

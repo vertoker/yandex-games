@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Scripts.Tools;
+using Scripts.Game.UI.Windows;
 
 namespace Scripts.Game.UI
 {
     public class WindowHandler : MonoBehaviour
     {
         private static WindowHandler self;
+        [SerializeField] private BaseWin[] windows;
         private RectTransform windowContainer;
         private AnimatorUI an;
 
@@ -45,10 +47,12 @@ namespace Scripts.Game.UI
         public static void Open(WindowType type, string key)
         {
             self.an.Open();
+            self.windows[(int)type].Open(key);
         }
-        public static void Close()
+        public static void Close(WindowType type, string key)
         {
             self.an.Close();
+            self.windows[(int)type].Close(key);
         }
     }
 
@@ -56,6 +60,6 @@ namespace Scripts.Game.UI
     {
         Static = 0,
         Factory = 1,
-        Trading = 2,
+        List = 2
     }
 }

@@ -12,6 +12,7 @@ namespace YG
         public bool promptDone;
 
         // Ваши сохранения
-        public PlayerResources resources;
+        public PlayerResources resources = new PlayerResources();
+        public PlayerData data = new PlayerData();
     }
 }

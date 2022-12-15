@@ -1,3 +1,4 @@
+using Scripts.Game.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +7,6 @@ namespace Scripts.Location.Extraction
 {
     public class ResourceExtractor : MonoBehaviour
     {
-        private void OnTriggerEnter(Collider other)
-        {
-            
-        }
-        private void OnTriggerExit(Collider other)
-        {
-            
-        }
+        [SerializeField] private PlayerResourceType resourceType;
     }
 }

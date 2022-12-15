@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Scripts.Game.Data
 {
-    public class PlayerPump : MonoBehaviour
+    [System.Serializable]
+    public class PlayerData : MonoBehaviour
     {
         private static int START_EXPERIENCE = 100, PROGRESS_EXPERIENCE = 20;
 
@@ -33,6 +34,18 @@ namespace Scripts.Game.Data
                 case ToolType.Hoe: if (hoeMaterial != ToolMaterial.Netherite) hoeMaterial = (ToolMaterial)((byte)hoeMaterial + 1); break;
                 case ToolType.Axe: if (axeMaterial != ToolMaterial.Netherite) axeMaterial = (ToolMaterial)((byte)axeMaterial + 1); break;
                 case ToolType.Sword: if (swordMaterial != ToolMaterial.Netherite) swordMaterial = (ToolMaterial)((byte)swordMaterial + 1); break;
+            }
+        }
+        public ToolMaterial GetMaterial(ToolType toolType)
+        {
+            switch (toolType)
+            {
+                case ToolType.Pickaxe: return pickaxeMaterial;
+                case ToolType.Shovel: return shovelMaterial;
+                case ToolType.Hoe: return hoeMaterial;
+                case ToolType.Axe: return axeMaterial;
+                case ToolType.Sword: return swordMaterial;
+                default: return ToolMaterial.Wood;
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Scripts.Location.Utility
         }
         private void OnTriggerExit(Collider other)
         {
-            WindowHandler.Close();
+            WindowHandler.Close(type, key);
         }
     }
 }

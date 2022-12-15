@@ -44,9 +44,11 @@ namespace Scripts.Game.Controller
             inAction = true;
             SwitchAnim(key);
         }
-        public void EndAction()
+        public void EndAction(bool doIdle = false)
         {
             inAction = false;
+            if (doIdle)
+                SwitchAnim(AnimationKey.Idle);
         }
         private void SwitchAnim(AnimationKey key, float speed = 1f)
         {

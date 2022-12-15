@@ -1,8 +1,9 @@
 using Scripts.Location.Extraction;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
+using YG;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,6 +22,9 @@ namespace Scripts.Game.Controller
         private Rigidbody rb;
         private Transform tr;
 
+        public Action movementUpdate;
+        public Action extractionUpdate;
+
         private void Awake()
         {
             animator = GetComponent<PersonAnimatorController>();
@@ -30,18 +34,28 @@ namespace Scripts.Game.Controller
 
         public void Move(Vector2 direction)
         {
+            movementUpdate?.Invoke();
             animator.Move(direction, speed);
             direction *= speed;
             rb.velocity = new Vector3(direction.x, rb.velocity.y, direction.y);
             tr.eulerAngles = new Vector3(0f, 90f - Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg, 0f);
         }
+        public void ExtractionEvent()
+        {
+            extractionUpdate?.Invoke();//YandexGame.savesData.data.GetMaterial()
+        }
         public void StartAction(AnimationKey key)
         {
             animator.StartAction(key);
         }
-        public void EndAction()
+        public void EndAction(bool doIdle = false)
         {
-            animator.EndAction();
+            animator.EndAction(doIdle);
+        }
+        public void LookAt(Vector3 position)
+        {
+            var delta = tr.position - position;
+            tr.eulerAngles = new Vector3(0f, 270f - Mathf.Atan2(delta.z, delta.x) * Mathf.Rad2Deg, 0f);
         }
         public void SwitchTool(ToolType type = ToolType.Empty)
         {

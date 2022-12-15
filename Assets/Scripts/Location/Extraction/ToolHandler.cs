@@ -45,10 +45,10 @@ namespace Scripts.Location.Extraction
     }
     public enum ToolMaterial : byte
     {
-        Diamond = 0,
-        Iron = 1,
-        Netherite = 2,
-        Stone = 3,
-        Wood = 4
+        Wood = 0,
+        Stone = 1,
+        Iron = 2,
+        Diamond = 3,
+        Netherite = 4
     }
 }
