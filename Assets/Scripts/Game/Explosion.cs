@@ -8,9 +8,10 @@ namespace Scripts.Game
     public class Explosion : MonoBehaviour
     {
         [SerializeField] private float timeCollectExplodeObjects = 0.1f;
+        [SerializeField] private float powerExplode = 20f;
         [SerializeField] private float radiusExplode = 20f;
 
-        private List<Transform> objects = new List<Transform>();
+        private List<DestructableObject> objects = new List<DestructableObject>();
         private DeathableObject self;
         private SphereCollider trigger;
 
@@ -38,13 +39,17 @@ namespace Scripts.Game
         {
             yield return new WaitForSeconds(timeCollectExplodeObjects);
             trigger.enabled = false;
-            Debug.Log(objects.Count);
+            foreach (var item in objects)
+            {
+                //item.Destruct();
+            }
             gameObject.SetActive(false);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            objects.Add(other.transform);
+            if (other.TryGetComponent(out DestructableObject obj))
+                objects.Add(obj);
         }
     }
 }

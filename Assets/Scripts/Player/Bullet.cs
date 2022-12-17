@@ -16,7 +16,7 @@ namespace Scripts.Player
         }
         private void FixedUpdate()
         {
-            self.AddForce(force, ForceMode.Impulse);
+            self.velocity = force;
         }
     }
 }
