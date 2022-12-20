@@ -1,14 +1,15 @@
+using Scripts.UI;
 using UnityEngine;
 
-namespace Scripts.UI
+namespace UI
 {
     public static class Easings
     {
-        private const float c1 = 1.70158f;
-        private const float c2 = c1 * 1.525f;
-        private const float c3 = c1 + 1f;
-        private const float c4 = 2 * Mathf.PI / 3;
-        private const float c5 = 2 * Mathf.PI / 4.5f;
+        private const float C1 = 1.70158f;
+        private const float C2 = C1 * 1.525f;
+        private const float C3 = C1 + 1f;
+        private const float C4 = 2 * Mathf.PI / 3;
+        private const float C5 = 2 * Mathf.PI / 4.5f;
 
         public static float GetEasing(float x, EasingType easing)
         {
@@ -71,21 +72,21 @@ namespace Scripts.UI
                         : (Mathf.Sqrt(1 - Mathf.Pow(-2 * x + 2, 2)) + 1) / 2;
 
                 case EasingType.InBack:
-                    return c3 * x * x * x - c1 * x * x;
+                    return C3 * x * x * x - C1 * x * x;
                 case EasingType.OutBack:
-                    return 1 + c3 * Mathf.Pow(x - 1, 3) + c1 * Mathf.Pow(x - 1, 2);
+                    return 1 + C3 * Mathf.Pow(x - 1, 3) + C1 * Mathf.Pow(x - 1, 2);
                 case EasingType.InOutBack:
-                    return x < 0.5f ? (Mathf.Pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
-                        : (Mathf.Pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+                    return x < 0.5f ? (Mathf.Pow(2 * x, 2) * ((C2 + 1) * 2 * x - C2)) / 2
+                        : (Mathf.Pow(2 * x - 2, 2) * ((C2 + 1) * (x * 2 - 2) + C2) + 2) / 2;
 
                 case EasingType.InElastic:
-                    return x == 0 ? 0 : x == 1 ? 1 : -Mathf.Pow(2, 10 * x - 10) * Mathf.Sin((x * 10 - 10.75f) * c4);
+                    return x == 0 ? 0 : x == 1 ? 1 : -Mathf.Pow(2, 10 * x - 10) * Mathf.Sin((x * 10 - 10.75f) * C4);
                 case EasingType.OutElastic:
-                    return x == 0 ? 0 : x == 1 ? 1 : Mathf.Pow(2, -10 * x) * Mathf.Sin((x * 10 - 0.75f) * c4) + 1;
+                    return x == 0 ? 0 : x == 1 ? 1 : Mathf.Pow(2, -10 * x) * Mathf.Sin((x * 10 - 0.75f) * C4) + 1;
                 case EasingType.InOutElastic:
                     return x == 0 ? 0 : x == 1 ? 1 : x < 0.5f
-                        ? -(Mathf.Pow(2, 20 * x - 10) * Mathf.Sin((20 * x - 11.125f) * c5)) / 2
-                        : (Mathf.Pow(2, -20 * x + 10) * Mathf.Sin((20 * x - 11.125f) * c5)) / 2 + 1;
+                        ? -(Mathf.Pow(2, 20 * x - 10) * Mathf.Sin((20 * x - 11.125f) * C5)) / 2
+                        : (Mathf.Pow(2, -20 * x + 10) * Mathf.Sin((20 * x - 11.125f) * C5)) / 2 + 1;
             }
             return 0;
         }

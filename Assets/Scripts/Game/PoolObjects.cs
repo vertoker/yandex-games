@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Scripts.Game
+namespace Game
 {
     public class PoolObjects : MonoBehaviour
     {

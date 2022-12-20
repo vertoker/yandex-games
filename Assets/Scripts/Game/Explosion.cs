@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.Game
+namespace Game
 {
     [RequireComponent(typeof(SphereCollider), typeof(DeathableObject))]
     public class Explosion : MonoBehaviour
@@ -14,9 +14,11 @@ namespace Scripts.Game
         private List<DestructableObject> objects = new List<DestructableObject>();
         private DeathableObject self;
         private SphereCollider trigger;
+        private Transform tr;
 
         private void Awake()
         {
+            tr = GetComponent<Transform>();
             trigger = GetComponent<SphereCollider>();
             self = GetComponent<DeathableObject>();
             trigger.radius = radiusExplode;
@@ -41,7 +43,7 @@ namespace Scripts.Game
             trigger.enabled = false;
             foreach (var item in objects)
             {
-                //item.Destruct();
+                item.Destruct(tr.position, radiusExplode, powerExplode);
             }
             gameObject.SetActive(false);
         }
