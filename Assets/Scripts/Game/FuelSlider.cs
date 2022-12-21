@@ -30,6 +30,7 @@ namespace Game
         private void OnEnable()
         {
             GameCycle.StartCycleEvent += StartUpdater;
+            GameCycle.EndFuelEvent += EndFuel;
             GameCycle.EndCycleEvent += StopUpdater;
             GameCycle.UpdateFuelEvent += UpdateSlider;
             ScreenCaller.ScreenOrientationChanged += ScreenChange;
@@ -38,6 +39,7 @@ namespace Game
         private void OnDisable()
         {
             GameCycle.StartCycleEvent -= StartUpdater;
+            GameCycle.EndFuelEvent -= EndFuel;
             GameCycle.EndCycleEvent -= StopUpdater;
             GameCycle.UpdateFuelEvent -= UpdateSlider;
         }
@@ -52,10 +54,14 @@ namespace Game
             slider.enabled = true;
             updater = StartCoroutine(UpdaterPosition());
         }
-        private void StopUpdater()
+
+        private void EndFuel()
         {
             if (updater != null)
                 StopCoroutine(updater);
+        }
+        private void StopUpdater()
+        {
             background.enabled = false;
             slider.enabled = false;
         }

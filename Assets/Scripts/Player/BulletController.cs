@@ -1,3 +1,4 @@
+using Game;
 using Scripts.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,12 +15,16 @@ namespace Player
 
         private void OnEnable()
         {
+            GameCycle.StartCycleEvent += EnableBullet;
+            GameCycle.EndFuelEvent += DisableBullet;
             inputReceiver.OnDownUpdate += Down;
             inputReceiver.OnDragUpdate += Drag;
             inputReceiver.OnUpUpdate += Up;
         }
         private void OnDisable()
         {
+            GameCycle.StartCycleEvent -= EnableBullet;
+            GameCycle.EndFuelEvent -= DisableBullet;
             inputReceiver.OnDownUpdate -= Down;
             inputReceiver.OnDragUpdate -= Drag;
             inputReceiver.OnUpUpdate -= Up;
@@ -39,6 +44,16 @@ namespace Player
         private void Up(PointerEventData data)
         {
             bullet.MoveAngle(0f, 0f);
+        }
+
+        private void EnableBullet()
+        {
+            bullet.gameObject.SetActive(true);
+            bullet.SetActiveForce(true);
+        }
+        private void DisableBullet()
+        {
+            bullet.SetActiveForce(false);
         }
     }
 }

@@ -26,26 +26,19 @@ namespace Player
         }
         private void OnEnable()
         {
-            GameCycle.StartCycleEvent += StartForce;
-            GameCycle.EndCycleEvent += EndForce;
             deathableObject.deathEvent += GameCycle.Death;
         }
         private void OnDisable()
         {
-            GameCycle.StartCycleEvent -= StartForce;
-            GameCycle.EndCycleEvent -= EndForce;
             deathableObject.deathEvent -= GameCycle.Death;
         }
 
-        private void StartForce()
+        public void SetActiveForce(bool value)
         {
-            activeForce = true;
-            rb.useGravity = false;
-        }
-        private void EndForce()
-        {
-            activeForce = false;
-            rb.useGravity = true;
+            activeForce = value;
+            rb.useGravity = !value;
+            if (!value) return;
+            currentAngle = Vector3.zero;
         }
         
         private void FixedUpdate()
