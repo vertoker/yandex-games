@@ -1,15 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using YG;
 
 namespace Game
 {
     public class GameCycle : MonoBehaviour
     {
-        public float lookSideTime = 1f;
-        public float time = 10;
-        public int bullets = 3;
-
+        [SerializeField] private float lookSideTime = 1;
+        
         private int activeBulletCapacity;
         
         public static Action StartMenuEvent, EndMenuEvent;
@@ -24,19 +23,30 @@ namespace Game
         {
             _instance = this;
         }
-        private void Start()
+        private void OnEnable()
+        {
+            YandexGame.GetDataEvent += LoadData;
+        }
+        private void OnDisable()
+        {
+            YandexGame.GetDataEvent -= LoadData;
+        }
+
+        private void LoadData()
         {
             StartMenuEvent?.Invoke();
         }
         public void StartGame()
         {
             EndMenuEvent?.Invoke();
+            activeBulletCapacity = YandexGame.savesData.bulletCount;
             StartGameEvent?.Invoke();
-            activeBulletCapacity = bullets;
             fuelUpdater = StartCoroutine(FuelTimer());
         }
         public void EndGame()
         {
+            if (fuelUpdater != null)
+                StopCoroutine(fuelUpdater);
             EndCycleEvent?.Invoke();
             EndGameEvent?.Invoke();
             StartMenuEvent?.Invoke();
@@ -44,7 +54,7 @@ namespace Game
         private IEnumerator FuelTimer()
         {
             StartCycleEvent?.Invoke();
-            for (float i = 1; i >= 0; i -= Time.deltaTime / time)
+            for (float i = 1; i >= 0; i -= Time.deltaTime / YandexGame.savesData.fuelTime)
             {
                 UpdateFuelEvent?.Invoke(i);
                 yield return null;
@@ -62,17 +72,22 @@ namespace Game
             }
             else
             {
-                EndGameEvent?.Invoke();
-                StartMenuEvent?.Invoke();
+                EndGame();
             }
         }
 
         public static void Death()
         {
+            print("death");
             EndCycleEvent?.Invoke();
             if (_instance.fuelUpdater != null)
                 _instance.StopCoroutine(_instance.fuelUpdater);
             _instance.StartCoroutine(_instance.LookSideTimer());
+        }
+
+        public void SetTimeScale(float time)
+        {
+            Time.timeScale = time;
         }
     }
 }

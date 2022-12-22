@@ -16,7 +16,8 @@ namespace Player
         private void OnEnable()
         {
             GameCycle.StartCycleEvent += EnableBullet;
-            GameCycle.EndFuelEvent += DisableBullet;
+            GameCycle.EndFuelEvent += DisableFuelBullet;
+            GameCycle.EndGameEvent += DisableBullet;
             inputReceiver.OnDownUpdate += Down;
             inputReceiver.OnDragUpdate += Drag;
             inputReceiver.OnUpUpdate += Up;
@@ -24,7 +25,8 @@ namespace Player
         private void OnDisable()
         {
             GameCycle.StartCycleEvent -= EnableBullet;
-            GameCycle.EndFuelEvent -= DisableBullet;
+            GameCycle.EndFuelEvent -= DisableFuelBullet;
+            GameCycle.EndGameEvent -= DisableBullet;
             inputReceiver.OnDownUpdate -= Down;
             inputReceiver.OnDragUpdate -= Drag;
             inputReceiver.OnUpUpdate -= Up;
@@ -50,10 +52,18 @@ namespace Player
         {
             bullet.gameObject.SetActive(true);
             bullet.SetActiveForce(true);
+            
+            var tr = bullet.transform;
+            var angle = tr.localEulerAngles;
+            tr.localEulerAngles = new Vector3(0f, angle.y, angle.z);
+        }
+        private void DisableFuelBullet()
+        {
+            bullet.SetActiveForce(false);
         }
         private void DisableBullet()
         {
-            bullet.SetActiveForce(false);
+            bullet.gameObject.SetActive(false);
         }
     }
 }

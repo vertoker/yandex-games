@@ -5,16 +5,10 @@ namespace Game
     [RequireComponent(typeof(DeathableObject))]
     public class DestructableObject : MonoBehaviour
     {
-        private GameObject selfObject;
-        private Transform selfTransform;
-        private Rigidbody selfRigidbody;
-
-        private void Awake()
-        {
-            selfObject = gameObject;
-            selfTransform = transform;
-            selfRigidbody = GetComponent<Rigidbody>();
-        }
+        [SerializeField] private GameObject selfObject;
+        [SerializeField] private Transform selfTransform;
+        [SerializeField] private Rigidbody selfRigidbody;
+        
         public void Destruct(Vector3 epicenter, float radius, float power)
         {
             var direction = selfTransform.position - epicenter;

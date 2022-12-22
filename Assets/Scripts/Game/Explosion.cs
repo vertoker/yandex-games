@@ -11,7 +11,7 @@ namespace Game
         [SerializeField] private float powerExplode = 20f;
         [SerializeField] private float radiusExplode = 20f;
 
-        private List<DestructableObject> objects = new List<DestructableObject>();
+        private List<DestructableObject> objects;
         private DeathableObject self;
         private SphereCollider trigger;
         private Transform tr;
@@ -35,6 +35,7 @@ namespace Game
         public void Explode()
         {
             trigger.enabled = true;
+            objects = new List<DestructableObject>();
             StartCoroutine(CreateObjectList());
         }
         private IEnumerator CreateObjectList()

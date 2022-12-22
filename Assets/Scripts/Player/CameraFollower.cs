@@ -61,6 +61,8 @@ namespace Player
         public void DisableCinematic()
         {
             isCinematic = false;
+            var angle = self.localEulerAngles;
+            self.localEulerAngles = new Vector3(0f, angle.y, angle.z);
         }
     }
 }

@@ -3,6 +3,7 @@ using Data;
 using Player;
 using Unity.VisualScripting;
 using UnityEngine;
+using YG;
 
 namespace Game
 {
@@ -30,7 +31,7 @@ namespace Game
         {
             if (loadedLevel)
                 UnloadLevel();
-            loadedLevel = levels[0];
+            loadedLevel = levels[YandexGame.savesData.currentLevel - 1];
             levelObject = Instantiate(loadedLevel.Level, transform);
             cam.EnableCinematic(loadedLevel.CamPos, loadedLevel.CamRot, true);
         }

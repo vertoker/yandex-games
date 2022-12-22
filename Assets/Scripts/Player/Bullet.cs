@@ -39,6 +39,7 @@ namespace Player
             rb.useGravity = !value;
             if (!value) return;
             currentAngle = Vector3.zero;
+            activeAngle = Vector3.zero;
         }
         
         private void FixedUpdate()
