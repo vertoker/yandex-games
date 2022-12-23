@@ -7,9 +7,7 @@ namespace Game
     public class DeathableObject : MonoBehaviour
     {
         public Action deathEvent;
-        private bool isDead = false;
-
-        private const float DeathCooldown = 0.1f;
+        private bool isDead;
 
         private void OnEnable()
         {

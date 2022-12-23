@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4199625223111096480}
-  - component: {fileID: 4214190884295702372}
   - component: {fileID: 4199625223111096483}
   - component: {fileID: 4199625223111096481}
   - component: {fileID: 4199625223111096486}
@@ -17,7 +16,7 @@ GameObject:
   - component: {fileID: 4199625223111096484}
   m_Layer: 0
   m_Name: Origin
-  m_TagString: Untagged
+  m_TagString: Destructable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,18 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4214190884295702372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4199625223111096485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31dcd8a5fa89a7b4c930140f4e2f9406, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4199625223111096483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51244c99230123b47a69b9b69654b210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfObject: {fileID: 4199625223111096485}
   selfTransform: {fileID: 4199625223111096480}
   selfRigidbody: {fileID: 4199625223111096487}
 --- !u!33 &4199625223111096481

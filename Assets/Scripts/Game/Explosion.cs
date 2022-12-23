@@ -42,10 +42,7 @@ namespace Game
         {
             yield return new WaitForSeconds(timeCollectExplodeObjects);
             trigger.enabled = false;
-            foreach (var item in objects)
-            {
-                item.Destruct(tr.position, radiusExplode, powerExplode);
-            }
+            ExplosionComputator.ComputateExplosion(tr.position, radiusExplode, powerExplode, objects);
             gameObject.SetActive(false);
         }
 

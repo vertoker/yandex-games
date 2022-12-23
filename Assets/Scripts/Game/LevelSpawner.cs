@@ -37,6 +37,7 @@ namespace Game
         }
         private void UnloadLevel()
         {
+            PoolObjects.EnqueueAll();
             Destroy(levelObject);
             loadedLevel = null;
         }

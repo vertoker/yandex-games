@@ -6,40 +6,47 @@ namespace Game
     public class PoolObjects : MonoBehaviour
     {
         [SerializeField] private int initSpawnCount = 100;
-        [SerializeField] private GameObject origin;
-        private List<DestructableObject> list;
-        private Queue<DestructableObject> pool;
-        private Transform self;
+        [SerializeField] private DestructableObject origin;
+        private Queue<DestructableObject> poolDisable;
+        [SerializeField] private List<DestructableObject> listEnable;
+        private Transform parent;
 
+        private static PoolObjects _self;
         private void Awake()
         {
-            self = transform;
-            list = new List<DestructableObject>();
-            pool = new Queue<DestructableObject>();
-
-            for (int i = 0; i < self.childCount; i++)
-            {
-                list.Add(self.GetChild(i).GetComponent<DestructableObject>());
-            }
+            _self = this;
+            parent = transform;
+            poolDisable = new Queue<DestructableObject>();
+            listEnable = new List<DestructableObject>();
             for (int i = 0; i < initSpawnCount; i++)
             {
-                pool.Enqueue(Instantiate(origin, self).GetComponent<DestructableObject>());
+                poolDisable.Enqueue(Instantiate(origin, parent).GetComponent<DestructableObject>());
             }
         }
 
-        public DestructableObject Dequeue()
+        public static DestructableObject Dequeue()
         {
-            if (pool.Count == 0)
-                return CreateNew();
-            return pool.Dequeue();
+            var obj = _self.poolDisable.Count == 0 ? _self.CreateNew() : _self.poolDisable.Dequeue();
+            _self.listEnable.Add(obj);
+            return obj;
         }
-        public void Enqueue(DestructableObject obj)
+        public static void Enqueue(DestructableObject obj)
         {
-            pool.Enqueue(obj);
+            _self.listEnable.Remove(obj);
+            _self.poolDisable.Enqueue(obj);
+        }
+        public static void EnqueueAll()
+        {
+            foreach (var obj in _self.listEnable)
+            {
+                obj.gameObject.SetActive(false);
+                _self.poolDisable.Enqueue(obj);
+            }
+            _self.listEnable.Clear();
         }
         private DestructableObject CreateNew()
         {
-            return Instantiate(origin, self).GetComponent<DestructableObject>();
+            return Instantiate(origin, parent);
         }
     }
 }

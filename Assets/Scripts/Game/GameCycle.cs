@@ -51,7 +51,7 @@ namespace Game
             EndGameEvent?.Invoke();
             StartMenuEvent?.Invoke();
         }
-        private IEnumerator FuelTimer()
+        private static IEnumerator FuelTimer()
         {
             StartCycleEvent?.Invoke();
             for (float i = 1; i >= 0; i -= Time.deltaTime / YandexGame.savesData.fuelTime)
@@ -78,7 +78,6 @@ namespace Game
 
         public static void Death()
         {
-            print("death");
             EndCycleEvent?.Invoke();
             if (_instance.fuelUpdater != null)
                 _instance.StopCoroutine(_instance.fuelUpdater);

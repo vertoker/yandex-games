@@ -1,20 +1,24 @@
+using System;
 using UnityEngine;
 
 namespace Game
 {
-    [RequireComponent(typeof(DeathableObject))]
     public class DestructableObject : MonoBehaviour
     {
-        [SerializeField] private GameObject selfObject;
         [SerializeField] private Transform selfTransform;
         [SerializeField] private Rigidbody selfRigidbody;
-        
-        public void Destruct(Vector3 epicenter, float radius, float power)
+        private Vector3Int objectSize;
+
+        public Vector3 Position => selfTransform.position;
+        public Vector3 Rotation => selfTransform.eulerAngles;
+        public Vector3Int Scale => objectSize;
+        public Transform Transform => selfTransform;
+        public Rigidbody Rigidbody => selfRigidbody;
+        public bool IsDestructable => objectSize != ExplosionComputator.EPSILONSIZE;
+
+        private void OnEnable()
         {
-            var direction = selfTransform.position - epicenter;
-            var distance = direction.magnitude;
-            var actualPower = radius / distance * power;
-            selfRigidbody.AddForce(direction.normalized * actualPower, ForceMode.Impulse);
+            objectSize = Vector3Int.CeilToInt(selfTransform.localScale);
         }
     }
 }

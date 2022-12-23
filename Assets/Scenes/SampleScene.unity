@@ -718,7 +718,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 484941537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 500, y: 1, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1552,8 +1552,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906360285}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -120, y: 30, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalPosition: {x: -50, y: 10, z: 0}
+  m_LocalScale: {x: 1, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1091322422}
@@ -1602,7 +1602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeCollectExplodeObjects: 0.1
-  powerExplode: 20
+  powerExplode: 10
   radiusExplode: 10
 --- !u!114 &906360293
 MonoBehaviour:
@@ -1706,14 +1706,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1681724021}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1753,7 +1753,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1091322421}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.45, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1915,7 +1915,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -2461,7 +2461,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 3
+    angle: 18.15
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -2547,7 +2547,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.5
+      value: 0.2
       mode: 0
       spread: 0
       speed:
@@ -6963,8 +6963,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601402176167c9c46bbed09eccd345c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initSpawnCount: 100
-  origin: {fileID: 4199625223111096485, guid: ee502ab58913f9c45bf8c753b8413ee5, type: 3}
+  initSpawnCount: 1000
+  origin: {fileID: 4199625223111096483, guid: ee502ab58913f9c45bf8c753b8413ee5, type: 3}
+  listEnable: []
 --- !u!114 &1427133376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7182,11 +7183,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c75f3054d4fb9864382b53925f136baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpPositionTime: 0.4
+  lerpPositionTime: 0.3
   lerpAngleTime: 0.1
-  lookAtOffset: {x: 0, y: 2, z: 0}
-  positionOffset: {x: -12, y: 2.5, z: 0}
+  lookAtOffset: {x: 0, y: 1, z: 0}
+  positionOffset: {x: -5, y: 1.5, z: 0}
   target: {fileID: 906360289}
+  minDistance: 1
+  maxDistance: 15
 --- !u!4 &1681724021
 Transform:
   m_ObjectHideFlags: 0
@@ -7195,7 +7198,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681724019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -129.77, y: 35, z: 0}
+  m_LocalPosition: {x: -81.770004, y: 11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
