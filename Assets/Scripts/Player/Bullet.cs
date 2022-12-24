@@ -26,11 +26,11 @@ namespace Player
         }
         private void OnEnable()
         {
-            deathableObject.deathEvent += GameCycle.Death;
+            deathableObject.DeathEvent += GameCycle.Death;
         }
         private void OnDisable()
         {
-            deathableObject.deathEvent -= GameCycle.Death;
+            deathableObject.DeathEvent -= GameCycle.Death;
         }
 
         public void SetActiveForce(bool value)

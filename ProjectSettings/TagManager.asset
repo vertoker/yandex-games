@@ -5,14 +5,15 @@ TagManager:
   serializedVersion: 2
   tags:
   - Destructable
+  - Bullet
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Level
   - Water
   - UI
-  - 
+  - Destructable
   - 
   - 
   - 

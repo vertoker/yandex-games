@@ -49,6 +49,7 @@ namespace Game
                                 newObj.Transform.SetPositionAndRotation(obj.Position + offset, quaternion);
                                 newObj.gameObject.SetActive(true);
                                 newObj.Rigidbody.AddForce((direction + offset).normalized * actualPower, ForceMode.Impulse);
+                                newObj.Rigidbody.angularVelocity = offset;
                             }
                         }
                     }

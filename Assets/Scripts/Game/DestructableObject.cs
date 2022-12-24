@@ -16,9 +16,15 @@ namespace Game
         public Rigidbody Rigidbody => selfRigidbody;
         public bool IsDestructable => objectSize != ExplosionComputator.EPSILONSIZE;
 
+        private void Awake()
+        {
+            selfTransform = transform;
+            selfRigidbody = GetComponent<Rigidbody>();
+        }
         private void OnEnable()
         {
             objectSize = Vector3Int.CeilToInt(selfTransform.localScale);
+            selfRigidbody.mass = objectSize.x * objectSize.y * objectSize.z;
         }
     }
 }

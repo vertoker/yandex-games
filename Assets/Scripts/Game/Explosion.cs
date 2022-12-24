@@ -7,6 +7,7 @@ namespace Game
     [RequireComponent(typeof(SphereCollider), typeof(DeathableObject))]
     public class Explosion : MonoBehaviour
     {
+        [SerializeField] private float chainExplosionDelay = 0.5f;
         [SerializeField] private float timeCollectExplodeObjects = 0.1f;
         [SerializeField] private float powerExplode = 20f;
         [SerializeField] private float radiusExplode = 20f;
@@ -15,6 +16,8 @@ namespace Game
         private DeathableObject self;
         private SphereCollider trigger;
         private Transform tr;
+
+        public Vector3 Position => tr.position;
 
         private void Awake()
         {
@@ -25,14 +28,23 @@ namespace Game
         }
         private void OnEnable()
         {
-            self.deathEvent += Explode;
+            self.DeathEvent += Explode;
         }
         private void OnDisable()
         {
-            self.deathEvent += Explode;
+            self.DeathEvent -= Explode;
         }
 
-        public void Explode()
+        private void ExplodeDelay()
+        {
+            StartCoroutine(DelayExplosion());
+        }
+        private IEnumerator DelayExplosion()
+        {
+            yield return new WaitForSeconds(chainExplosionDelay);
+            Explode();
+        }
+        private void Explode()
         {
             trigger.enabled = true;
             objects = new List<DestructableObject>();
@@ -43,6 +55,7 @@ namespace Game
             yield return new WaitForSeconds(timeCollectExplodeObjects);
             trigger.enabled = false;
             ExplosionComputator.ComputateExplosion(tr.position, radiusExplode, powerExplode, objects);
+            PoolEffects.ExecuteExplosion(this);
             gameObject.SetActive(false);
         }
 
@@ -50,6 +63,8 @@ namespace Game
         {
             if (other.TryGetComponent(out DestructableObject obj))
                 objects.Add(obj);
+            else if (other.TryGetComponent(out Explosion exp))
+                exp.ExplodeDelay();
         }
     }
 }

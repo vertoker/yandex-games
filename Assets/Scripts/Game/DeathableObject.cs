@@ -6,19 +6,21 @@ namespace Game
 {
     public class DeathableObject : MonoBehaviour
     {
-        public Action deathEvent;
+        [SerializeField] private bool isBullet = false;
+        public Action DeathEvent;
         private bool isDead;
 
         private void OnEnable()
         {
             isDead = false;
         }
-        
         private void OnCollisionEnter(Collision collision)
         {
-            if (isDead) return;
-            deathEvent?.Invoke();
-            isDead = true;
+            if ((collision.gameObject.CompareTag("Bullet") || isBullet) && !isDead)
+            {
+                DeathEvent?.Invoke();
+                isDead = true;
+            }
         }
     }
 }

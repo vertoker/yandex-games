@@ -35,6 +35,10 @@ namespace Game
             _self.listEnable.Remove(obj);
             _self.poolDisable.Enqueue(obj);
         }
+        public static void RemoveFromActive(DestructableObject obj)
+        {
+            _self.listEnable.Remove(obj);
+        }
         public static void EnqueueAll()
         {
             foreach (var obj in _self.listEnable)
