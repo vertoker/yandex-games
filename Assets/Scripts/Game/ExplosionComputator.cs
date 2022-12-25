@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Utility;
 
 namespace Game
@@ -53,6 +54,8 @@ namespace Game
                             }
                         }
                     }
+                    
+                    ScoreCounter.AddPoints(obj.Scale.x * obj.Scale.y * obj.Scale.z * 10);
                 }
                 else
                 {

@@ -20,14 +20,24 @@ namespace Game
         {
             GameCycle.StartMenuEvent += LoadLevel;
             GameCycle.StartCycleEvent += SetBullet;
+            GameCycle.EndGameEvent += EndGame;
         }
         private void OnDisable()
         {
             GameCycle.StartMenuEvent -= LoadLevel;
             GameCycle.StartCycleEvent -= SetBullet;
+            GameCycle.EndGameEvent -= EndGame;
         }
 
-        private void LoadLevel()
+        public void LoadNextLevel()
+        {
+            if (YandexGame.savesData.currentLevel < 100)
+                YandexGame.savesData.currentLevel++;
+            else
+                YandexGame.savesData.currentLevel = 1;
+            LoadLevel();
+        }
+        public void LoadLevel()
         {
             if (loadedLevel)
                 UnloadLevel();
@@ -38,7 +48,8 @@ namespace Game
         private void UnloadLevel()
         {
             for (int i = 0; i < levelTransform.childCount; i++)
-                PoolObjects.RemoveFromActive(levelTransform.GetChild(i).GetComponent<DestructableObject>());
+                if (levelTransform.GetChild(i).TryGetComponent(out DestructableObject obj))
+                    PoolObjects.RemoveFromActive(obj);
             PoolObjects.EnqueueAll();
             Destroy(levelTransform.gameObject);
             loadedLevel = null;
@@ -47,6 +58,10 @@ namespace Game
         {
             bullet.position = loadedLevel.BulletPos;
             bullet.localEulerAngles = Vector3.zero;
+        }
+        private void EndGame()
+        {
+            cam.EnableCinematic(loadedLevel.CamPos, loadedLevel.CamRot);
         }
     }
 }

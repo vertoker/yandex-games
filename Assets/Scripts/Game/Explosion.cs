@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Game
         [SerializeField] private float powerExplode = 20f;
         [SerializeField] private float radiusExplode = 20f;
 
+        private int chainExplosion;
         private List<DestructableObject> objects;
         private DeathableObject self;
         private SphereCollider trigger;
@@ -24,10 +26,11 @@ namespace Game
             tr = GetComponent<Transform>();
             trigger = GetComponent<SphereCollider>();
             self = GetComponent<DeathableObject>();
-            trigger.radius = radiusExplode;
+            trigger.radius = radiusExplode / tr.localScale.x;
         }
         private void OnEnable()
         {
+            chainExplosion = 1;
             self.DeathEvent += Explode;
         }
         private void OnDisable()
@@ -35,8 +38,9 @@ namespace Game
             self.DeathEvent -= Explode;
         }
 
-        private void ExplodeDelay()
+        private void ExplodeDelay(int chainReactionCounter)
         {
+            chainExplosion = chainReactionCounter;
             StartCoroutine(DelayExplosion());
         }
         private IEnumerator DelayExplosion()
@@ -56,6 +60,7 @@ namespace Game
             trigger.enabled = false;
             ExplosionComputator.ComputateExplosion(tr.position, radiusExplode, powerExplode, objects);
             PoolEffects.ExecuteExplosion(this);
+            ScoreCounter.AddPoints(chainExplosion * 5000);
             gameObject.SetActive(false);
         }
 
@@ -64,7 +69,13 @@ namespace Game
             if (other.TryGetComponent(out DestructableObject obj))
                 objects.Add(obj);
             else if (other.TryGetComponent(out Explosion exp))
-                exp.ExplodeDelay();
+                exp.ExplodeDelay(chainExplosion + 1);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, radiusExplode);
         }
     }
 }

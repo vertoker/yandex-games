@@ -43,7 +43,17 @@ namespace Game
             StartGameEvent?.Invoke();
             fuelUpdater = StartCoroutine(FuelTimer());
         }
-        public void EndGame()
+        
+        private void EndGame()
+        {
+            EndCycleEvent?.Invoke();
+            EndGameEvent?.Invoke();
+        }
+        public void StartMenu()
+        {
+            StartMenuEvent?.Invoke();
+        }
+        public void ExitToMenu()
         {
             if (fuelUpdater != null)
                 StopCoroutine(fuelUpdater);

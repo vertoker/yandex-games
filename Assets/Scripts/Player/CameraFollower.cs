@@ -63,13 +63,13 @@ namespace Player
             }
         }
         
-        public void EnableCinematic(Vector3 pos, Vector3 rot, bool instanceMove = false)
+        public void EnableCinematic(Vector3 pos, Vector3 rot, bool instantMove = false)
         {
             cinematicTargetPos = pos;
             cinematicTargetRot = rot;
             type = CameraType.Cinematic;
             cam.localEulerAngles = new Vector3(0,90, 0);
-            if (!instanceMove) return;
+            if (!instantMove) return;
             self.position = pos;
             self.localEulerAngles = rot;
         }
