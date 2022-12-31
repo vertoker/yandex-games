@@ -1,17 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
-using UI;
-using UnityEngine.EventSystems;
+using Scripts.UI;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 using UnityEngine.Events;
+using Utility;
 
-namespace Scripts.UI
+namespace UI
 {
     public class AnimatorUI : MonoBehaviour
     {
         [SerializeField] private bool openOnStart = false;
         [SerializeField] private bool isOpen = false;
+        [SerializeField] private bool isScalable = true;
         private bool isTimeout = false;
         [SerializeField] private float openTime = 0.5f;
         [SerializeField] private float closeTime = 0.5f;
@@ -19,6 +18,7 @@ namespace Scripts.UI
 
         [SerializeField] private Vector2 openPosition = new Vector2(-250f, 0f);
         [SerializeField] private Vector2 closePosition = new Vector2(-5000f, 0f);
+        private Vector2 scalable = new Vector2(1f, 1f);
 
         [SerializeField] private RectTransform layout;
 
@@ -58,9 +58,9 @@ namespace Scripts.UI
         {
             //layout.gameObject.SetActive(isOpen);
             if (isOpen)
-                layout.anchoredPosition = openPosition;
+                layout.anchoredPosition = openPosition * scalable;
             else
-                layout.anchoredPosition = closePosition;
+                layout.anchoredPosition = closePosition * scalable;
         }
         private void Start()
         {
@@ -68,6 +68,17 @@ namespace Scripts.UI
             {
                 Open();
             }
+        }
+
+        private void OnEnable()
+        {
+            if (!isScalable) return;
+            ScreenCaller.ScreenOrientationChanged += ScreenUpdate;
+        }
+        private void OnDisable()
+        {
+            if (!isScalable) return;
+            ScreenCaller.ScreenOrientationChanged -= ScreenUpdate;
         }
 
         public void Timeout()
@@ -95,8 +106,7 @@ namespace Scripts.UI
                 StopCoroutine(offTimer);
 
             openStartEvent.Invoke();
-            //layout.gameObject.SetActive(true);
-            currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, openPosition, EasingType.InOutQuad, openTime));
+            currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, openPosition * scalable, EasingType.InOutQuad, openTime));
             offTimer = StartCoroutine(OffTimer());
         }
         public void Close()
@@ -109,7 +119,33 @@ namespace Scripts.UI
                 StopCoroutine(offTimer);
 
             closeStartEvent.Invoke();
-            currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, closePosition, EasingType.InOutQuad, closeTime));
+            currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, closePosition * scalable, EasingType.InOutQuad, closeTime));
+            offTimer = StartCoroutine(OffTimer());
+        }
+        public void OpenCustom(string pos)
+        {
+            if (isTimeout)
+                return;
+            if (currentAnimation != null)
+                StopCoroutine(currentAnimation);
+            if (offTimer != null)
+                StopCoroutine(offTimer);
+
+            openStartEvent.Invoke();
+            currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, Parse(pos) * scalable, EasingType.InOutQuad, openTime));
+            offTimer = StartCoroutine(OffTimer());
+        }
+        public void CloseCustom(string pos)
+        {
+            if (isTimeout)
+                return;
+            if (currentAnimation != null)
+                StopCoroutine(currentAnimation);
+            if (offTimer != null)
+                StopCoroutine(offTimer);
+
+            closeStartEvent.Invoke();
+            currentAnimation = StartCoroutine(Animation(layout, layout.anchoredPosition, Parse(pos) * scalable, EasingType.InOutQuad, closeTime));
             offTimer = StartCoroutine(OffTimer());
         }
         private static IEnumerator Animation(RectTransform layout, Vector2 origin, Vector2 target, EasingType easingType, float time)
@@ -135,6 +171,19 @@ namespace Scripts.UI
         {
             yield return new WaitForSeconds(timeoutTime);
             isTimeout = false;
+        }
+
+        private void ScreenUpdate(bool isVertical, float aspect)
+        {
+            var lastScale = scalable;
+            scalable = new Vector2(aspect, 1f);
+            layout.anchoredPosition *= scalable / lastScale;
+        }
+
+        private static Vector2 Parse(string obj)
+        {
+            var data = obj.Split(' ');
+            return new Vector2(float.Parse(data[0]), float.Parse(data[1]));
         }
     }
 }

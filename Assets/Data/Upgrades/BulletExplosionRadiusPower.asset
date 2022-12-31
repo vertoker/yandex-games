@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e57ae297678234299db238ff0fb08a, type: 3}
+  m_Name: BulletExplosionRadiusPower
+  m_EditorClassIdentifier: 
+  upgrades:
+  - price: 0
+    value: 10
+  - price: 100000
+    value: 15
+  - price: 2500000
+    value: 20
+  - price: 50000000
+    value: 25
+  - price: 250000000
+    value: 30

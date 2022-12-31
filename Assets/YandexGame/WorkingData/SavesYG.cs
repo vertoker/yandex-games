@@ -13,12 +13,13 @@ namespace YG
 
         // Saves
         public int bulletCount = 3;
-        public int bulletExplosionPower = 10;
-        public int currentLevel = 1;
+        public float bulletExplosionRadiusPower = 10;
+        public float fuelTime = 8;
 
-        public float fuelTime = 10;
+        public int currentLevel = 1;
         
         public int[] levelPoints = new int[100];
+        public int spendPoints = 0;
 
         public int AllPoints => levelPoints.Sum();
 

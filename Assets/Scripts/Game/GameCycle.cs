@@ -32,7 +32,7 @@ namespace Game
             YandexGame.GetDataEvent -= LoadData;
         }
 
-        private void LoadData()
+        public void LoadData()
         {
             StartMenuEvent?.Invoke();
         }
