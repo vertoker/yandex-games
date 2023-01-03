@@ -16,6 +16,8 @@ namespace UI
         private void OnEnable()
         {
             ScreenCaller.ScreenOrientationChanged += ScreenUpdate;
+            if (ScreenCaller.IsInitialized)
+                ScreenUpdate(ScreenCaller.IsVertical, ScreenCaller.Aspect);
         }
         private void OnDisable()
         {

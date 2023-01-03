@@ -8,19 +8,25 @@ namespace Utility
     {
         [SerializeField] private float updateTime = 0.2f;
         [SerializeField] private Camera cam;
-        private ScreenOrientation currentOrientation;
-        private float screenSizeX, screenSizeY;
 
+        private static bool _isInitialized = false;
+        private static ScreenOrientation _currentOrientation;
+        private static float _screenSizeX, _screenSizeY;
         public static Action<bool, float> ScreenOrientationChanged;
-
+        
+        public static bool IsVertical => _currentOrientation is ScreenOrientation.Portrait or ScreenOrientation.PortraitUpsideDown;
+        public static float Aspect => _screenSizeX / _screenSizeY;
+        public static bool IsInitialized => _isInitialized;
+        
         private void Start()
         {
-            currentOrientation = Screen.orientation;
-            screenSizeX = Screen.width;
-            screenSizeY = Screen.height;
-            Debug.Log("Flip to " + currentOrientation.ToString());
-            var isVertical = currentOrientation == ScreenOrientation.Portrait || currentOrientation == ScreenOrientation.PortraitUpsideDown;
-            ScreenOrientationChanged?.Invoke(isVertical, cam.aspect);
+            _currentOrientation = Screen.orientation;
+            _screenSizeX = Screen.width;
+            _screenSizeY = Screen.height;
+            
+            Debug.Log("Flip to " + _currentOrientation);
+            ScreenOrientationChanged?.Invoke(IsVertical, Aspect);
+            _isInitialized = true;
 
             StartCoroutine(CheckForChange());
         }
@@ -30,15 +36,14 @@ namespace Utility
             while (true)
             {
                 yield return new WaitForSeconds(updateTime);
-                if (currentOrientation != Screen.orientation || screenSizeX != Screen.width || screenSizeY != Screen.height)
+                if (_currentOrientation != Screen.orientation || _screenSizeX != Screen.width || _screenSizeY != Screen.height)
                 {
-                    currentOrientation = Screen.orientation;
-                    screenSizeX = Screen.width;
-                    screenSizeY = Screen.height;
-                    Debug.Log("Flip to " + currentOrientation.ToString());
-                    var isVertical = currentOrientation == ScreenOrientation.Portrait || currentOrientation == ScreenOrientation.PortraitUpsideDown;
-                    //cam.orthographicSize = isVertical ? 5 / cam.aspect : 5;
-                    ScreenOrientationChanged?.Invoke(isVertical, cam.aspect);
+                    _currentOrientation = Screen.orientation;
+                    _screenSizeX = Screen.width;
+                    _screenSizeY = Screen.height;
+                    
+                    Debug.Log("Flip to " + _currentOrientation);
+                    ScreenOrientationChanged?.Invoke(IsVertical, Aspect);
                 }
             }
         }

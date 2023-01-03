@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: BulletCount
   m_EditorClassIdentifier: 
   upgrades:
-  - price: 0
-    value: 3
   - price: 100000
+    value: 3
+  - price: 500000
     value: 4
   - price: 2500000
     value: 5
-  - price: 50000000
+  - price: 10000000
     value: 6
-  - price: 250000000
+  - price: 50000000
     value: 7
+  - price: 999999999
+    value: 8

@@ -37,7 +37,6 @@ namespace Game
         }
         public static void RemoveFromActive(DestructableObject obj)
         {
-            print(_self.listEnable.Contains(obj));
             _self.listEnable.Remove(obj);
         }
         public static void EnqueueAll()
@@ -48,10 +47,6 @@ namespace Game
                 _self.poolDisable.Enqueue(obj);
             }
             _self.listEnable.Clear();
-            foreach (var obj in _self.poolDisable)
-            {
-                print(obj);
-            }
         }
         private DestructableObject CreateNew()
         {

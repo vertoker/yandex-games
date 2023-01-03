@@ -7,26 +7,33 @@ namespace YG
     {
         // Tech Saves
         public int idSave;
-        public bool isFirstSession = true;
-        public string language = "ru";
+        public bool isFirstSession;
+        public string language;
         public bool promptDone;
 
         // Saves
-        public int bulletCount = 3;
-        public float bulletExplosionRadiusPower = 10;
-        public float fuelTime = 8;
-
-        public int currentLevel = 1;
+        public int bulletCount;
+        public float bulletExplosionRadiusPower ;
+        public float fuelTime;
         
-        public int[] levelPoints = new int[100];
-        public int spendPoints = 0;
+        public int currentLevel;
+        public int maxLevel;
+        public int money;
+        public int[] levelPoints;
 
-        public int AllPoints => levelPoints.Sum();
-
-        public int LevelPoints
+        public SavesYG()
         {
-            get => levelPoints[currentLevel - 1];
-            set => levelPoints[currentLevel - 1] = value;
+            isFirstSession = true;
+            language = "ru";
+
+            bulletCount = 3;
+            bulletExplosionRadiusPower = 10;
+            fuelTime = 8;
+            
+            currentLevel = 1;
+            maxLevel = 1;
+            money = 0;
+            levelPoints = new int[100];
         }
     }
 }

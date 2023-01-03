@@ -28,7 +28,6 @@ namespace Game
 
         private void BeginGame()
         {
-            print(123212);
             score = 0;
             text.text = score.ToString();
         }

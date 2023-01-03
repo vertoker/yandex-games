@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 namespace YG
 {
@@ -75,7 +76,7 @@ namespace YG
         #region Methods
         private void Awake()
         {
-            pathSaves = Application.dataPath + "/YandexGame/WorkingData/saveyg.yg";
+            pathSaves = Application.dataPath + "/YandexGame/WorkingData/saveyg.json";
             transform.SetParent(null);
             gameObject.name = "YandexGame";
 
@@ -143,10 +144,8 @@ namespace YG
         public static void SaveEditor()
         {
             Message("Save Editor");
-            FileStream fs = new FileStream(pathSaves, FileMode.Create);
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(fs, savesData);
-            fs.Close();
+            string json = JsonUtility.ToJson(savesData);
+            File.WriteAllText(pathSaves, json);
         }
 
         [DllImport("__Internal")]
@@ -155,7 +154,7 @@ namespace YG
         {
             Message("Save Local");
 #if !UNITY_EDITOR
-            SaveToLocalStorage("savesData", JsonUtility.ToJson(savesData));
+            SaveToLocalStorage("savesData", JsonConvert.SerializeObject(savesData));
 #endif
         }
 
@@ -164,11 +163,10 @@ namespace YG
             Message("Load Editor");
             if (File.Exists(pathSaves))
             {
-                FileStream fs = new FileStream(pathSaves, FileMode.Open);
-                BinaryFormatter formatter = new BinaryFormatter();
+                string json = File.ReadAllText(pathSaves);
                 try
                 {
-                    savesData = (SavesYG)formatter.Deserialize(fs);
+                    savesData = JsonConvert.DeserializeObject<SavesYG>(json);
                     AfterLoading();
                 }
                 catch (Exception e)
@@ -176,10 +174,6 @@ namespace YG
                     Debug.LogError(e.Message);
                     ResetSaveProgress();
                 }
-                finally
-                {
-                    fs.Close();
-                } 
             }
             else ResetSaveProgress();
         }
@@ -192,7 +186,8 @@ namespace YG
 
             if (!HasKey("savesData"))
                 ResetSaveProgress();
-            else savesData = JsonUtility.FromJson<SavesYG>(LoadFromLocalStorage("savesData"));
+            else
+                savesData = JsonConvert.DeserializeObject<SavesYG>(LoadFromLocalStorage("savesData"));
 
             AfterLoading();
         }
@@ -224,7 +219,10 @@ namespace YG
         public void _ResetSaveProgress()
         {
             Message("Reset Save Progress");
-            savesData = new SavesYG { isFirstSession = false };
+            savesData = new SavesYG
+            {
+                isFirstSession = false
+            };
             _SDKEnabled = true;
 
             if (infoYG.LocalizationEnable &&
@@ -383,7 +381,7 @@ namespace YG
         public static void SaveCloud()
         {
             Message("Save Cloud");
-            SaveYG(JsonUtility.ToJson(savesData), Instance.infoYG.flush);
+            SaveYG(JsonConvert.SerializeObject(savesData), Instance.infoYG.flush);
         }
 
         [DllImport("__Internal")]
@@ -846,7 +844,7 @@ namespace YG
 
         public void SetAuthorization(string data)
         {
-            jsonAuth = JsonUtility.FromJson<JsonAuth>(data);
+            jsonAuth = JsonConvert.DeserializeObject<JsonAuth>(data);
 
             if (jsonAuth.playerAuth.ToString() == "resolved")
             {
@@ -900,7 +898,7 @@ namespace YG
                 data = data.Replace(@"\", "");
                 try
                 {
-                    cloudData = JsonUtility.FromJson<SavesYG>(data);
+                    cloudData = JsonConvert.DeserializeObject<SavesYG>(data);
                 }
                 catch (Exception e)
                 {
@@ -914,7 +912,7 @@ namespace YG
             {
                 try
                 {
-                    localData = JsonUtility.FromJson<SavesYG>(LoadFromLocalStorage("savesData"));
+                    localData = JsonConvert.DeserializeObject<SavesYG>(LoadFromLocalStorage("savesData"));
                 }
                 catch (Exception e)
                 {
@@ -957,7 +955,7 @@ namespace YG
                 Message("Local Saves - " + localDataState);
                 Message("Cloud Saves - Broken! Data Recovering...");
                 ResetSaveProgress();
-                savesData = JsonUtility.FromJson<SavesYG>(data);
+                savesData = JsonConvert.DeserializeObject<SavesYG>(data);
                 Message("Cloud Saves Partially Restored!");
                 AfterLoading();
             }
@@ -966,7 +964,7 @@ namespace YG
                 Message("Cloud Saves - " + cloudDataState);
                 Message("Local Saves - Broken! Data Recovering...");
                 ResetSaveProgress();
-                savesData = JsonUtility.FromJson<SavesYG>(LoadFromLocalStorage("savesData"));
+                savesData = JsonConvert.DeserializeObject<SavesYG>(LoadFromLocalStorage("savesData"));
                 Message("Local Saves Partially Restored!");
                 AfterLoading();
             }
@@ -1137,7 +1135,7 @@ namespace YG
         #region Environment Data
         public void SetEnvironmentData(string data)
         {
-            EnvironmentData = JsonUtility.FromJson<JsonEnvironmentData>(data);
+            EnvironmentData = JsonConvert.DeserializeObject<JsonEnvironmentData>(data);
         }
         #endregion Environment Data
 
@@ -1162,7 +1160,7 @@ namespace YG
 
         public void LeaderboardEntries(string data)
         {
-            jsonLB = JsonUtility.FromJson<JsonLB>(data);
+            jsonLB = JsonConvert.DeserializeObject<JsonLB>(data);
 
             rank = jsonLB.rank;
             photo = jsonLB.photo;
@@ -1192,7 +1190,7 @@ namespace YG
         public void PaymentsEntries(string data)
         {
 #if !UNITY_EDITOR
-            PaymentsData = JsonUtility.FromJson<JsonPayments>(data);
+            PaymentsData = JsonConvert.DeserializeObject<JsonPayments>(data);
 #else
             PaymentsData.id = new string[3];
             PaymentsData.id[0] = "test";

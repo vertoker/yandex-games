@@ -63,6 +63,12 @@ namespace Game
             ScoreCounter.AddPoints(chainExplosion * 5000);
             gameObject.SetActive(false);
         }
+        
+        public void SetExplosionParams(float radius, float power)
+        {
+            radiusExplode = radius;
+            powerExplode = power;
+        }
 
         private void OnTriggerEnter(Collider other)
         {

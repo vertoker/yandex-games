@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: BulletFuelTime
   m_EditorClassIdentifier: 
   upgrades:
-  - price: 0
-    value: 8
   - price: 100000
+    value: 8
+  - price: 500000
     value: 10
   - price: 2500000
     value: 12
-  - price: 50000000
+  - price: 10000000
     value: 15
-  - price: 250000000
+  - price: 50000000
     value: 20
+  - price: 999999999
+    value: 50

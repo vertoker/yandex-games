@@ -27,8 +27,8 @@ namespace Game
                 if (obj.IsDestructable)
                 {
                     obj.gameObject.SetActive(false);
-                    obj.Transform.localScale = EPSILONSIZE;
-                    PoolObjects.Enqueue(obj);
+                    //obj.Transform.localScale = EPSILONSIZE;
+                    //PoolObjects.Enqueue(obj);
                     
                     var quaternion = Quaternion.Euler(obj.Rotation);
                     var matrix = Rotate(quaternion);

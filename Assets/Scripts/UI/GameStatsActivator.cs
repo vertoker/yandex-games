@@ -17,17 +17,21 @@ namespace UI
         }
         private void OnEnable()
         {
-            GameCycle.EndGameEvent += EnableWindow;
+            GameCycle.StartEndGameUI += EnableWindow;
         }
         private void OnDisable()
         {
-            GameCycle.EndGameEvent -= EnableWindow;
+            GameCycle.StartEndGameUI -= EnableWindow;
         }
 
         private void EnableWindow()
         {
-            if (YandexGame.savesData.LevelPoints < ScoreCounter.Score)
-                YandexGame.savesData.LevelPoints = ScoreCounter.Score;
+            if (YandexGame.savesData.levelPoints[YandexGame.savesData.currentLevel - 1] < ScoreCounter.Score)
+                YandexGame.savesData.levelPoints[YandexGame.savesData.currentLevel - 1] = ScoreCounter.Score;
+            if (YandexGame.savesData.currentLevel == YandexGame.savesData.maxLevel)
+                YandexGame.savesData.maxLevel = Mathf.Clamp(YandexGame.savesData.maxLevel + 1, 0, 100);
+            YandexGame.SaveProgress();
+            
             score.text = ScoreCounter.Score.ToString();
             obj.SetActive(true);
         }

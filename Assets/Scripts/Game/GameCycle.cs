@@ -12,7 +12,7 @@ namespace Game
         private int activeBulletCapacity;
         
         public static Action StartMenuEvent, EndMenuEvent;
-        public static Action StartGameEvent, EndGameEvent;
+        public static Action StartGameEvent, EndGameEvent, StartEndGameUI;
         public static Action StartCycleEvent, EndFuelEvent, EndCycleEvent;
         public static Action<float> UpdateFuelEvent;
         private static GameCycle _instance;
@@ -48,6 +48,7 @@ namespace Game
         {
             EndCycleEvent?.Invoke();
             EndGameEvent?.Invoke();
+            StartEndGameUI?.Invoke();
         }
         public void StartMenu()
         {
@@ -91,7 +92,7 @@ namespace Game
             EndCycleEvent?.Invoke();
             if (_instance.fuelUpdater != null)
                 _instance.StopCoroutine(_instance.fuelUpdater);
-            _instance.StartCoroutine(_instance.LookSideTimer());
+            _instance.fuelUpdater = _instance.StartCoroutine(_instance.LookSideTimer());
         }
 
         public void SetTimeScale(float time)

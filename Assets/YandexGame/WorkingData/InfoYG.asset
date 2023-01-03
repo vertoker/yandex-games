@@ -17,7 +17,7 @@ MonoBehaviour:
   leaderboardEnable: 1
   saveCloud: 1
   flush: 0
-  saveCloudInterval: 5
+  saveCloudInterval: 3
   fullscreenAdChallenge: 0
   fullscreenAdInterval: 60
   durationOfAdSimulation: 0.5

@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: BulletExplosionRadiusPower
   m_EditorClassIdentifier: 
   upgrades:
-  - price: 0
-    value: 10
   - price: 100000
+    value: 10
+  - price: 500000
     value: 15
   - price: 2500000
     value: 20
-  - price: 50000000
+  - price: 10000000
     value: 25
-  - price: 250000000
+  - price: 50000000
     value: 30
+  - price: 999999999
+    value: 40

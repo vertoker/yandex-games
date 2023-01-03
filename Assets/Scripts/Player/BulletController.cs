@@ -2,6 +2,7 @@ using Game;
 using Scripts.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using YG;
 
 namespace Player
 {
@@ -50,6 +51,7 @@ namespace Player
 
         private void EnableBullet()
         {
+            bullet.GetComponent<Explosion>().SetExplosionParams(YandexGame.savesData.bulletExplosionRadiusPower, YandexGame.savesData.bulletExplosionRadiusPower);
             bullet.gameObject.SetActive(true);
             bullet.SetActiveForce(true);
             

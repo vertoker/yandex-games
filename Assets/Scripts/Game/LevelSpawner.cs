@@ -32,9 +32,14 @@ namespace Game
         public void LoadNextLevel()
         {
             if (YandexGame.savesData.currentLevel < 100)
+            {
                 YandexGame.savesData.currentLevel++;
+            }
             else
+            {
                 YandexGame.savesData.currentLevel = 1;
+            }
+            YandexGame.SaveProgress();
             LoadLevel();
         }
         public void LoadLevel()

@@ -23,6 +23,7 @@ public class SaveSystem : MonoBehaviour
 
     private void LoadCloudData()
     {
+        YandexGame.SaveProgress();
         loadData.Invoke();
     }
 }

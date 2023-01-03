@@ -14,21 +14,41 @@ namespace Data
         public int[] Values => upgrades.Select(a => a.value).ToArray();
         public int Length => upgrades.Length;
         
-        /*public float GetNextValue(int current, out bool billing)
+        public int GetNextValue(int current)
         {
-            billing = false;
-            int length = values.Length;
+            int length = Length - 1;
+            for (int i = 0; i < length; i++)
+                if (upgrades[i].value == current)
+                    return upgrades[i + 1].value;
+            return current;
+        }
+        public int GetPrice(int current)
+        {
+            int length = Length;
+            for (int i = 0; i < length; i++)
+                if (upgrades[i].value == current)
+                    return upgrades[i].price;
+            return 0;
+        }
+        public int GetIndex(int current)
+        {
+            int length = Length;
+            for (int i = 0; i < length; i++)
+                if (upgrades[i].value == current)
+                    return i;
+            return -1;
+        }
+        public int GetSpendMoney(int current)
+        {
+            int money = 0, length = Length;
             for (int i = 0; i < length; i++)
             {
-                if (values[i] == current && i < length - 1)
-                {
-                    current = values[i + 1];
-                    billing = true;
+                if (upgrades[i].value == current)
                     break;
-                }
+                money += upgrades[i].price;
             }
-            return current;
-        }*/
+            return money;
+        }
     }
     
     [Serializable]
