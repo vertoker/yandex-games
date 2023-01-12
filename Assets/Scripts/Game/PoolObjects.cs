@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Game
 {
     public class PoolObjects : MonoBehaviour
     {
+        [SerializeField] private float timeExistance = 3f;
         [SerializeField] private int initSpawnCount = 100;
         [SerializeField] private DestructableObject origin;
         private Queue<DestructableObject> poolDisable;
@@ -28,10 +30,12 @@ namespace Game
         {
             var obj = _self.poolDisable.Count == 0 ? _self.CreateNew() : _self.poolDisable.Dequeue();
             _self.listEnable.Add(obj);
+            _self.StartCoroutine(_self.ReturnBack(obj));
             return obj;
         }
         public static void Enqueue(DestructableObject obj)
         {
+            obj.gameObject.SetActive(false);
             _self.listEnable.Remove(obj);
             _self.poolDisable.Enqueue(obj);
         }
@@ -41,6 +45,7 @@ namespace Game
         }
         public static void EnqueueAll()
         {
+            _self.StopAllCoroutines();
             foreach (var obj in _self.listEnable)
             {
                 obj.gameObject.SetActive(false);
@@ -51,6 +56,12 @@ namespace Game
         private DestructableObject CreateNew()
         {
             return Instantiate(origin, parent);
+        }
+
+        private IEnumerator ReturnBack(DestructableObject obj)
+        {
+            yield return new WaitForSeconds(timeExistance);
+            Enqueue(obj);
         }
     }
 }

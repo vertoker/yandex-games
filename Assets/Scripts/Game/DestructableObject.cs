@@ -7,6 +7,7 @@ namespace Game
     {
         [SerializeField] private Transform selfTransform;
         [SerializeField] private Rigidbody selfRigidbody;
+        [SerializeField] private Vector3Int epsilonSize = new Vector3Int(1, 1, 1);
         private Vector3Int objectSize;
 
         public Vector3 Position => selfTransform.position;
@@ -14,8 +15,10 @@ namespace Game
         public Vector3Int Scale => objectSize;
         public Transform Transform => selfTransform;
         public Rigidbody Rigidbody => selfRigidbody;
-        public bool IsDestructable => objectSize != ExplosionComputator.EPSILONSIZE;
-
+        
+        public bool IsDestructable => objectSize != epsilonSize;
+        public Vector3Int EpsilonSize => epsilonSize;
+        
         private void Awake()
         {
             selfTransform = transform;

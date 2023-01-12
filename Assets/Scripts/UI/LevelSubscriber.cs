@@ -8,13 +8,11 @@ namespace UI
     {
         [SerializeField] private Transform content;
         private LevelItem[] items;
-        private int length;
 
         private void Awake()
         {
-            length = YandexGame.savesData.levelPoints.Length;
-            items = new LevelItem[length];
-            for (int i = 0; i < length; i++)
+            items = new LevelItem[SavesYG.LEVELCOUNT];
+            for (int i = 0; i < SavesYG.LEVELCOUNT; i++)
             {
                 items[i] = content.GetChild(i).GetComponent<LevelItem>();
             }
@@ -22,7 +20,7 @@ namespace UI
         
         public void UpdateItems()
         {
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < SavesYG.LEVELCOUNT; i++)
             {
                 items[i].SetItem(i);
             }

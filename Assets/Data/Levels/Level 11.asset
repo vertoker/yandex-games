@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48235d8dad25ea843a9f171f7a99dcfc, type: 3}
+  m_Name: Level 11
+  m_EditorClassIdentifier: 
+  level: {fileID: 3228033621437356612, guid: da738acbb7b484c4aaf8da4e5f1e30ba, type: 3}
+  camPos: {x: -32.096066, y: 28.17848, z: 23.412949}
+  camRot: {x: 26.297863, y: 125.02283, z: 0.3688734}
+  bulletPos: {x: -90, y: 10, z: 0}

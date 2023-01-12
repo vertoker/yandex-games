@@ -63,12 +63,12 @@ namespace Player
             }
         }
         
-        public void EnableCinematic(Vector3 pos, Vector3 rot, bool instantMove = false)
+        public void EnableCinematic(Vector3 pos, Vector3 rot, bool instantMove = false, bool rotateCam = true)
         {
             cinematicTargetPos = pos;
             cinematicTargetRot = rot;
             type = CameraType.Cinematic;
-            cam.localEulerAngles = new Vector3(0,90, 0);
+            cam.localEulerAngles = new Vector3(0,rotateCam ? 90 : 0, 0);
             if (!instantMove) return;
             self.position = pos;
             self.localEulerAngles = rot;
@@ -76,7 +76,8 @@ namespace Player
         public void DisableCinematic()
         {
             type = CameraType.FollowerController;
-            var angle = self.localEulerAngles;
+            var angle = target.localEulerAngles;
+            cam.localEulerAngles = new Vector3(0,90, 0);
             self.localEulerAngles = new Vector3(0f, angle.y, angle.z);
         }
 

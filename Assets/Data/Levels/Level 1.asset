@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48235d8dad25ea843a9f171f7a99dcfc, type: 3}
   m_Name: Level 1
   m_EditorClassIdentifier: 
-  level: {fileID: 2299946272109917903, guid: 44921adefde74c645ac3d08f3aaaf89d, type: 3}
-  camPos: {x: -36, y: 33, z: 37}
-  camRot: {x: 0, y: 40, z: -25}
-  bulletPos: {x: -80, y: 10, z: 0}
+  level: {fileID: 6653006968358241984, guid: 1835bd7e7b831ab44a56e1837c5f41e6, type: 3}
+  camPos: {x: -40.30078, y: 71.04021, z: -40.78359}
+  camRot: {x: 37.986, y: 47.711, z: 0.473}
+  bulletPos: {x: -100, y: 10, z: 0}

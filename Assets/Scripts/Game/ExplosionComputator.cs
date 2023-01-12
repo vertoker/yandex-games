@@ -8,8 +8,6 @@ namespace Game
 {
     public class ExplosionComputator : MonoBehaviour
     {
-        public static readonly Vector3 EPSILONSIZE = new Vector3(1, 1, 1);
-        
         private static ExplosionComputator _self;
         private void Awake()
         {
@@ -48,6 +46,7 @@ namespace Game
                                     matrix[8] * x + matrix[9] * y + matrix[10] * z + matrix[11]
                                 );
                                 newObj.Transform.SetPositionAndRotation(obj.Position + offset, quaternion);
+                                newObj.Transform.localScale = obj.EpsilonSize;
                                 newObj.gameObject.SetActive(true);
                                 newObj.Rigidbody.AddForce((direction + offset).normalized * actualPower, ForceMode.Impulse);
                                 newObj.Rigidbody.angularVelocity = offset;

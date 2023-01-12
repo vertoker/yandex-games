@@ -20,6 +20,8 @@ namespace YG
         public int maxLevel;
         public int money;
         public int[] levelPoints;
+        
+        public const int LEVELCOUNT = 25;
 
         public SavesYG()
         {
@@ -33,7 +35,7 @@ namespace YG
             currentLevel = 1;
             maxLevel = 1;
             money = 0;
-            levelPoints = new int[100];
+            levelPoints = new int[LEVELCOUNT];
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Game
 
         public void LoadNextLevel()
         {
-            if (YandexGame.savesData.currentLevel < 100)
+            if (YandexGame.savesData.currentLevel < YG.SavesYG.LEVELCOUNT)
             {
                 YandexGame.savesData.currentLevel++;
             }
@@ -48,7 +48,7 @@ namespace Game
                 UnloadLevel();
             loadedLevel = levels[YandexGame.savesData.currentLevel - 1];
             levelTransform = Instantiate(loadedLevel.Level, transform).transform;
-            cam.EnableCinematic(loadedLevel.CamPos, loadedLevel.CamRot, true);
+            cam.EnableCinematic(loadedLevel.CamPos, loadedLevel.CamRot, true, false);
         }
         private void UnloadLevel()
         {
@@ -66,7 +66,7 @@ namespace Game
         }
         private void EndGame()
         {
-            cam.EnableCinematic(loadedLevel.CamPos, loadedLevel.CamRot);
+            cam.EnableCinematic(loadedLevel.CamPos, loadedLevel.CamRot, false, false);
         }
     }
 }

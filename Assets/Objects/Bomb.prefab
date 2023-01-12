@@ -95,7 +95,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480871099554878746}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: cc63eda8729b7324abcfb239db60b4c6, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34f17cde848eb134d80585c290f1be13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chainExplosionDelay: 0.5
   timeCollectExplodeObjects: 0.1
   powerExplode: 10
   radiusExplode: 10
