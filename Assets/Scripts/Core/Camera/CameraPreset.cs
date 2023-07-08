@@ -7,13 +7,13 @@ namespace Core.Camera
     public class CameraPreset : ScriptableObject
     {
         public DimensionType dimension;
-        public VectorFollow Pos;
-        public VectorFollow Rot;
+        public VectorFollow pos;
+        public VectorFollow rot;
     }
 
     public enum DimensionType
     {
-        ThreeD = 0,
-        TwoD = 1
+        ThreeDimension = 0,
+        TwoDimension = 1
     }
 }

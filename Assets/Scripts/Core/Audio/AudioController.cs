@@ -18,6 +18,8 @@ namespace Core.Audio
 
         private async void Awake()
         {
+            if (_instance != null)
+                return;
             _instance = this;
             
             // Create All

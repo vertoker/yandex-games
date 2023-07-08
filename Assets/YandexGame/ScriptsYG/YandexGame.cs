@@ -83,7 +83,7 @@ namespace YG
         {
             pathSaves = Application.dataPath + "/YandexGame/WorkingData/saveyg.yg";
             transform.SetParent(null);
-            gameObject.name = "YandexGame";
+            //gameObject.name = "YandexGame";
 
             if (singleton)
             {

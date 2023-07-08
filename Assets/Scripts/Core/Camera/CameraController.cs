@@ -32,49 +32,50 @@ namespace Core.Camera
         
         public static VectorFollow PosPreset
         {
-            get => _instance.preset.Pos;
-            set => _instance.preset.Pos = value;
+            get => _instance.preset.pos;
+            set => _instance.preset.pos = value;
         }
         public static VectorFollow RotPreset
         {
-            get => _instance.preset.Rot;
-            set => _instance.preset.Rot = value;
+            get => _instance.preset.rot;
+            set => _instance.preset.rot = value;
         }
 
         private void Awake()
         {
-            _self = transform;
+            if (_instance != null)
+                return;
             _instance = this;
+            
+            _self = transform;
         }
 
         private void Update()
         {
             switch (posMode)
             {
-                case FollowMode.None:
-                    break;
-                case FollowMode.MoveTowards:
+                case FollowMode.Towards:
+                    _self.position = Vector3.MoveTowards(_self.position, target.position, preset.pos.speed);
                     break;
                 case FollowMode.Lerp:
+                    _self.position = Vector3.Lerp(_self.position, target.position, preset.pos.speed);
                     break;
                 case FollowMode.LerpUnclamped:
+                    _self.position = Vector3.LerpUnclamped(_self.position, target.position, preset.pos.speed);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(posMode), posMode, null);
             }
             
             switch (rotMode)
             {
-                case FollowMode.None:
-                    break;
-                case FollowMode.MoveTowards:
+                case FollowMode.Towards:
+                    _self.rotation = Quaternion.RotateTowards(_self.rotation, target.rotation, preset.rot.speed);
                     break;
                 case FollowMode.Lerp:
+                    _self.rotation = Quaternion.Lerp(_self.rotation, target.rotation, preset.rot.speed);
                     break;
                 case FollowMode.LerpUnclamped:
+                    _self.rotation = Quaternion.LerpUnclamped(_self.rotation, target.rotation, preset.rot.speed);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(rotMode), rotMode, null);
             }
         }
     }
@@ -82,7 +83,7 @@ namespace Core.Camera
     public enum FollowMode
     {
         None = 0,
-        MoveTowards = 1,
+        Towards = 1,
         Lerp = 2,
         LerpUnclamped = 3
     }
