@@ -89,10 +89,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f25a32d24564234889becd9057fb653, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posMode: 0
-  rotMode: 0
+  posMode: 1
+  rotMode: 1
   preset: {fileID: 11400000, guid: bec07a1be89f6cd4489146d376f7fd7b, type: 2}
-  target: {fileID: 0}
+  watcher: {fileID: 0}
 --- !u!1 &1653629431666562500
 GameObject:
   m_ObjectHideFlags: 0

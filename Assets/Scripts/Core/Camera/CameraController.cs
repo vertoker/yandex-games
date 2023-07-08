@@ -1,4 +1,5 @@
 using System;
+using Core.Camera.Watchers;
 using UnityEngine;
 
 namespace Core.Camera
@@ -9,14 +10,19 @@ namespace Core.Camera
         [SerializeField] private FollowMode rotMode;
         [SerializeField] private CameraPreset preset;
         [Space]
-        [SerializeField] private Transform target;
+        [SerializeField] private WatcherBase watcher;
         private static CameraController _instance;
         private Transform _self;
-        
-        public static Transform Target
+
+        public void Switch(WatcherBase watcherNext)
         {
-            get => _instance.target;
-            set => _instance.target = value;
+            if (watcher != null)
+                watcher.EndSwitch();
+            
+            if (watcherNext != null)
+                watcherNext.BeginSwitch();
+            
+            watcher = watcherNext;
         }
         
         public static FollowMode PosMode
@@ -50,31 +56,40 @@ namespace Core.Camera
             _self = transform;
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
+            if (watcher == null)
+                return;
+            
             switch (posMode)
             {
+                case FollowMode.Instant:
+                    _self.position = watcher.Target.position;
+                    break;
                 case FollowMode.Towards:
-                    _self.position = Vector3.MoveTowards(_self.position, target.position, preset.pos.speed);
+                    _self.position = Vector3.MoveTowards(_self.position, watcher.Target.position, preset.pos.speed);
                     break;
                 case FollowMode.Lerp:
-                    _self.position = Vector3.Lerp(_self.position, target.position, preset.pos.speed);
+                    _self.position = Vector3.Lerp(_self.position, watcher.Target.position, preset.pos.speed);
                     break;
                 case FollowMode.LerpUnclamped:
-                    _self.position = Vector3.LerpUnclamped(_self.position, target.position, preset.pos.speed);
+                    _self.position = Vector3.LerpUnclamped(_self.position, watcher.Target.position, preset.pos.speed);
                     break;
             }
             
             switch (rotMode)
             {
+                case FollowMode.Instant:
+                    _self.rotation = watcher.Target.rotation;
+                    break;
                 case FollowMode.Towards:
-                    _self.rotation = Quaternion.RotateTowards(_self.rotation, target.rotation, preset.rot.speed);
+                    _self.rotation = Quaternion.RotateTowards(_self.rotation, watcher.Target.rotation, preset.rot.speed);
                     break;
                 case FollowMode.Lerp:
-                    _self.rotation = Quaternion.Lerp(_self.rotation, target.rotation, preset.rot.speed);
+                    _self.rotation = Quaternion.Lerp(_self.rotation, watcher.Target.rotation, preset.rot.speed);
                     break;
                 case FollowMode.LerpUnclamped:
-                    _self.rotation = Quaternion.LerpUnclamped(_self.rotation, target.rotation, preset.rot.speed);
+                    _self.rotation = Quaternion.LerpUnclamped(_self.rotation, watcher.Target.rotation, preset.rot.speed);
                     break;
             }
         }
@@ -82,9 +97,10 @@ namespace Core.Camera
     
     public enum FollowMode
     {
-        None = 0,
-        Towards = 1,
-        Lerp = 2,
-        LerpUnclamped = 3
+        None,
+        Instant,
+        Towards,
+        Lerp,
+        LerpUnclamped
     }
 }
