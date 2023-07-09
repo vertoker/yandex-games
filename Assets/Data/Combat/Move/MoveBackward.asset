@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 515df8aa84324ca996b079aa70b5f450, type: 3}
-  m_Name: CameraPreset
+  m_Script: {fileID: 11500000, guid: 06ef8759acdc4fc8b24fbc4772861ce0, type: 3}
+  m_Name: MoveBackward
   m_EditorClassIdentifier: 
-  dimension: 0
-  pos:
-    speed: 0.07
-  rot:
-    speed: 0.07
+  clip: {fileID: 0}
+  inputDirection: 2
+  inputCombat: 0
+  nextActions: []

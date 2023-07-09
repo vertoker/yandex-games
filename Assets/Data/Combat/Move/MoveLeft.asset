@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: MoveLeft
   m_EditorClassIdentifier: 
   clip: {fileID: 0}
-  weapon: 0
-  inputAction: 3
+  inputDirection: 3
+  inputCombat: 0
   nextActions: []

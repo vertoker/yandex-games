@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Core.Audio;
+using Audio;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using YG;

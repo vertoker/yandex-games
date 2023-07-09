@@ -29,7 +29,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -47,8 +47,8 @@ ModelImporter:
     sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 1
-    importLights: 1
+    importCameras: 0
+    importLights: 0
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
@@ -62,7 +62,7 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
-    meshOptimizationFlags: -1
+    meshOptimizationFlags: 0
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
@@ -81,11 +81,136 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: SteveSkeleton(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Armature
+      parentName: SteveSkeleton(Clone)
+      position: {x: -0, y: 0.72, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Body 1
+      parentName: Armature
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Body 2
+      parentName: Body 1
+      position: {x: -0, y: 0.22, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Body 3
+      parentName: Body 2
+      position: {x: -0, y: 0.22, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head
+      parentName: Body 3
+      position: {x: -0, y: 0.28000003, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head_end
+      parentName: Head
+      position: {x: -0, y: 0.48000002, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LArm 1
+      parentName: Body 3
+      position: {x: -0.35000002, y: 0.22000003, z: 0}
+      rotation: {x: -0.7071068, y: 0.7071068, z: 0, w: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LArm 2
+      parentName: LArm 1
+      position: {x: -0, y: 0.33, z: 0}
+      rotation: {x: 0, y: -0.000000015893256, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LArm 2_end
+      parentName: LArm 2
+      position: {x: -0, y: 0.33, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RArm 1
+      parentName: Body 3
+      position: {x: 0.35000002, y: 0.22000003, z: 0}
+      rotation: {x: -0.7071068, y: -0.7071068, z: 0, w: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RArm 2
+      parentName: RArm 1
+      position: {x: -0, y: 0.33, z: 0}
+      rotation: {x: 0, y: -0.000000015893256, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RArm 2_end
+      parentName: RArm 2
+      position: {x: -0, y: 0.33, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LLeg 1
+      parentName: Body 1
+      position: {x: -0.120000005, y: 0, z: 0}
+      rotation: {x: 1, y: -2.6765506e-24, z: 0.00000004371139, w: 6.123234e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LLeg 2
+      parentName: LLeg 1
+      position: {x: -0, y: 0.36000004, z: 0}
+      rotation: {x: 0, y: -0.00000016292068, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LLeg 2_end
+      parentName: LLeg 2
+      position: {x: -0, y: 0.36, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RLeg 1
+      parentName: Body 1
+      position: {x: 0.120000005, y: 0, z: 0}
+      rotation: {x: 1, y: -4.622913e-24, z: 0.0000000754979, w: 6.123234e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RLeg 2
+      parentName: RLeg 1
+      position: {x: -0, y: 0.36000004, z: 0}
+      rotation: {x: 0, y: -0.0000000754979, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RLeg 2_end
+      parentName: RLeg 2
+      position: {x: -0, y: 0.36, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Body
+      parentName: SteveSkeleton(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: HandLeft.001
+      parentName: SteveSkeleton(Clone)
+      position: {x: -0.24000001, y: 1.38, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: HandRight.001
+      parentName: SteveSkeleton(Clone)
+      position: {x: 0.24000001, y: 1.38, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Head.001
+      parentName: SteveSkeleton(Clone)
+      position: {x: -0, y: 1.44, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LegLeft.001
+      parentName: SteveSkeleton(Clone)
+      position: {x: -0.120000005, y: 0.72, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LegRight.001
+      parentName: SteveSkeleton(Clone)
+      position: {x: 0.120000005, y: 0.72, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -94,15 +219,15 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: Body 1
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0

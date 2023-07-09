@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 515df8aa84324ca996b079aa70b5f450, type: 3}
-  m_Name: CameraPreset
+  m_Script: {fileID: 11500000, guid: fbfedc2bd07f42c3a80df2adf1f196dc, type: 3}
+  m_Name: MobileHorizontal
   m_EditorClassIdentifier: 
-  dimension: 0
-  pos:
-    speed: 0.07
-  rot:
-    speed: 0.07
+  pos: {x: 1.4, y: 2, z: -2}
+  rot: {x: -0.17298739, y: 0.085832015, z: -0.015134501, w: -0.9810602}

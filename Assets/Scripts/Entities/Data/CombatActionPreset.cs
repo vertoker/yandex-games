@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Entities.Data
 {
@@ -6,14 +7,14 @@ namespace Entities.Data
     public class CombatActionPreset : ScriptableObject
     {
         [SerializeField] private AnimationClip clip;
-        [SerializeField] private WeaponType weapon;
-        [SerializeField] public CombatActionInput inputAction;
+        [SerializeField] public InputDirection inputDirection;
+        [SerializeField] public InputCombat inputCombat;
         [Space]
         [SerializeField] public CombatActionPreset[] nextActions;
 
         public AnimationClip Clip => clip;
-        public WeaponType Weapon => weapon;
-        public CombatActionInput InputAction => inputAction;
+        public InputDirection InputDirection => inputDirection;
+        public InputCombat InputCombat => inputCombat;
         public CombatActionPreset[] NextActions => nextActions;
     }
 }
