@@ -1,19 +1,33 @@
-﻿using Preset;
+﻿using System;
+using Game.Drawer;
+using Preset;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Menu
 {
     public class MenuButton : MonoBehaviour
     {
-        [SerializeField] private TMP_Text title;
         [SerializeField] private Image image;
+        [SerializeField] private Button button;
         
-        public void Install(ImagePreset preset)
+        public void Install(ImagePreset preset, GameUIController controller, DrawerController drawer)
         {
-            title.text = preset.ImageTitle;
             image.sprite = preset.ImageSource;
+
+            var action = new UnityAction(() =>
+            {
+                drawer.Init(preset);
+                controller.OpenGame();
+            });
+            button.onClick.AddListener(action);
+        }
+
+        private void OnDisable()
+        {
+            button.onClick.RemoveAllListeners();
         }
     }
 }
