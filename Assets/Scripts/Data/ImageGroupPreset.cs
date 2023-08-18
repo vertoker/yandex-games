@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Preset
+namespace Data
 {
     [CreateAssetMenu(menuName = "Presets/" + nameof(ImageGroupPreset), fileName = nameof(ImageGroupPreset))]
     public class ImageGroupPreset : ScriptableObject

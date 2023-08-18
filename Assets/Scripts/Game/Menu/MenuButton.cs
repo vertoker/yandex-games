@@ -1,6 +1,6 @@
 ﻿using System;
+using Data;
 using Game.Drawer;
-using Preset;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
@@ -23,11 +23,6 @@ namespace Game.Menu
                 controller.OpenGame();
             });
             button.onClick.AddListener(action);
-        }
-
-        private void OnDisable()
-        {
-            button.onClick.RemoveAllListeners();
         }
     }
 }

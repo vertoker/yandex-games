@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System.Collections.Generic;
+using Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,12 +18,14 @@ namespace Game.Drawer
             _pool = new Pool<ColorButton>(preset, parent, poolInit);
         }
 
-        public void SetupColors(ColorData[] colors)
+        public void SetupColors(Dictionary<Color, int> colors)
         {
-            for (var i = 0; i < colors.Length; i++)
+            var counter = 1;
+            foreach (var pair in colors)
             {
                 var data = _pool.Dequeue();
-                data.Init(colors[i], i + 1);
+                data.Init(pair.Key, pair.Value, counter);
+                counter++;
             }
         }
 

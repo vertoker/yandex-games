@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Preset
+namespace Data
 {
     [CreateAssetMenu(menuName = "Presets/" + nameof(ImagePreset), fileName = nameof(ImagePreset))]
     public class ImagePreset : ScriptableObject

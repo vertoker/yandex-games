@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Core.Camera
 {
+    [RequireComponent(typeof(UnityEngine.Camera))]
     public class CameraController : MonoBehaviour
     {
         [SerializeField] private FollowMode posMode;
@@ -11,12 +12,24 @@ namespace Core.Camera
         [Space]
         [SerializeField] private Transform target;
         private static CameraController _instance;
+        
+        private UnityEngine.Camera _cam;
         private Transform _self;
         
         public static Transform Target
         {
             get => _instance.target;
             set => _instance.target = value;
+        }
+        public static Transform Self
+        {
+            get => _instance._self;
+            set => _instance._self = value;
+        }
+        public static UnityEngine.Camera SelfCamera
+        {
+            get => _instance._cam;
+            set => _instance._cam = value;
         }
         
         public static FollowMode PosMode
@@ -48,6 +61,7 @@ namespace Core.Camera
             _instance = this;
             
             _self = transform;
+            _cam = _self.GetComponent<UnityEngine.Camera>();
         }
 
         private void Update()

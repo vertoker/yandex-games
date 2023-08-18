@@ -21,10 +21,10 @@ namespace Data
         private float GetProgress() => _counter / (float)_count;
         public bool IsFinished => _counter == _count;
 
-        public void Init(ColorData colorData, int indexColor)
+        public void Init(Color color, int count, int indexColor)
         {
-            _selectedColor = colorData.Color;
-            _count = colorData.Count;
+            _selectedColor = color;
+            _count = count;
             _counter = 0;
 
             background.color = _selectedColor;
