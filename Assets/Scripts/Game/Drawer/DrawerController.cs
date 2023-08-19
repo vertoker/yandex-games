@@ -44,11 +44,6 @@ namespace Game.Drawer
 
         public void Init(ImagePreset preset)
         {
-            _imageCache.Init(preset.ImageSource.texture);
-            
-            background.sprite = preset.ImageSource;
-            result.sprite = _imageCache.Sprite;
-            
             var texture = preset.ImageSource.texture;
             for (var x = 0; x < texture.width; x++)
             {
@@ -60,6 +55,11 @@ namespace Game.Drawer
             
             ValueChanged(bar.value);
             buttons.SetupColors(_colors);
+            
+            _imageCache.Init(preset.ImageSource.texture, _colors);
+            background.sprite = preset.ImageSource;
+            result.sprite = _imageCache.Sprite;
+            
             var size = pixelPreset.GetSize(texture.width, texture.height);
             cameraViewer.Init(size);
         }
