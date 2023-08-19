@@ -30,7 +30,7 @@ namespace Game.Drawer
         private void OnEnable()
         {
             bar.onValueChanged.AddListener(ValueChanged);
-            ValueChanged(bar.value);
+            bar.value = 1;
         }
         private void OnDisable()
         {

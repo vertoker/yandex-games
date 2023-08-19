@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515df8aa84324ca996b079aa70b5f450, type: 3}
   m_Name: CameraPreset
   m_EditorClassIdentifier: 
-  dimension: 0
+  dimension: 1
+  pos:
+    speed: 0.3
+  rot:
+    speed: 1

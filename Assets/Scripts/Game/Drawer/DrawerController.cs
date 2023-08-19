@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using Data;
+using Game.Pool;
 
 namespace Game.Drawer
 {
@@ -22,6 +23,8 @@ namespace Game.Drawer
         [SerializeField] private PixelPreset pixelPreset;
         [SerializeField] private SpriteRenderer pixelPrefab;
         [SerializeField] private Transform pixelParent;
+        
+        private ImageDrawerCache _imageCache;
         private Pool<SpriteRenderer> _pixelPool;
         
         [Header("Text")]
@@ -36,12 +39,15 @@ namespace Game.Drawer
         {
             _pixelPool = new Pool<SpriteRenderer>(pixelPrefab, pixelParent, poolInit);
             _textPool = new Pool<TextMeshPro>(textPrefab, textParent, poolInit);
+            _imageCache = new ImageDrawerCache();
         }
 
         public void Init(ImagePreset preset)
         {
+            _imageCache.Init(preset.ImageSource.texture);
+            
             background.sprite = preset.ImageSource;
-            result.sprite = preset.ImageSource;
+            result.sprite = _imageCache.Sprite;
             
             var texture = preset.ImageSource.texture;
             for (var x = 0; x < texture.width; x++)
@@ -61,7 +67,11 @@ namespace Game.Drawer
         {
             _colors.Clear();
             _colorsList.Clear();
+
+            background.sprite = null;
+            result.sprite = null;
             
+            _imageCache.Dispose();
             _pixelPool.EnqueueAll();
             _textPool.EnqueueAll();
         }
@@ -85,7 +95,7 @@ namespace Game.Drawer
             text.text = (_colorsList.IndexOf(color) + 1).ToString();
             
             pixel.transform.position = pos;
-            pixel.color = color;
+            //pixel.color = color;
         }
         
         private void OnEnable()

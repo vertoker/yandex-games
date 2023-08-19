@@ -675,7 +675,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -2006,8 +2006,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2860482fbe864a0bbd07ab07d671ddf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  farSensitivity: 0
+  closeSensitivity: 0
   camViewer: {fileID: 1278025115}
   camTarget: {fileID: 1278025116}
+  bar: {fileID: 2026165927}
 --- !u!1 &1656974476
 GameObject:
   m_ObjectHideFlags: 0
