@@ -10,11 +10,13 @@ namespace Game.Drawer
     {
         [SerializeField] private float farSensitivity;
         [SerializeField] private float closeSensitivity;
+        [SerializeField] private DrawerController drawer;
         [SerializeField] private CameraViewer camViewer;
         [SerializeField] private Transform camTarget;
         [SerializeField] private Scrollbar bar;
         
         private Vector2 _startPressPos;
+        private bool _isDraw;
         
         private void Awake()
         {
@@ -31,16 +33,36 @@ namespace Game.Drawer
         public void OnPointerDown(PointerEventData eventData)
         {
             var offsetPress = GetLocalPress(Input.mousePosition);
-            _startPressPos = offsetPress + (Vector2)camTarget.position;
+            _startPressPos = (Vector2)camTarget.position + offsetPress;
+
+            if (bar.value > drawer.MinBarToFade || Input.GetMouseButton(1) || Input.GetMouseButton(2))
+            {
+                _isDraw = false;
+                return;
+            }
+            
+            drawer.GetPixelByPos(_startPressPos, out var x, out var y);
+            _isDraw = drawer.IsDraw(x, y);
+            if (_isDraw) drawer.DrawPixel(x, y);
         }
         public void OnDrag(PointerEventData eventData)
         {
             var offsetPress = GetLocalPress(Input.mousePosition);
-            var currentPos = _startPressPos - offsetPress;
-            var x = Mathf.Clamp(currentPos.x, -camViewer.CurrentSize.x, camViewer.CurrentSize.x);
-            var y = Mathf.Clamp(currentPos.y, -camViewer.CurrentSize.y, camViewer.CurrentSize.y);
-            var pos = new Vector3(x, y, 0);
-            camTarget.position = pos;
+
+            if (_isDraw)
+            {
+                var currentPos = (Vector2)camTarget.position + offsetPress;
+                drawer.GetPixelByPos(currentPos, out var x, out var y);
+                if (drawer.IsDraw(x, y)) drawer.DrawPixel(x, y);
+            }
+            else
+            {
+                var currentPos = _startPressPos - offsetPress;
+                var x = Mathf.Clamp(currentPos.x, -camViewer.CurrentSize.x, camViewer.CurrentSize.x);
+                var y = Mathf.Clamp(currentPos.y, -camViewer.CurrentSize.y, camViewer.CurrentSize.y);
+                var pos = new Vector3(x, y, 0);
+                camTarget.position = pos;
+            }
         }
         public void OnPointerUp(PointerEventData eventData)
         {

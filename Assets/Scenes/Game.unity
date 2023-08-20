@@ -595,7 +595,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1578757573}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &603006087
 GameObject:
@@ -863,7 +863,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1578757573}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1071713424
 SpriteRenderer:
@@ -1572,8 +1572,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttons: {fileID: 1556312201}
   cameraViewer: {fileID: 1278025115}
-  background: {fileID: 603006089}
-  result: {fileID: 1071713424}
+  backgroundRenderer: {fileID: 603006089}
+  resultRenderer: {fileID: 1071713424}
+  minBarToFade: 0.6
   poolInit: 1000
   bar: {fileID: 2026165927}
   pixelPreset: {fileID: 11400000, guid: 3aff6a8206216644f90fc4d09fa424f1, type: 2}
@@ -1594,9 +1595,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 603006088}
-  - {fileID: 1071713423}
   - {fileID: 484572133}
   - {fileID: 1986268407}
+  - {fileID: 1071713423}
   - {fileID: 1278025116}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -2008,6 +2009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   farSensitivity: 0
   closeSensitivity: 0
+  drawer: {fileID: 1578757572}
   camViewer: {fileID: 1278025115}
   camTarget: {fileID: 1278025116}
   bar: {fileID: 2026165927}
@@ -2747,7 +2749,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1578757573}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2026165925
 GameObject:

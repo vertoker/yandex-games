@@ -12,8 +12,9 @@ namespace Game.Drawer
         [SerializeField] private ColorButton preset;
         [SerializeField] private Transform parent;
 
-        public event Action<ColorButton> SelectedColor;
-
+        public event Action<int, ColorButton> SelectedColor;
+        public ColorButton Selected => _active;
+        
         private Pool<ColorButton> _pool;
         private ColorButton _active;
 
@@ -22,7 +23,7 @@ namespace Game.Drawer
             _pool = new Pool<ColorButton>(preset, parent, poolInit);
         }
 
-        public void SetupColors(Dictionary<Color, int> colors)
+        public void SetupColors(Dictionary<Color, List<PixelData>> colors)
         {
             var counter = 0;
             foreach (var pair in colors)
@@ -30,8 +31,9 @@ namespace Game.Drawer
                 var data = _pool.Dequeue();
                 var index = counter;
                 counter++;
-                data.Init(pair.Key, pair.Value, counter, () => Switch(index));
+                data.Init(pair.Key, pair.Value.Count, counter, () => Switch(index));
             }
+            Switch(0);
         }
         public void OnDisable()
         {
@@ -39,13 +41,26 @@ namespace Game.Drawer
             _active = null;
         }
 
+        public void SwitchToActive()
+        {
+            var buttons = _pool.Actives;
+            for (var i = 0; i < buttons.Count; i++)
+            {
+                if (buttons[i].IsFinished)
+                    continue;
+                Switch(i);
+                return;
+            }
+            if (_active != null)
+                _active.Deselect();
+        }
         public void Switch(int index)
         {
             if (_active != null)
                 _active.Deselect();
             _active = _pool.Actives[index];
             _active.Select();
-            SelectedColor?.Invoke(_active);
+            SelectedColor?.Invoke(index, _active);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Data
         [SerializeField] private Image progress;
         [SerializeField] private Image check;
 
+        public Color Color => _selectedColor;
+        
         private Color _selectedColor;
         private int _count;
         private int _counter;
@@ -38,9 +40,11 @@ namespace Data
             text.enabled = true;
             text.text = numberColor.ToString();
             
-            var highlight = GetHighlightColor(color);
+            progress.color = color;
+            var highlight = color.ToHighlighted();
             backgroundProgress.color = highlight;
             text.color = highlight;
+            check.color = highlight;
             
             progress.fillAmount = GetProgress();
             backgroundProgress.enabled = false;
@@ -74,15 +78,11 @@ namespace Data
         }
         public void Finish()
         {
+            colorPicker.onClick.RemoveAllListeners();
             text.enabled = false;
-            backgroundProgress.enabled = false;
             progress.enabled = false;
-        }
-
-        private static Color GetHighlightColor(Color color)
-        {
-            var power = color.r + color.g + color.b;
-            return power > 1.5f ? Color.black : Color.white;
+            backgroundProgress.enabled = false;
+            check.enabled = true;
         }
     }
 }
