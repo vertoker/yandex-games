@@ -13,10 +13,9 @@ namespace Game.Drawer
         [SerializeField] private Transform parent;
 
         public event Action<int, ColorButton> SelectedColor;
-        public ColorButton Selected => _active;
-        
+        public ColorButton Selected { get; private set; }
+
         private Pool<ColorButton> _pool;
-        private ColorButton _active;
 
         private void Awake()
         {
@@ -38,7 +37,7 @@ namespace Game.Drawer
         public void OnDisable()
         {
             _pool.EnqueueAll();
-            _active = null;
+            Selected = null;
         }
 
         public void SwitchToActive()
@@ -51,16 +50,16 @@ namespace Game.Drawer
                 Switch(i);
                 return;
             }
-            if (_active != null)
-                _active.Deselect();
+            if (Selected != null)
+                Selected.Deselect();
         }
         public void Switch(int index)
         {
-            if (_active != null)
-                _active.Deselect();
-            _active = _pool.Actives[index];
-            _active.Select();
-            SelectedColor?.Invoke(index, _active);
+            if (Selected != null)
+                Selected.Deselect();
+            Selected = _pool.Actives[index];
+            Selected.Select();
+            SelectedColor?.Invoke(index, Selected);
         }
     }
 }

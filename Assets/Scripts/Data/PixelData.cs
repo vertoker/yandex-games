@@ -21,7 +21,8 @@ namespace Data
         {
             _pixel = pixel;
             _text = text;
-            _currentState = PixelDataState.UnSelect;
+            _currentState = PixelDataState.Select;
+            UnSelect();
         }
         
         public void SetColor(Color color)
@@ -46,6 +47,11 @@ namespace Data
         public void UnSelect()
         {
             if (_currentState != PixelDataState.Select) return;
+            UnSelectPush();
+        }
+        public void UnSelectPush()
+        {
+            _pixel.transform.localScale = Extensions.UnSelectScale;
             _pixel.color = Color.white;
             _currentState = PixelDataState.UnSelect;
         }

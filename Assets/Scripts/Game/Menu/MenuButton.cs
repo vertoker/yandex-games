@@ -13,16 +13,15 @@ namespace Game.Menu
         [SerializeField] private Image image;
         [SerializeField] private Button button;
         
-        public void Install(ImagePreset preset, GameUIController controller, DrawerController drawer)
+        public void Install(ImagePreset preset, UnityAction action)
         {
             image.sprite = preset.ImageSource;
-
-            var action = new UnityAction(() =>
-            {
-                drawer.Init(preset);
-                controller.OpenGame();
-            });
             button.onClick.AddListener(action);
+        }
+
+        public void Click()
+        {
+            button.onClick.Invoke();
         }
     }
 }

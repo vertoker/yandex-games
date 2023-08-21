@@ -16,6 +16,8 @@ namespace Game.Drawer
         private RectTransform[] _icons;
         private Coroutine _update;
 
+        public float TimeScale => timeScale;
+        
         private void Awake()
         {
             var parent = transform;
@@ -52,7 +54,7 @@ namespace Game.Drawer
             _icons[8].anchoredPosition = new Vector2(lerp, -lerp);
         }
 
-        private void CancelAnim()
+        public void CancelAnim()
         {
             if (_update != null)
                 StopCoroutine(_update);
@@ -66,10 +68,10 @@ namespace Game.Drawer
             _update = StartCoroutine(ScrollAnim(bar.value, bar.value > 0.5f ? 0 : 1));
         }
 
-        private IEnumerator ScrollAnim(float start, float end)
+        public IEnumerator ScrollAnim(float start, float end)
         {
             var timeToMove = Mathf.Abs(end - start);
-            for (var i = 0f; i <= 1; i += Time.deltaTime / timeToMove / timeScale)
+            for (var i = 0f; i <= 1; i += Time.deltaTime / timeToMove / TimeScale)
             {
                 bar.value = start + (end - start) * i;
                 yield return null;

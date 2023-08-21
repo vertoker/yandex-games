@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 using Data;
+using Game.Menu;
 using Game.Pool;
 using UnityEngine.Serialization;
 
@@ -11,6 +13,16 @@ namespace Game.Drawer
 {
     public class DrawerController : MonoBehaviour
     {
+        [Header("Prefab Groups")]
+        [SerializeField] private GameObject gameGroup;
+        [SerializeField] private GameObject finishGroup;
+        
+        [Header("Views")]
+        [SerializeField] private ReCenterButton reCenterView;
+        [SerializeField] private ProgressView progressView;
+        [SerializeField] private ProgressView errorView;
+        private int _pixelsCounter, _pixelsCount, _errorsCount;
+        
         [Header("Controllers")]
         [SerializeField] private ColorButtonsHandler buttons;
         [SerializeField] private CameraViewer cameraViewer;
@@ -40,10 +52,11 @@ namespace Game.Drawer
         private PixelData[,] _pixels;
         private readonly Dictionary<Color, List<PixelData>> _colors = new(10);
         private readonly List<Color> _colorsList = new(10);
+        private Coroutine _history;
 
         public float MinBarToFade => minBarToFade;
         
-        private int _switch = 0;
+        private int _switch;
 
         private void Awake()
         {
@@ -54,16 +67,19 @@ namespace Game.Drawer
 
         public void Init(ImagePreset preset)
         {
+            finishGroup.SetActive(false);
+            gameGroup.SetActive(true);
+            
+            _pixelsCount = _pixelsCounter = _errorsCount = 0;
+            progressView.SetPercent(0);
+            errorView.SetCount(0);
+            
             var texture = preset.ImageSource.texture;
             _pixels = new PixelData[texture.width, texture.height];
             
             for (var x = 0; x < texture.width; x++)
-            {
-                for (var y = 0; y < texture.height; y++)
-                {
+                for (var y = 0; y < texture.height; y++) 
                     Analyze(texture, x, y);
-                }
-            }
             
             ValueChanged(bar.value);
             buttons.SetupColors(_colors);
@@ -71,9 +87,10 @@ namespace Game.Drawer
             _imageCache.Init(preset.ImageSource.texture, _colors.Keys.ToList());
             backgroundRenderer.sprite = preset.ImageSource;
             resultRenderer.sprite = _imageCache.Sprite;
+            resultRenderer.enabled = true;
             
             var size = pixelPreset.GetSize(texture.width, texture.height);
-            cameraViewer.Init(size);
+            cameraViewer.Init(size, texture.width, texture.height);
         }
         public void Dispose()
         {
@@ -110,6 +127,7 @@ namespace Game.Drawer
             var pixelData = new PixelData(pixel, text);
             _pixels[x, y] = pixelData;
             _colors[color].Add(pixelData);
+            _pixelsCount++;
         }
         
         private void OnEnable()
@@ -139,7 +157,7 @@ namespace Game.Drawer
             x = Mathf.FloorToInt(absX);
             y = Mathf.FloorToInt(absY);
         }
-        public bool IsDraw(int x, int y)
+        public bool CanDrawInit(int x, int y)
         {
             if (!InBounds(x, 0, _imageCache.Width)) return false;
             if (!InBounds(y, 0, _imageCache.Height)) return false;
@@ -148,6 +166,19 @@ namespace Game.Drawer
             var source = _imageCache.GetSourcePixel(x, y);
             var result = _imageCache.GetResultPixel(x, y);
             var draw = buttons.Selected.Color;
+
+            return source == draw && result != draw;
+        }
+        public bool CanDraw(int x, int y)
+        {
+            if (!InBounds(x, 0, _imageCache.Width)) return false;
+            if (!InBounds(y, 0, _imageCache.Height)) return false;
+            if (_pixels[x, y] == null) return false;
+            
+            var source = _imageCache.GetSourcePixel(x, y);
+            var result = _imageCache.GetResultPixel(x, y);
+            var draw = buttons.Selected.Color;
+
             return result != draw && result != source;
         }
         public void DrawPixel(int x, int y)
@@ -158,28 +189,73 @@ namespace Game.Drawer
             var source = _imageCache.GetSourcePixel(x, y);
             var draw = button.Color;
             _imageCache.SetColor(x, y, draw);
-
+            
             if (draw == source)
             {
+                _pixelsCounter++;
                 pixelData.SetColor(draw);
-                
+                _imageCache.PushToHistory(x, y, draw);
+                progressView.SetPercent(_pixelsCounter / (float)_pixelsCount);
                 button.Add();
-                if (!button.IsFinished)
-                    return;
+                
+                if (!button.IsFinished) return;
                 
                 button.Finish();
                 buttons.SwitchToActive();
+
+                if (_pixelsCount != _pixelsCounter) return;
+                
+                gameGroup.SetActive(false);
+                finishGroup.SetActive(true);
+                resultRenderer.enabled = false;
+                reCenterView.CancelAnim();
+                StartCoroutine(reCenterView.ScrollAnim(bar.value, 1));
+                var time = reCenterView.TimeScale * (1 - bar.value);
+                Invoke(nameof(RepeatHistory), time);//cringe
             }
-            else pixelData.SetWrongColor(draw);
+            else
+            {
+                pixelData.SetWrongColor(draw);
+                _errorsCount++;
+                errorView.SetCount(_errorsCount);
+            }
         }
         
         private void SwitchToColorGraySelect(int index, ColorButton button)
         {
-            foreach (var pixel in _colors[_colorsList[_switch]])
-                pixel.UnSelect();
+            var list = _colors[_colorsList[_switch]];
+            if (list != null)
+                foreach (var pixel in list)
+                    pixel.UnSelect();
+            
             _switch = index;
-            foreach (var pixel in _colors[_colorsList[_switch]])
+            
+            list = _colors[_colorsList[_switch]];
+            if (list == null) return;
+            foreach (var pixel in list)
                 pixel.Select();
+        }
+
+        public void RepeatHistory()
+        {
+            if (_history != null)
+                StopCoroutine(_history);
+
+            var width = _pixels.GetLength(0);
+            var height = _pixels.GetLength(1);
+            for (var x = 0; x < width; x++)
+                for (var y = 0; y < height; y++)
+                    _pixels[x, y]?.UnSelectPush();
+            _history = StartCoroutine(HistoryTimer());
+        }
+
+        private IEnumerator HistoryTimer()
+        {
+            foreach (var data in _imageCache.History.Reverse())
+            {
+                _pixels[data.X, data.Y].SetColor(_colorsList[data.ColorIndex]);
+                yield return null;
+            }
         }
 
         private static bool InBounds(int value, int min, int max) => min <= value && value < max;

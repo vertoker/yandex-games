@@ -5,7 +5,8 @@ namespace Data
     public static class Extensions
     {
         public static Vector3 NormalScale => new Vector3(1, 1, 1);
-
+        public static Vector3 UnSelectScale => new Vector3(0.9f, 0.9f, 0.9f);
+        
         public static Color LightGray => new Color(0.8f, 0.8f, 0.8f, 1f);
         
         public static Color ToHighlighted(this Color color)
@@ -28,8 +29,8 @@ namespace Data
         public static Color ToNonContrast(this Color color, float progress = 0.5f)
         {
             var r = Mathf.Lerp(color.r, 1, progress);
-            var g = Mathf.Lerp(color.r, 1, progress);
-            var b = Mathf.Lerp(color.r, 1, progress);
+            var g = Mathf.Lerp(color.g, 1, progress);
+            var b = Mathf.Lerp(color.b, 1, progress);
             return new Color(r, g, b, color.a);
         }
     }

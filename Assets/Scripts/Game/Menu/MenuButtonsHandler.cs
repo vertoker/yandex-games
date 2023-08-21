@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Data;
 using Game.Drawer;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Menu
 {
@@ -19,16 +21,40 @@ namespace Game.Menu
         [SerializeField] protected MenuButton buttonTemplate;
         [SerializeField] protected ImageGroupPreset presets;
 
+        private List<MenuButton> _buttons;
+        private int _current;
+
         private void Awake()
         {
             var blockCount = Mathf.Floor(presets.Presets.Length / (float)verticalCount);
             parent.sizeDelta = new Vector2(startWidth + blockCount * blockWidth, parent.sizeDelta.y);
+            _buttons = new List<MenuButton>(presets.Presets.Length);
             
             foreach (var preset in presets.Presets)
             {
                 var button = Instantiate(buttonTemplate, parent);
-                button.Install(preset, gameUIController, drawerController);
+                var action = new UnityAction(() =>
+                {
+                    gameUIController.Reset();
+                    drawerController.Init(preset);
+                    gameUIController.OpenGame();
+                    Switch(button);
+                });
+                button.Install(preset, action);
+                _buttons.Add(button);
             }
+        }
+
+        public void SwitchNext()
+        {
+            _current++;
+            if (_current == presets.Presets.Length)
+                _current = 0;
+            _buttons[_current].Click();
+        }
+        private void Switch(MenuButton active)
+        {
+            _current = _buttons.IndexOf(active);
         }
     }
 }

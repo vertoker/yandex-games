@@ -19,7 +19,8 @@ namespace Game.Pool
         public Sprite Sprite => _spriteCache;
         public int Width => _width;
         public int Height => _height;
-        
+        public Stack<PixelActionData> History => _history;
+
         public Color GetSourcePixel(int x, int y) => _textureSource.GetPixel(x, y);
         public Color GetResultPixel(int x, int y) => _spriteCache.texture.GetPixel(x, y);
 
@@ -57,11 +58,12 @@ namespace Game.Pool
 
         public void SetColor(int x, int y, Color color)
         {
-            //var color = _textureSource.GetPixel(x, y);
             _spriteCache.texture.SetPixel(x, y, color);
             _spriteCache.texture.Apply();
-            
-            _history.Push(new PixelActionData
+        }
+        public void PushToHistory(int x, int y, Color color)
+        {
+            History.Push(new PixelActionData
             {
                 X = x, Y = y,
                 ColorIndex = _colors.IndexOf(color)

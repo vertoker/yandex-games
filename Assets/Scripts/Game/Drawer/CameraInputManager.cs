@@ -8,8 +8,6 @@ namespace Game.Drawer
 {
     public class CameraInputManager : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
-        [SerializeField] private float farSensitivity;
-        [SerializeField] private float closeSensitivity;
         [SerializeField] private DrawerController drawer;
         [SerializeField] private CameraViewer camViewer;
         [SerializeField] private Transform camTarget;
@@ -42,7 +40,7 @@ namespace Game.Drawer
             }
             
             drawer.GetPixelByPos(_startPressPos, out var x, out var y);
-            _isDraw = drawer.IsDraw(x, y);
+            _isDraw = drawer.CanDrawInit(x, y);
             if (_isDraw) drawer.DrawPixel(x, y);
         }
         public void OnDrag(PointerEventData eventData)
@@ -53,7 +51,7 @@ namespace Game.Drawer
             {
                 var currentPos = (Vector2)camTarget.position + offsetPress;
                 drawer.GetPixelByPos(currentPos, out var x, out var y);
-                if (drawer.IsDraw(x, y)) drawer.DrawPixel(x, y);
+                if (drawer.CanDraw(x, y)) drawer.DrawPixel(x, y);
             }
             else
             {

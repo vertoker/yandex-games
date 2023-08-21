@@ -25,5 +25,9 @@ namespace Game.Menu
         {
             _controller.Open("Game");
         }
+        public void Reset()
+        {
+            _controller.CloseAll();
+        }
     }
 }

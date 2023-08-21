@@ -1,7 +1,9 @@
-﻿namespace Data.Localization
+﻿using UnityEngine;
+
+namespace Data.Localization
 {
-    public class BaseLocalize
+    public abstract class BaseLocalize : ScriptableObject
     {
-        
+        public abstract string GetString();
     }
 }
