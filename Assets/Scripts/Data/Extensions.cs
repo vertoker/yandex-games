@@ -4,6 +4,9 @@ namespace Data
 {
     public static class Extensions
     {
+        public const float TimePixelAnim = 0.4f;
+        
+        public static Vector3 SelectScale => new Vector3(1.6f, 1.6f, 1.6f);
         public static Vector3 NormalScale => new Vector3(1, 1, 1);
         public static Vector3 UnSelectScale => new Vector3(0.9f, 0.9f, 0.9f);
         

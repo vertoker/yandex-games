@@ -45,12 +45,16 @@ namespace Game.Menu
             }
         }
 
+        public void Restart()
+        {
+            _buttons[_current].Click();
+        }
         public void SwitchNext()
         {
             _current++;
             if (_current == presets.Presets.Length)
                 _current = 0;
-            _buttons[_current].Click();
+            Restart();
         }
         private void Switch(MenuButton active)
         {

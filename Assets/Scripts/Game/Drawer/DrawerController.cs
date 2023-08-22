@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Core.Audio;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -76,6 +78,7 @@ namespace Game.Drawer
             
             var texture = preset.ImageSource.texture;
             _pixels = new PixelData[texture.width, texture.height];
+            PixelData.SortingCounter = 1;
             
             for (var x = 0; x < texture.width; x++)
                 for (var y = 0; y < texture.height; y++) 
@@ -103,6 +106,8 @@ namespace Game.Drawer
             _imageCache.Dispose();
             _pixelPool.EnqueueAll();
             _textPool.EnqueueAll();
+
+            GC.Collect();
         }
 
         private void Analyze(Texture2D texture, int x, int y)
@@ -193,9 +198,10 @@ namespace Game.Drawer
             if (draw == source)
             {
                 _pixelsCounter++;
-                pixelData.SetColor(draw);
+                pixelData.SetColor(draw, this);
                 _imageCache.PushToHistory(x, y, draw);
                 progressView.SetPercent(_pixelsCounter / (float)_pixelsCount);
+                AudioController.Play("pixel");
                 button.Add();
                 
                 if (!button.IsFinished) return;
@@ -211,6 +217,7 @@ namespace Game.Drawer
                 reCenterView.CancelAnim();
                 StartCoroutine(reCenterView.ScrollAnim(bar.value, 1));
                 var time = reCenterView.TimeScale * (1 - bar.value);
+                AudioController.Play("success");
                 Invoke(nameof(RepeatHistory), time);//cringe
             }
             else
@@ -241,6 +248,7 @@ namespace Game.Drawer
             if (_history != null)
                 StopCoroutine(_history);
 
+            PixelData.SortingCounter = 1;
             var width = _pixels.GetLength(0);
             var height = _pixels.GetLength(1);
             for (var x = 0; x < width; x++)
@@ -253,7 +261,7 @@ namespace Game.Drawer
         {
             foreach (var data in _imageCache.History.Reverse())
             {
-                _pixels[data.X, data.Y].SetColor(_colorsList[data.ColorIndex]);
+                _pixels[data.X, data.Y].SetColor(_colorsList[data.ColorIndex], this);
                 yield return null;
             }
         }

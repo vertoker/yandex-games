@@ -10,8 +10,11 @@ namespace Core.Audio
 {
     public class AudioController : MonoBehaviour
     {
+        [SerializeField] protected int startAudioSourceSize = 10;
         [SerializeField] protected AudioWebClip[] assets;
         private static AudioController _instance;
+
+        private Stack<AudioSource> _sourcePool;
 
         public Action AudioLoaded;
 
@@ -20,10 +23,14 @@ namespace Core.Audio
             if (_instance != null)
                 return;
             _instance = this;
+
+            _sourcePool = new Stack<AudioSource>(startAudioSourceSize);
+            for (var i = 0; i < startAudioSourceSize; i++)
+                _sourcePool.Push(gameObject.AddComponent<AudioSource>());
             
             // Create All
             foreach (var clip in assets)
-                clip.SetSource(gameObject.AddComponent<AudioSource>());
+                clip.SetSource(_sourcePool);
             
             // Load All
             foreach (var clip in assets)
@@ -56,7 +63,7 @@ namespace Core.Audio
 
         public static void Play(string name)
         {
-            _instance.assets.FirstOrDefault(c => c.SoundName == name)?.Play();
+            _instance.assets.FirstOrDefault(c => c.SoundName == name)?.Play(_instance);
         }
     }
 }

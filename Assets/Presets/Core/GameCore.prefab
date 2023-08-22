@@ -139,9 +139,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   assets:
-  - soundName: Fail
+  - soundName: pixel
     soundExtension: 20
-  - soundName: Success
+  - soundName: success
     soundExtension: 20
 --- !u!81 &1653629431666562503
 AudioListener:
