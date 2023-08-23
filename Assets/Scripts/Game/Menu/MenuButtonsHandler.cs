@@ -4,6 +4,7 @@ using Data;
 using Game.Drawer;
 using UnityEngine;
 using UnityEngine.Events;
+using YG;
 
 namespace Game.Menu
 {
@@ -26,21 +27,25 @@ namespace Game.Menu
 
         private void Awake()
         {
+            var length = presets.Presets.Length;
             var blockCount = Mathf.Floor(presets.Presets.Length / (float)verticalCount);
             parent.sizeDelta = new Vector2(startWidth + blockCount * blockWidth, parent.sizeDelta.y);
-            _buttons = new List<MenuButton>(presets.Presets.Length);
-            
-            foreach (var preset in presets.Presets)
+            _buttons = new List<MenuButton>(length);
+
+            for (var i = 0; i < length; i++)
             {
                 var button = Instantiate(buttonTemplate, parent);
+                var levelData = YandexGame.savesData.levels[i];
+                var preset = presets.Presets[i];
                 var action = new UnityAction(() =>
                 {
+                    var index = i;
                     gameUIController.Reset();
-                    drawerController.Init(preset);
+                    drawerController.Init(preset, levelData);
                     gameUIController.OpenGame();
                     Switch(button);
                 });
-                button.Install(preset, action);
+                button.Install(preset, levelData, action);
                 _buttons.Add(button);
             }
         }
@@ -52,7 +57,7 @@ namespace Game.Menu
         public void SwitchNext()
         {
             _current++;
-            if (_current == presets.Presets.Length)
+            if (_current == _buttons.Count)
                 _current = 0;
             Restart();
         }

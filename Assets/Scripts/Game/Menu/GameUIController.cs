@@ -1,5 +1,7 @@
-﻿using Core.UI;
+﻿using System;
+using Core.UI;
 using UnityEngine;
+using YG;
 
 namespace Game.Menu
 {
@@ -9,14 +11,30 @@ namespace Game.Menu
         [SerializeField] private GameObject initWindow;
         private CanvasController _controller;
 
+        private void OnDisable()
+        {
+            YandexGame.GetDataEvent -= Open;
+        }
+
         private void Start()
         {
             _controller = GetComponent<CanvasController>();
-            _controller.CloseAll();
+            if (YandexGame.initializedLB)
+            {
+                Open();
+            }
+            else
+            {
+                YandexGame.GetDataEvent += Open;
+            }
+        }
+
+        private void Open()
+        {
             if (initWindow != null)
                 _controller.Open(initWindow.name);
         }
-        
+
         public void OpenMenu()
         {
             _controller.Open("Menu");

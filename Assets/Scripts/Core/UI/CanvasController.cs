@@ -17,6 +17,7 @@ namespace Core.UI
             {
                 var window = transform.GetChild(i).gameObject;
                 _windows.Add(ToName(window), window);
+                window.SetActive(false);
             }
         }
         

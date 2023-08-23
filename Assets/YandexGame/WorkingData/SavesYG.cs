@@ -1,4 +1,7 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Linq;
+using Data;
+
 namespace YG
 {
     [System.Serializable]
@@ -10,30 +13,20 @@ namespace YG
         public string language = "ru";
         public bool promptDone;
 
-        // Тестовые сохранения для демо сцены
-        // Можно удалить этот код, но тогда удалите и демо (папка Example)
-        public int money = 1;                       // Можно задать полям значения по умолчанию
-        public string newPlayerName = "Hello!";
-        public bool[] openLevels = new bool[3];
+        public List<ImageSerialization> tempSaves = new();
+        public LevelData[] levels = new LevelData[50];
 
-        // Ваши сохранения
-
-        // ...
-
-        // Поля (сохранения) можно удалять и создавать новые. При обновлении игры сохранения ломаться не должны
-        // Пока выявленное ограничение - это расширение массива
-
-
-        // Вы можете выполнить какие то действия при загрузке сохранений
-        public SavesYG()
+        public ImageSerialization Add(string key)
         {
-            // Допустим, задать значения по умолчанию для отдельных элементов массива
-
-            openLevels[1] = true;
-
-            // Длина массива в проекте должна быть задана один раз!
-            // Если после публикации игры изменить длину массива, то после обновления игры у пользователей сохранения могут поломаться
-            // Если всё же необходимо увеличить длину массива, сдвиньте данное поле массива в самую нижнюю строку кода
+            var im = tempSaves.FirstOrDefault(i => i.Key == key);
+            if (im != null) return im;
+            im = new ImageSerialization { Key = key };
+            tempSaves.Add(im);
+            return im;
+        }
+        public void Remove(string key)
+        {
+            tempSaves.Remove(tempSaves.FirstOrDefault(s => s.Key == key));
         }
     }
 }

@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229dca43b744cd14db316aee0fdb8f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startAudioSourceSize: 10
   assets:
   - soundName: pixel
     soundExtension: 20

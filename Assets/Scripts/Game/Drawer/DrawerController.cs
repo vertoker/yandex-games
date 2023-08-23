@@ -10,6 +10,7 @@ using Data;
 using Game.Menu;
 using Game.Pool;
 using UnityEngine.Serialization;
+using YG;
 
 namespace Game.Drawer
 {
@@ -49,12 +50,16 @@ namespace Game.Drawer
         private ImageDrawerCache _imageCache;
         private Pool<TextMeshPro> _textPool;
         private Pool<SpriteRenderer> _pixelPool;
+        private ImageSerialization _serialization;
+        private LevelData _levelData;
+        private ImagePreset _preset;
         
         // data
         private PixelData[,] _pixels;
         private readonly Dictionary<Color, List<PixelData>> _colors = new(10);
         private readonly List<Color> _colorsList = new(10);
         private Coroutine _history;
+        private Coroutine _saver;
 
         public float MinBarToFade => minBarToFade;
         
@@ -67,11 +72,14 @@ namespace Game.Drawer
             _imageCache = new ImageDrawerCache();
         }
 
-        public void Init(ImagePreset preset)
+        public void Init(ImagePreset preset, LevelData levelData)
         {
+            _preset = preset;
+            _levelData = levelData;
             finishGroup.SetActive(false);
             gameGroup.SetActive(true);
-            
+
+            _serialization = YandexGame.savesData.Add(preset.ImageTitle);
             _pixelsCount = _pixelsCounter = _errorsCount = 0;
             progressView.SetPercent(0);
             errorView.SetCount(0);
@@ -97,6 +105,9 @@ namespace Game.Drawer
         }
         public void Dispose()
         {
+            _serialization = null;
+            _preset = null;
+            
             _colors.Clear();
             _colorsList.Clear();
 
@@ -204,6 +215,10 @@ namespace Game.Drawer
                 AudioController.Play("pixel");
                 button.Add();
                 
+                if (_saver != null)
+                    StopCoroutine(_saver);
+                _saver = StartCoroutine(Save());
+                
                 if (!button.IsFinished) return;
                 
                 button.Finish();
@@ -218,6 +233,7 @@ namespace Game.Drawer
                 StartCoroutine(reCenterView.ScrollAnim(bar.value, 1));
                 var time = reCenterView.TimeScale * (1 - bar.value);
                 AudioController.Play("success");
+                YandexGame.savesData.Remove(_preset.ImageTitle);
                 Invoke(nameof(RepeatHistory), time);//cringe
             }
             else
@@ -264,6 +280,13 @@ namespace Game.Drawer
                 _pixels[data.X, data.Y].SetColor(_colorsList[data.ColorIndex], this);
                 yield return null;
             }
+        }
+        private IEnumerator Save()
+        {
+            yield return new WaitForSeconds(3);
+            _serialization.WriteData(_preset.ImageSource.texture, _imageCache.Sprite.texture);
+            YandexGame.SaveProgress();
+            Debug.Log(YandexGame.savesData.tempSaves.Count);
         }
 
         private static bool InBounds(int value, int min, int max) => min <= value && value < max;
