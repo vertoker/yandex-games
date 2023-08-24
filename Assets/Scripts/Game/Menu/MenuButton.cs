@@ -15,12 +15,25 @@ namespace Game.Menu
         [SerializeField] private TMP_Text score;
         [SerializeField] private RawImage image;
         [SerializeField] private Button button;
+
+        private ImagePreset _preset;
+        private LevelData _data;
+        
+        public Texture2D Result { get; private set; }
         
         public void Install(ImagePreset preset, LevelData data, UnityAction action)
         {
-            var source = preset.ImageSource.texture;
-            var save = YandexGame.savesData.tempSaves
-                .FirstOrDefault(s => s.Key == preset.ImageTitle);
+            _preset = preset;
+            _data = data;
+            UpdateData();
+            
+            button.onClick.AddListener(action);
+        }
+
+        public void UpdateData()
+        {
+            var source = _preset.ImageSource.texture;
+            var save = YandexGame.savesData.Get(_preset.ImageTitle);
             var aspect = source.width / (float)source.height;
             var size = image.rectTransform.sizeDelta.y;
             image.rectTransform.sizeDelta = aspect < 1 
@@ -29,24 +42,24 @@ namespace Game.Menu
             
             if (save != null)
             {
-                var result = new Texture2D(source.width, source.height)
+                Result = new Texture2D(source.width, source.height)
                 {
                     wrapMode = TextureWrapMode.Clamp,
                     filterMode = FilterMode.Point
                 };
-                save.ReadData(source, result);
+                save.ReadData(source, Result);
                 
-                image.texture = result;
-                score.text = $"{data.points - data.errors} / {data.points}";
+                image.texture = Result;
+                score.text = _data.GetNormalizedScore().ToString();
             }
-            else if (data.completed)
+            else if (_data.completed)
             {
                 image.texture = source;
-                score.text = $"{data.points - data.errors} / {data.points}";
+                score.text = _data.GetNormalizedScore().ToString();
             }
             else
             {
-                var result = new Texture2D(source.width, source.height)
+                Result = new Texture2D(source.width, source.height)
                 {
                     wrapMode = TextureWrapMode.Clamp,
                     filterMode = FilterMode.Point
@@ -55,13 +68,12 @@ namespace Game.Menu
                 var length = source.width * source.height;
                 for (var i = 0; i < length; i++)
                     pixels[i] = pixels[i].ToGrayNonEqual();
-                result.SetPixels(pixels);
-                result.Apply();
+                Result.SetPixels(pixels);
+                Result.Apply();
                 
-                image.texture = result;
+                image.texture = Result;
                 score.text = string.Empty;
             }
-            button.onClick.AddListener(action);
         }
 
         public void Click()

@@ -1,17 +1,26 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Data
 {
     [System.Serializable]
-    public struct LevelData
+    public class LevelData
     {
         public bool completed;
         public int points;
         public int errors;
 
-        public static int Sum(LevelData[] levels)
+        public static int Sum(IEnumerable<LevelData> levels)
         {
-            return levels.Sum(level => level.points - level.errors);
+            return (from level in levels 
+                where !level.completed 
+                select level.GetNormalizedScore())
+                .Sum();
+        }
+
+        public int GetNormalizedScore()
+        {
+            return points < errors ? 0 :  points - errors;
         }
     }
 }

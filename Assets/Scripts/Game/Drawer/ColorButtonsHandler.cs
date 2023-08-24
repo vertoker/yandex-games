@@ -14,6 +14,7 @@ namespace Game.Drawer
 
         public event Action<int, ColorButton> SelectedColor;
         public ColorButton Selected { get; private set; }
+        private int _selectedIndex;
 
         private Pool<ColorButton> _pool;
 
@@ -37,7 +38,15 @@ namespace Game.Drawer
         public void OnDisable()
         {
             _pool.EnqueueAll();
+            Deselect();
+        }
+
+        private void Deselect()
+        {
+            if (Selected != null)
+                Selected.Deselect();
             Selected = null;
+            _selectedIndex = -1;
         }
 
         public void SwitchToActive()
@@ -50,14 +59,17 @@ namespace Game.Drawer
                 Switch(i);
                 return;
             }
-            if (Selected != null)
-                Selected.Deselect();
+            Deselect();
         }
         public void Switch(int index)
         {
-            if (Selected != null)
-                Selected.Deselect();
+            if (index == _selectedIndex)
+                return;
+            Deselect();
+            
             Selected = _pool.Actives[index];
+            _selectedIndex = index;
+            
             Selected.Select();
             SelectedColor?.Invoke(index, Selected);
         }

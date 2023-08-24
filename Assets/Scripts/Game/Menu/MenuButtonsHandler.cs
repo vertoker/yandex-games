@@ -39,9 +39,12 @@ namespace Game.Menu
                 var preset = presets.Presets[i];
                 var action = new UnityAction(() =>
                 {
-                    var index = i;
                     gameUIController.Reset();
-                    drawerController.Init(preset, levelData);
+                    var save = YandexGame.savesData.Get(preset.ImageTitle);
+                    if (save != null)
+                        drawerController.Init(preset, levelData, button, save, button.Result);
+                    else
+                        drawerController.Init(preset, levelData, button);
                     gameUIController.OpenGame();
                     Switch(button);
                 });

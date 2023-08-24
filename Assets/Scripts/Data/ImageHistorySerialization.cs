@@ -1,56 +1,41 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Data
 {
     [System.Serializable]
-    public class ImageSerialization
+    public class ImageHistorySerialization
     {
-        public string Key;
-        public byte[] Data;
+        public string key;
+        public byte[] data;
 
         public void WriteData(Texture2D source, Texture2D result)
         {
-            var count = source.width * source.height / 8;
-            int byteCounter = 0, counter = 0;
-            Data = new byte[count];
+            var count = Mathf.FloorToInt(source.width * source.height / 8f) + 1;
+            data = new byte[count];
 
             var pixelsSource = source.GetPixels32();
             var pixelsResult = result.GetPixels32();
             var length = pixelsSource.Length;
+            var bits = new BitArray(length);
             
             for (var i = 0; i < length; i++)
             {
                 var correct = EqualsNoAlpha(pixelsSource[i], pixelsResult[i]);
-                if (correct) Data[counter] |= (byte)(1 << byteCounter);
-                
-                byteCounter++;
-                if (byteCounter < 8)
-                    continue;
-                byteCounter = 0;
-                counter++;
+                bits[i] = correct;
             }
+            
+            bits.CopyTo(data, 0);
         }
         public void ReadData(Texture2D source, Texture2D result)
         {
-            int byteCounter = 0, counter = 0;
-            
+            var bits = new BitArray(data);
             var pixelsSource = source.GetPixels();
             var pixelsResult = result.GetPixels();
             var length = pixelsSource.Length;
             
             for (var i = 0; i < length; i++)
-            {
-                if ((Data[counter] & (1 << i)) == 0)
-                    pixelsResult[i] = pixelsSource[i].ToGrayNonEqual();
-                else
-                    pixelsResult[i] = pixelsSource[i];
-                
-                byteCounter++;
-                if (byteCounter < 8)
-                    continue;
-                byteCounter = 0;
-                counter++;
-            }
+                pixelsResult[i] = bits[i] ? pixelsSource[i] : pixelsSource[i].ToGrayNonEqual();
             
             result.SetPixels(pixelsResult);
             result.Apply();

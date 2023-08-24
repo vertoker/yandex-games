@@ -13,20 +13,32 @@ namespace YG
         public string language = "ru";
         public bool promptDone;
 
-        public List<ImageSerialization> tempSaves = new();
-        public LevelData[] levels = new LevelData[50];
+        public List<ImageHistorySerialization> tempSaves;
+        public LevelData[] levels;
 
-        public ImageSerialization Add(string key)
+        public ImageHistorySerialization Add(string key)
         {
-            var im = tempSaves.FirstOrDefault(i => i.Key == key);
+            var im = Get(key);
             if (im != null) return im;
-            im = new ImageSerialization { Key = key };
+            im = new ImageHistorySerialization { key = key };
             tempSaves.Add(im);
             return im;
         }
+        public ImageHistorySerialization Get(string key)
+        {
+            return tempSaves.FirstOrDefault(i => i.key == key);
+        }
         public void Remove(string key)
         {
-            tempSaves.Remove(tempSaves.FirstOrDefault(s => s.Key == key));
+            tempSaves.Remove(Get(key));
+        }
+
+        public SavesYG()
+        {
+            tempSaves = new List<ImageHistorySerialization>();
+            levels = new LevelData[50];
+            for (var i = 0; i < 50; i++)
+                levels[i] = new LevelData();
         }
     }
 }
