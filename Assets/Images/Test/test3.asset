@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageTitle: "\u041B\u043E\u043A\u0430\u0446\u0438\u044F"
   imageSource: {fileID: 21300000, guid: 7ca8681e17dbde84eb51bb6187618741, type: 3}
+  successColor: {r: 1, g: 0.8078432, b: 0.47058827, a: 1}
+  pixelsCount: 4174

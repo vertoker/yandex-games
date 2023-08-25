@@ -35,7 +35,11 @@ namespace Game.Drawer
             }
             Switch(0);
         }
-        public void OnDisable()
+        private void OnDisable()
+        {
+            Dispose();
+        }
+        public void Dispose()
         {
             _pool.EnqueueAll();
             Deselect();

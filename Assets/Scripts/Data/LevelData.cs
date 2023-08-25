@@ -7,6 +7,7 @@ namespace Data
     public class LevelData
     {
         public bool completed;
+        public int maxPoints;
         public int points;
         public int errors;
 
@@ -18,6 +19,12 @@ namespace Data
                 .Sum();
         }
 
+        public void Save()
+        {
+            var newMaxPoints = GetNormalizedScore();
+            if (newMaxPoints > maxPoints)
+                maxPoints = newMaxPoints;
+        }
         public int GetNormalizedScore()
         {
             return points < errors ? 0 :  points - errors;

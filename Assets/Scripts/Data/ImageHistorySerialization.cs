@@ -33,7 +33,7 @@ namespace Data
             var pixelsSource = source.GetPixels();
             var pixelsResult = result.GetPixels();
             var length = pixelsSource.Length;
-            
+
             for (var i = 0; i < length; i++)
                 pixelsResult[i] = bits[i] ? pixelsSource[i] : pixelsSource[i].ToGrayNonEqual();
             

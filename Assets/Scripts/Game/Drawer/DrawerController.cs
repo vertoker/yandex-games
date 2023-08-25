@@ -9,7 +9,6 @@ using TMPro;
 using Data;
 using Game.Menu;
 using Game.Pool;
-using UnityEngine.Serialization;
 using YG;
 
 namespace Game.Drawer
@@ -53,7 +52,6 @@ namespace Game.Drawer
         private LevelData _levelData;
         private ImagePreset _preset;
         private MenuButton _button;
-        private ImageHistorySerialization _save;
         
         // cache
         private ImageDrawerCache _imageCache;
@@ -82,11 +80,10 @@ namespace Game.Drawer
 
         public void Init(ImagePreset preset, LevelData levelData, MenuButton button, ImageHistorySerialization save, Texture2D result)
         {
-            _save = save;
+            _serialization = save;
 
             Init(preset, levelData, button);
-
-            if (_save == null) return;
+            
             errorView.SetCount(levelData.errors);
             _start = StartCoroutine(LoadHistoryTimer(preset.ImageSource.texture, result));
 
@@ -139,6 +136,9 @@ namespace Game.Drawer
             resultRenderer.sprite = null;
             _isBlock = blocker.enabled = false;
             
+            _switch = 0;
+            
+            buttons.Dispose();
             _imageCache.Dispose();
             _pixelPool.EnqueueAll();
             _textPool.EnqueueAll();
@@ -288,7 +288,7 @@ namespace Game.Drawer
             Invoke(nameof(RepeatHistory), time);
             
             YandexGame.savesData.Remove(_preset.ImageTitle);
-            YandexGame.SaveProgress();
+            Save();
         }
 
         private void SwitchToColorGraySelect(int index, ColorButton button)
@@ -323,14 +323,17 @@ namespace Game.Drawer
         public void Restart()
         {
             if (_saver != null) StopCoroutine(_saver);
-            YandexGame.savesData.Remove(_save.key);
-
-            _levelData.completed = false;
+            if (_history != null) StopCoroutine(_history);
+            if (_pixelsCount == _levelData.points) return;
+            
+            if (_serialization != null)
+                YandexGame.savesData.Remove(_serialization.key);
+            
             _levelData.points = 0;
             _levelData.errors = 0;
             progressView.SetPercent(0);
             errorView.SetCount(0);
-            YandexGame.SaveProgress();
+            Save();
         }
 
         private IEnumerator ReloadHistoryTimer()
@@ -351,12 +354,13 @@ namespace Game.Drawer
             if (_saver != null)
                 StopCoroutine(_saver);
             if (_serialization == null) return;
+            if (_isBlock) return;
             
             _serialization.WriteData(_preset.ImageSource.texture, _imageCache.Sprite.texture);
             //Debug.Log(_levelData.errors);
             //Debug.Log(YandexGame.savesData.levels[0].errors);
             //Debug.Log(_levelData.Equals(YandexGame.savesData.levels[0]));
-            YandexGame.SaveProgress();
+            Save();
             //Debug.Log(YandexGame.savesData.tempSaves.Count);
         }
         
@@ -380,6 +384,12 @@ namespace Game.Drawer
                 }
             }
             _isBlock = blocker.enabled = false;
+        }
+
+        private void Save()
+        {
+            _levelData.Save();
+            YandexGame.SaveProgress();
         }
 
         private static bool InBounds(int value, int min, int max) => min <= value && value < max;

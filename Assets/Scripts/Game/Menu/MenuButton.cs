@@ -12,9 +12,11 @@ namespace Game.Menu
 {
     public class MenuButton : MonoBehaviour
     {
+        [SerializeField] private Image background;
         [SerializeField] private TMP_Text score;
         [SerializeField] private RawImage image;
         [SerializeField] private Button button;
+        [SerializeField] private Image success;
 
         private ImagePreset _preset;
         private LevelData _data;
@@ -50,12 +52,12 @@ namespace Game.Menu
                 save.ReadData(source, Result);
                 
                 image.texture = Result;
-                score.text = _data.GetNormalizedScore().ToString();
+                score.text = _data.maxPoints.ToString();
             }
             else if (_data.completed)
             {
                 image.texture = source;
-                score.text = _data.GetNormalizedScore().ToString();
+                score.text = _data.maxPoints.ToString();
             }
             else
             {
@@ -74,6 +76,11 @@ namespace Game.Menu
                 image.texture = Result;
                 score.text = string.Empty;
             }
+
+            if (_data.maxPoints > _preset.PixelsCount)
+                _data.maxPoints = _preset.PixelsCount;
+            success.enabled = _data.completed;
+            background.color = _data.maxPoints == _preset.PixelsCount ? _preset.SuccessColor : Color.white;
         }
 
         public void Click()
