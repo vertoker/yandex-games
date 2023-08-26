@@ -49,6 +49,7 @@ namespace Game.Drawer
         [SerializeField] private Transform textParent;
         
         // init
+        private Action _updateButtons;
         private LevelData _levelData;
         private ImagePreset _preset;
         private MenuButton _button;
@@ -69,6 +70,7 @@ namespace Game.Drawer
 
         public float MinBarToFade => minBarToFade;
         
+        private bool _active;
         private int _switch;
 
         private void Awake()
@@ -78,20 +80,22 @@ namespace Game.Drawer
             _imageCache = new ImageDrawerCache();
         }
 
-        public void Init(ImagePreset preset, LevelData levelData, MenuButton button, ImageHistorySerialization save, Texture2D result)
+        public void Init(ImagePreset preset, LevelData levelData, MenuButton button, Action updateButtons, 
+            ImageHistorySerialization save, Texture2D result)
         {
             _serialization = save;
 
-            Init(preset, levelData, button);
+            Init(preset, levelData, button, updateButtons);
             
             errorView.SetCount(levelData.errors);
             _start = StartCoroutine(LoadHistoryTimer(preset.ImageSource.texture, result));
 
         }
-        public void Init(ImagePreset preset, LevelData levelData, MenuButton button)
+        public void Init(ImagePreset preset, LevelData levelData, MenuButton button, Action updateButtons)
         {
-            _preset = preset;
+            _updateButtons = updateButtons;
             _levelData = levelData;
+            _preset = preset;
             _button = button;
             
             _isBlock = blocker.enabled = false;
@@ -121,9 +125,11 @@ namespace Game.Drawer
             
             var size = pixelPreset.GetSize(texture.width, texture.height);
             cameraViewer.Init(size, texture.width, texture.height);
+            _active = true;
         }
         public void Dispose()
         {
+            _active = false;
             _serialization = null;
             _preset = null;
             
@@ -143,7 +149,9 @@ namespace Game.Drawer
             _pixelPool.EnqueueAll();
             _textPool.EnqueueAll();
             
-            _button.UpdateData();
+            _button.UpdateButtonConfigure();
+            _updateButtons.Invoke();
+            _updateButtons = null;
             _button = null;
             
             GC.Collect();
@@ -288,6 +296,7 @@ namespace Game.Drawer
             Invoke(nameof(RepeatHistory), time);
             
             YandexGame.savesData.Remove(_preset.ImageTitle);
+            YandexGame.ReviewShow(false);
             Save();
         }
 
@@ -388,8 +397,21 @@ namespace Game.Drawer
 
         private void Save()
         {
+            if (!_active) return;
             _levelData.Save();
+            YandexGame.savesData.Save();
             YandexGame.SaveProgress();
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus)
+                Save();
+        }
+
+        private void OnApplicationQuit()
+        {
+            Save();
         }
 
         private static bool InBounds(int value, int min, int max) => min <= value && value < max;

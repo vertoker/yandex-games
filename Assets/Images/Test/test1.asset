@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f36e9eeff8064085a2f3024aba39c22a, type: 3}
   m_Name: test1
   m_EditorClassIdentifier: 
+  imageSource: {fileID: 21300000, guid: da6fb47f85efb6743972bb46663d36f2, type: 3}
+  levelActiveThreshold: 0
   imageTitle: "\u0421\u043E\u0431\u0430\u0447\u043A\u0430"
-  imageSource: {fileID: 21300000, guid: 56f86f3c796f11d49b3df73b657486b0, type: 3}
-  successColor: {r: 0.9647059, g: 0.7137255, b: 0.17254902, a: 1}
-  pixelsCount: 80
+  successColor: {r: 0.96470594, g: 0.7137255, b: 0.17254902, a: 1}
+  pixelsCount: 318
+  percentComplete: 0.8

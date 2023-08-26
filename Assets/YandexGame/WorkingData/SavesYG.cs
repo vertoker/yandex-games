@@ -14,6 +14,7 @@ namespace YG
         public string language = "ru";
         public bool promptDone;
 
+        public int overallPoints;
         public List<ImageHistorySerialization> tempSaves;
         public LevelData[] levels;
 
@@ -34,8 +35,18 @@ namespace YG
             tempSaves.Remove(Get(key));
         }
 
+        public void Save()
+        {
+            var sum = LevelData.Sum(levels);
+            if (sum <= overallPoints) return;
+            overallPoints = sum;
+
+            YandexGame.NewLeaderboardScores("best", overallPoints);
+        }
+
         public SavesYG()
         {
+            overallPoints = 0;
             tempSaves = new List<ImageHistorySerialization>();
             levels = new LevelData[50];
             for (var i = 0; i < 50; i++)

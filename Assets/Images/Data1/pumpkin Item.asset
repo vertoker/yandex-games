@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36e9eeff8064085a2f3024aba39c22a, type: 3}
+  m_Name: pumpkin Item
+  m_EditorClassIdentifier: 
+  imageSource: {fileID: 21300000, guid: 24e9c01dc32a9404cb3c507ab05ef319, type: 3}
+  levelActiveThreshold: 0
+  imageTitle: pumpkin
+  successColor: {r: 1, g: 0.53333336, b: 0, a: 1}
+  pixelsCount: 507
+  percentComplete: 0.8

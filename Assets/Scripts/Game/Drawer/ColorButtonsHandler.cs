@@ -11,6 +11,8 @@ namespace Game.Drawer
         [SerializeField] private int poolInit = 30;
         [SerializeField] private ColorButton preset;
         [SerializeField] private Transform parent;
+        [SerializeField] private Scrollbar bar;
+        private RectTransform _content;
 
         public event Action<int, ColorButton> SelectedColor;
         public ColorButton Selected { get; private set; }
@@ -20,6 +22,7 @@ namespace Game.Drawer
 
         private void Awake()
         {
+            _content = parent.GetComponent<RectTransform>();
             _pool = new Pool<ColorButton>(preset, parent, poolInit);
         }
 
@@ -29,10 +32,12 @@ namespace Game.Drawer
             foreach (var pair in colors)
             {
                 var data = _pool.Dequeue();
-                var index = counter;
-                counter++;
+                var index = counter; counter++;
+                data.transform.SetSiblingIndex(index);
                 data.Init(pair.Key, pair.Value.Count, counter, () => Switch(index));
             }
+            _content.sizeDelta = new Vector2(170f * colors.Count, _content.sizeDelta.y);
+            bar.value = 0;
             Switch(0);
         }
         private void OnDisable()
@@ -60,6 +65,7 @@ namespace Game.Drawer
             {
                 if (buttons[i].IsFinished)
                     continue;
+                bar.value = i / (float)buttons.Count;
                 Switch(i);
                 return;
             }

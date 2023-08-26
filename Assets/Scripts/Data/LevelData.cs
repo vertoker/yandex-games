@@ -13,10 +13,7 @@ namespace Data
 
         public static int Sum(IEnumerable<LevelData> levels)
         {
-            return (from level in levels 
-                where !level.completed 
-                select level.GetNormalizedScore())
-                .Sum();
+            return (from level in levels select level.maxPoints).Sum();
         }
 
         public void Save()

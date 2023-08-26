@@ -12,6 +12,11 @@ namespace Data
         
         public static Color LightGray => new Color(0.8f, 0.8f, 0.8f, 1f);
         
+        public static float GetPower(this Color color)
+        {
+            return (color.r + color.g + color.b) / 3f;
+        }
+        
         public static Color ToHighlighted(this Color color)
         {
             var power = color.r + color.g + color.b;

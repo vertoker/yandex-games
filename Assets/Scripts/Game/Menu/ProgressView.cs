@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
@@ -23,20 +24,34 @@ namespace Game.Menu
             progressView.fillAmount = 0;
         }
 
-        public void SetProgress(float progress)
+        public void SetProgress(float progress, int accuracy = 2)
         {
             progressView.fillAmount = progress;
-            textView.text = progress.ToString("0.00");
+            textView.text = progress.ToString(GetFormalFloat(accuracy));
         }
-        public void SetPercent(float progress)
+        public void SetPercent(float progress, int accuracy = 0)
         {
             progressView.fillAmount = progress;
-            textView.text = $"{(int)(progress * 100f)}%";
+            textView.text = $"{(progress * 100f).ToString(GetFormalFloat(accuracy))}%";
         }
         public void SetCount(int count)
         {
             progressView.fillAmount = 0;
             textView.text = count.ToString();
+        }
+
+        private static string GetFormalFloat(int accuracy)
+        {
+            if (accuracy == 0) return "0";
+            var builder = new StringBuilder(2 + accuracy);
+            builder.Append('0');
+            builder.Append('.');
+            while (accuracy > 0)
+            {
+                builder.Append('0');
+                accuracy--;
+            }
+            return builder.ToString();
         }
     }
 }

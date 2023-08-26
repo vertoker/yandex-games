@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Language;
+﻿using Core.Language;
 using Data.Localization;
 using TMPro;
 using UnityEngine;
