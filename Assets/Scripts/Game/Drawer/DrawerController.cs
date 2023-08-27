@@ -355,7 +355,7 @@ namespace Game.Drawer
         }
         private IEnumerator SaveHistoryTimer()
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(0.5f);
             SaveHistory();
         }
         public void SaveHistory()
@@ -407,11 +407,6 @@ namespace Game.Drawer
         {
             if (!hasFocus)
                 Save();
-        }
-
-        private void OnApplicationQuit()
-        {
-            Save();
         }
 
         private static bool InBounds(int value, int min, int max) => min <= value && value < max;

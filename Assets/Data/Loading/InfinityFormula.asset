@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071182ebb29246b0a9659ad57853aae9, type: 3}
   m_Name: InfinityFormula
   m_EditorClassIdentifier: 
-  pointsCount: 20
+  pointsCount: 25
   timeScale: 5
-  scale: {x: 60, y: 60}
+  scale: {x: 90, y: 90}

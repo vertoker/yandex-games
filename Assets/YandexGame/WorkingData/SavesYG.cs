@@ -15,6 +15,7 @@ namespace YG
         public bool promptDone;
         
         public bool unlockEverything;
+        public bool addDisabled;
         
         public int overallPoints;
         public List<ImageHistorySerialization> tempSaves;

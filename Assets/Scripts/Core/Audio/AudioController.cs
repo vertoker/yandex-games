@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,10 +16,11 @@ namespace Core.Audio
         private static AudioController _instance;
 
         private Stack<AudioSource> _sourcePool;
-
+        
         public Action AudioLoaded;
+        private int _counter;
 
-        private async void Awake()
+        private void Awake()
         {
             if (_instance != null)
                 return;
@@ -33,9 +35,24 @@ namespace Core.Audio
                 clip.SetSource(_sourcePool);
             
             // Load All
+            _counter = 0;
+            var length = assets.Length;
             foreach (var clip in assets)
-                await GetFile(clip, clip.SetClip);
-            
+                StartCoroutine(GetFile(clip, length));
+        }
+        
+        private IEnumerator GetFile(AudioWebClip clip, int length)
+        {
+            var request = UnityWebRequestMultimedia.GetAudioClip(clip.FilePath, clip.Extension);
+            //Debug.Log(clip.FilePath);
+            request.SendWebRequest();
+            while (!request.isDone)
+                yield return new WaitForSeconds(0.2f);
+            var cash = DownloadHandlerAudioClip.GetContent(request);
+            clip.SetClip(cash);
+
+            _counter++;
+            if (_counter != length) yield break;
             Debug.Log("Audio loaded");
             AudioLoaded?.Invoke();
         }
@@ -48,22 +65,10 @@ namespace Core.Audio
                 assets[i] = new AudioWebClip(clipNames[i]);
         }
 
-        private static async Task GetFile(AudioWebClip clip, Action<AudioClip> action)
-        {
-            var request = UnityWebRequestMultimedia.GetAudioClip(clip.FilePath, clip.Extension);
-            //Debug.Log(clip.FilePath);
-            request.SendWebRequest();
-            while (!request.isDone)
-                await Task.Yield();
-            //Debug.Log("Done 1");
-            var cash = DownloadHandlerAudioClip.GetContent(request);
-            //Debug.Log("Done 2");
-            action?.Invoke(cash);
-        }
-
         public static void Play(string name)
         {
-            _instance.assets.FirstOrDefault(c => c.SoundName == name)?.Play(_instance);
+            //if (false)//Application.isFocused)
+                _instance.assets.FirstOrDefault(c => c.SoundName == name)?.Play(_instance);
         }
     }
 }

@@ -8,9 +8,11 @@ namespace Game.Menu
     {
         [SerializeField] private MenuButtonsHandler handler;
         
-        public void Buy()
+        public void Buy(string id)
         {
-            YandexGame.BuyPayments("1");
+            if (id == "1" && YandexGame.savesData.unlockEverything) return;
+            if (id == "2" && YandexGame.savesData.addDisabled) return;
+            YandexGame.BuyPayments(id);
         }
         
         private void OnEnable()
@@ -24,8 +26,8 @@ namespace Game.Menu
 
         private void SuccessPurchased(string id)
         {
-            if (id == "1")
-                YandexGame.savesData.unlockEverything = true;
+            if (id == "1") YandexGame.savesData.unlockEverything = true;
+            if (id == "2") YandexGame.savesData.addDisabled = true;
             handler.UpdateButtonsByStatus();
             YandexGame.SaveProgress();
         }

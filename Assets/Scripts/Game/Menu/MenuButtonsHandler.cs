@@ -13,6 +13,7 @@ namespace Game.Menu
     {
         [Header("Progress")]
         [SerializeField] protected ProgressView view;
+        [SerializeField] protected GameObject settings;
         [Header("Controller")]
         [SerializeField] protected int verticalCount;
         [SerializeField] protected float startWidth;
@@ -70,6 +71,7 @@ namespace Game.Menu
 
         private void Update()
         {
+            if (settings.activeSelf) return;
             var scroll = Input.GetAxis("Mouse ScrollWheel");
             if (scroll != 0)
             {

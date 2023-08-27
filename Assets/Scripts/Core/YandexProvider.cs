@@ -7,6 +7,7 @@ namespace Core
     {
         public void FullscreenShow()
         {
+            if (YandexGame.savesData.addDisabled) return;
             YandexGame.FullscreenShow();
         }
 

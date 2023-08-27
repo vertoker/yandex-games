@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using Core.Audio;
 using UnityEngine;
@@ -21,13 +22,13 @@ namespace Utility.Loading
             remove => _gameLoaded -= value;
         } 
 
-        private int _waitTasks = 3;
+        private int _waitTasks = Application.isEditor ? 3 : 3;
         
         private void OnEnable()
         {
             YandexGame.GetDataEvent += LoadedData;
             audioController.AudioLoaded += LoadedData;
-            WaitDelay();
+            StartCoroutine(WaitDelay());
         }
         private void OnDisable()
         {
@@ -35,9 +36,9 @@ namespace Utility.Loading
             audioController.AudioLoaded -= LoadedData;
         }
 
-        private async void WaitDelay()
+        private IEnumerator WaitDelay()
         {
-            await Task.Delay((int)(startDelay * 1000));
+            yield return new WaitForSeconds(startDelay);
             LoadedData();
         }
 

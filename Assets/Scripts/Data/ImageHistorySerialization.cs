@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace Data
@@ -12,7 +13,7 @@ namespace Data
         public void WriteData(Texture2D source, Texture2D result)
         {
             var count = Mathf.FloorToInt(source.width * source.height / 8f) + 1;
-            data = new byte[count];
+            var nextData = new byte[count];
 
             var pixelsSource = source.GetPixels32();
             var pixelsResult = result.GetPixels32();
@@ -25,14 +26,18 @@ namespace Data
                 bits[i] = correct;
             }
             
-            bits.CopyTo(data, 0);
+            bits.CopyTo(nextData, 0);
+            data = nextData;
         }
         public void ReadData(Texture2D source, Texture2D result)
         {
-            var bits = new BitArray(data);
             var pixelsSource = source.GetPixels();
             var pixelsResult = result.GetPixels();
             var length = pixelsSource.Length;
+
+            if (data.Length == 0)
+                data = Enumerable.Repeat<byte>(0, Mathf.FloorToInt(length / 8f) + 1).ToArray();
+            var bits = new BitArray(data);
 
             for (var i = 0; i < length; i++)
                 pixelsResult[i] = bits[i] ? pixelsSource[i] : pixelsSource[i].ToGrayNonEqual();
