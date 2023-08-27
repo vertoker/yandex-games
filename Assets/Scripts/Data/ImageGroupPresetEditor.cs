@@ -16,7 +16,7 @@ namespace Data
 
             if (GUILayout.Button("Order By pixels count"))
             {
-                group.Presets = group.Presets.OrderByDescending(p => p.PixelsCount).ToArray();
+                group.Presets = group.Presets.OrderBy(p => p.PixelsCount).ToArray();
             }
 
             if (GUILayout.Button("Setup Blockers"))
@@ -25,9 +25,16 @@ namespace Data
                 var sum = 0;
                 for (var i = 0; i < length; i++)
                 {
-                    var currentSum = group.Presets[i].PixelCountWithPercent;
-                    group.Presets[i].LevelActiveThreshold = i < group.FreeLevels ? 0 : sum;
-                    sum += currentSum;
+                    if (i < group.FreeLevels)
+                    {
+                        group.Presets[i].LevelActiveThreshold = 0;
+                    }
+                    else
+                    {
+                        sum += group.Presets[i].PixelCountWithPercent;
+                        var threshold = Mathf.FloorToInt(sum / 100f) * 100;
+                        group.Presets[i].LevelActiveThreshold = threshold;
+                    }
                 }
             }
         }

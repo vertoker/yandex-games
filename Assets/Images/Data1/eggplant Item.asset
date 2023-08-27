@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: eggplant Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 0580451951ea5d549b870314b49d87d5, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 700
   imageTitle: eggplant
   successColor: {r: 0.6313726, g: 0.3372549, b: 0.7411765, a: 1}
   pixelsCount: 350

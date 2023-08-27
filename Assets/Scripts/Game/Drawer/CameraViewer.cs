@@ -26,7 +26,7 @@ namespace Game.Drawer
             _size = size;
             _isInit = true;
             _farDistance = farDistanceStart + farDistanceDeltaByPixel 
-                * Mathf.Max(width, height);
+                * Mathf.Max(width, height) / CameraController.SelfCamera.aspect;
             ValueChanged(bar.value);
         }
 

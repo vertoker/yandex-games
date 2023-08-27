@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: cucumber Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: b44b5b64ca3d8f94a82251e93930d82c, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 3400
   imageTitle: cucumber
   successColor: {r: 0.60784316, g: 0.92549026, b: 0.22352943, a: 1}
   pixelsCount: 283

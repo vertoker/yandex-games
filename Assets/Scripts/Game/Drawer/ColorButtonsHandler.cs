@@ -63,10 +63,11 @@ namespace Game.Drawer
             var buttons = _pool.Actives;
             for (var i = 0; i < buttons.Count; i++)
             {
-                if (buttons[i].IsFinished)
+                var index = (int)Mathf.Repeat(i + _selectedIndex, buttons.Count);
+                if (buttons[index].IsFinished)
                     continue;
-                bar.value = i / (float)buttons.Count;
-                Switch(i);
+                bar.value = index / (float)buttons.Count;
+                Switch(index);
                 return;
             }
             Deselect();

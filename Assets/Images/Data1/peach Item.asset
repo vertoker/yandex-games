@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: peach Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 746484beb222a6a4a9d20621415a321c, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 5200
   imageTitle: peach
   successColor: {r: 1, g: 0.41960788, b: 0.2784314, a: 1}
   pixelsCount: 446

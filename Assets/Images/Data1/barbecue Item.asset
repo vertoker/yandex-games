@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: barbecue Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 953b94e620663ce488120f0980686d19, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 1300
   imageTitle: barbecue
   successColor: {r: 0.87843144, g: 0.75294125, b: 0.54901963, a: 1}
   pixelsCount: 369

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: tomato Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 43c8f280b6c3fb240aca60cb6d4114c4, type: 3}
-  levelActiveThreshold: 1500
+  levelActiveThreshold: 6200
   imageTitle: tomato
   successColor: {r: 1, g: 0.38431376, b: 0.16470589, a: 1}
   pixelsCount: 455

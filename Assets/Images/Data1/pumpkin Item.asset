@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: pumpkin Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 24e9c01dc32a9404cb3c507ab05ef319, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 7800
   imageTitle: pumpkin
   successColor: {r: 1, g: 0.53333336, b: 0, a: 1}
   pixelsCount: 507

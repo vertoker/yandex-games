@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bread2 Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 805f9b2941abe7844b37799ba69f1f17, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 8200
   imageTitle: bread2
   successColor: {r: 0.7960785, g: 0.59607846, b: 0.2392157, a: 1}
   pixelsCount: 508

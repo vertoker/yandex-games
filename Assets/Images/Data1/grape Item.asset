@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: grape Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: f5ba360b9caa7f64da94c68eae83e15a, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 2900
   imageTitle: grape
   successColor: {r: 0.73333335, g: 0.3019608, b: 0.854902, a: 1}
   pixelsCount: 399

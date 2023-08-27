@@ -25,6 +25,7 @@ namespace Game.Menu
         [SerializeField] private RawImage image;
         [SerializeField] private Button button;
         [SerializeField] private Image success;
+        [SerializeField] private GameObject watchAd;
 
         private ButtonStatus _status;
         private ImagePreset _preset;
@@ -44,6 +45,7 @@ namespace Game.Menu
         public void UpdateButtonByStatus()
         {
             if (_status != ButtonStatus.Locked) return;
+            if (ConditionLock) return;
             var source = _preset.ImageSource.texture;
             SetStatusUnlocked(source);
         }
@@ -58,7 +60,7 @@ namespace Game.Menu
                 ? new Vector2(size * aspect, size) 
                 : new Vector2(size, size / aspect);
 
-            if (_preset.LevelActiveThreshold > YandexGame.savesData.overallPoints)
+            if (ConditionLock)
                 SetStatusLocked(source);
             else if (save != null)
                 SetStatusInProgress(source, save);
@@ -80,6 +82,7 @@ namespace Game.Menu
             image.color = Color.black;
             button.interactable = false;
             score.text = _preset.LevelActiveThreshold.ToString();
+            watchAd.SetActive(true);
         }
         private void SetStatusInProgress(Texture2D source, ImageHistorySerialization save)
         {
@@ -95,6 +98,7 @@ namespace Game.Menu
             image.color = Color.white;
             button.interactable = true;
             score.text = _data.maxPoints.ToString();
+            watchAd.SetActive(false);
         }
         private void SetStatusCompleted(Texture2D source)
         {
@@ -103,6 +107,7 @@ namespace Game.Menu
             image.color = Color.white;
             button.interactable = true;
             score.text = _data.maxPoints.ToString();
+            watchAd.SetActive(false);
         }
         private void SetStatusUnlocked(Texture2D source)
         {
@@ -123,9 +128,28 @@ namespace Game.Menu
             image.color = Color.white;
             button.interactable = true;
             score.text = string.Empty;
+            watchAd.SetActive(false);
         }
 
+        public void OpenDialogWindow()
+        {
+            WatchAdDialogWindow.Open();
+            WatchAdDialogWindow.SuccessEvent += Success;
+        }
 
+        private void Success(int id)
+        {
+            WatchAdDialogWindow.SuccessEvent -= Success;
+
+            if (id != 1) return;
+            _data.rewardUnlocked = true;
+            UpdateButtonConfigure();
+            YandexGame.SaveProgress();
+        }
+
+        private bool ConditionLock => _preset.LevelActiveThreshold > YandexGame.savesData.overallPoints
+                                     && !YandexGame.savesData.unlockEverything && !_data.rewardUnlocked;
+        
         public void Click()
         {
             button.onClick.Invoke();

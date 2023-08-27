@@ -102,7 +102,7 @@ namespace Game.Menu
             _current = _buttons.IndexOf(active);
         }
 
-        private void UpdateButtonsByStatus()
+        public void UpdateButtonsByStatus()
         {
             foreach (var button in _buttons)
                 button.UpdateButtonByStatus();

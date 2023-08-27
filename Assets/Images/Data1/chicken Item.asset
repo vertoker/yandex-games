@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: chicken Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 565c713e64fd83c45a56d830d49e71d2, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 500
   imageTitle: chicken
   successColor: {r: 0.77647066, g: 0.6392157, b: 0.41176474, a: 1}
   pixelsCount: 313

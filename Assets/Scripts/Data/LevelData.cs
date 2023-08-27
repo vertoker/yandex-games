@@ -7,6 +7,7 @@ namespace Data
     public class LevelData
     {
         public bool completed;
+        public bool rewardUnlocked;
         public int maxPoints;
         public int points;
         public int errors;

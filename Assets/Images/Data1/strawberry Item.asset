@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: strawberry Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: be06047527d124547a2346da0505856b, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 2600
   imageTitle: strawberry
   successColor: {r: 1, g: 0.38431376, b: 0.16470589, a: 1}
   pixelsCount: 390

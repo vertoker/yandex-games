@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bagel Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: bc812f0d3a5e02c4dbc6fb042656954a, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 200
   imageTitle: bagel
   successColor: {r: 0.83921576, g: 0.6156863, b: 0.19607845, a: 1}
   pixelsCount: 313

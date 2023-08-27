@@ -13,7 +13,9 @@ namespace YG
         public bool isFirstSession = true;
         public string language = "ru";
         public bool promptDone;
-
+        
+        public bool unlockEverything;
+        
         public int overallPoints;
         public List<ImageHistorySerialization> tempSaves;
         public LevelData[] levels;

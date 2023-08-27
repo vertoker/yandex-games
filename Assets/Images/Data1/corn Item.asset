@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: corn Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 15e94bc00d6fdfe40aa9042b0e4efbc1, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 4100
   imageTitle: corn
   successColor: {r: 1, g: 0.8117648, b: 0.24313727, a: 1}
   pixelsCount: 421

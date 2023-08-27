@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: pie Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: 4798d2026ea31cb4aa5af5062e35418d, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 1000
   imageTitle: pie
   successColor: {r: 0.89019614, g: 0.6392157, b: 0.2509804, a: 1}
   pixelsCount: 361

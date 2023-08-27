@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: mushrum Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: dfcdbbc568be06648893a059eba7151a, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 5900
   imageTitle: mushrum
   successColor: {r: 0.77647066, g: 0.6392157, b: 0.41176474, a: 1}
   pixelsCount: 454

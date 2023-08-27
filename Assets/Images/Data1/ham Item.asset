@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ham Item
   m_EditorClassIdentifier: 
   imageSource: {fileID: 21300000, guid: a7c50064c1da2b04791f1e1a169d945e, type: 3}
-  levelActiveThreshold: 0
+  levelActiveThreshold: 4400
   imageTitle: ham
   successColor: {r: 1, g: 0.82745105, b: 0.7960785, a: 1}
   pixelsCount: 433
