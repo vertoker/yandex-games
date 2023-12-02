@@ -15,6 +15,7 @@ namespace Game.Drawer
 {
     public class DrawerController : MonoBehaviour
     {
+        [SerializeField, Min(1)] private int loadBlockPerFrame = 3;
         [SerializeField] private Image blocker;
         private bool _isBlock;
 
@@ -253,7 +254,7 @@ namespace Game.Drawer
                 pixelData.SetColor(draw, this);
                 _imageCache.PushToHistory(x, y, draw);
                 progressView.SetPercent(_levelData.points / (float)_pixelsCount);
-                AudioController.Play("pixel");
+                AudioController.Play(0);
                 button.Add();
                 
                 if (_saver != null)
@@ -375,6 +376,7 @@ namespace Game.Drawer
         
         private IEnumerator LoadHistoryTimer(Texture2D source, Texture2D result)
         {
+            var waitCounter = 0;
             _isBlock = blocker.enabled = true;
             for (var x = 0; x < result.width; x++)
             {
@@ -389,7 +391,13 @@ namespace Game.Drawer
                     buttons.Switch(colorIndex);
                     
                     DrawPixel(x, y);
-                    yield return null;
+                    
+                    waitCounter++;
+                    if (waitCounter == loadBlockPerFrame)
+                    {
+                        waitCounter = 0;
+                        yield return null;
+                    }
                 }
             }
             _isBlock = blocker.enabled = false;

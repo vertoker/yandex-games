@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scopes: 1
   playerPhotoSize: 0
+  autoGameReadyAPI: 1
   playerInfoSimulation:
     authorized: 1
     isMobile: 0
@@ -21,160 +22,37 @@ MonoBehaviour:
     name: Player this
     uniqueID: 000
     photo: https://justplaygames.ru/public/icon_player.png
-  AdWhenLoadingScene: 0
+  AdWhenLoadingScene: 1
   showFirstAd: 0
+  rewardedAfterClosing: 1
   adDisplayCalls: 0
   fullscreenAdInterval: 60
   durationOfAdSimulation: 0.5
+  loadAdWithDelaySimulation: 0
   testErrorOfRewardedAdsInEditor: 0
   saveCloud: 1
-  flush: 1
+  flush: 0
   localSaveSync: 1
   saveCloudInterval: 5
-  saveOnQuitGame: 1
+  saveOnQuitGame: 0
+  quitGameParameters:
+    objectName: YandexGame
+    methodName: _SaveProgress
   leaderboardEnable: 1
+  saveScoreAnonymousPlayers: 1
   leaderboardSimulation:
-  - technoName: advanced
-    entries: 'Test LeaderBoard
-
-      Name: advanced
-
-      1. anonymous: 10
-
-      2.
-      Ivan: 15
-
-      3. Tanya: 23'
-    isDefault: 0
+  - technoName: best
+    entries: The Best Artists
+    isDefault: 1
     isInvertSortOrder: 0
     decimalOffset: 0
     type: numeric
-    players:
-    - rank: 1
-      name: anonymous
-      score: 10
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 123
-    - rank: 2
-      name: Ivan
-      score: 15
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 3
-      name: Tanya
-      score: 23
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 456
-    - rank: 4
-      name: Player4
-      score: 30
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 5
-      name: Player this
-      score: 40
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 000
-    - rank: 6
-      name: Player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    thisPlayer:
-      rank: 2
-      score: 10
-  - technoName: simple
-    entries: "Test LeaderBoard\nName: simple\n1. \u0441\u043A\u0440\u044B\u0442:
-      10\n2. Max: 15\n3. Maria: 23"
-    isDefault: 0
-    isInvertSortOrder: 0
-    decimalOffset: 0
-    type: numeric
-    players:
-    - rank: 1
-      name: anonymous
-      score: 10
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 123
-    - rank: 2
-      name: Ivan
-      score: 15
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 3
-      name: Tanya
-      score: 23
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 456
-    - rank: 4
-      name: player4
-      score: 30
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 5
-      name: playerThis
-      score: 40
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 000
-    - rank: 6
-      name: player6
-      score: 50
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    thisPlayer:
-      rank: 0
-      score: 0
-  - technoName: time
-    entries: 'Test LeaderBoard
-
-      Name: time
-
-      1. anonymous: 10
-
-      2.
-      Max: 15
-
-      3. Maria: 23'
-    isDefault: 0
-    isInvertSortOrder: 0
-    decimalOffset: 0
-    type: numeric
-    players:
-    - rank: 1
-      name: anonymous
-      score: 7123
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 789
-    - rank: 2
-      name: Max
-      score: 15321
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 987
-    - rank: 3
-      name: Maria
-      score: 62000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 891
-    - rank: 4
-      name: Player4
-      score: 122000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
-    - rank: 5
-      name: Player this
-      score: 127000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 000
-    - rank: 6
-      name: Player6
-      score: 340000
-      photo: https://justplaygames.ru/public/icon_player.png
-      uniqueID: 321
+    players: []
     thisPlayer:
       rank: 2
       score: 10
   LocalizationEnable: 1
-  callingLanguageCheck: 1
+  callingLanguageCheck: 0
   translateMethod: 0
   domainAutoLocalization: com
   CSVFileTranslate:
@@ -267,16 +145,26 @@ MonoBehaviour:
     hi: 
   purshasesSimulation:
   - id: 1
-    title: Buy All
-    description: Buy All
+    title: "\u0420\u0430\u0437\u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u0442\u044C
+      \u0432\u0441\u0435 \u0443\u0440\u043E\u0432\u043D\u0438"
+    description: "\u0412\u044B \u0440\u0430\u0437\u0431\u043B\u043E\u043A\u0438\u0440\u0443\u0435\u0442\u0435
+      \u0432\u0441\u0435 \u0443\u0440\u043E\u0432\u043D\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435
+      \u0442\u0440\u0435\u0431\u0443\u044E\u0442 \u043F\u0440\u043E\u0441\u043C\u043E\u0442\u0440
+      \u0440\u0435\u043A\u043B\u0430\u043C\u044B \u0434\u043B\u044F \u043E\u0442\u043A\u0440\u044B\u0442\u0438\u044F"
     imageURI: 
-    priceValue: 100
+    priceValue: 50
     consumed: 1
   - id: 2
-    title: Disable Ad
-    description: Disable Ad
+    title: "\u0423\u0431\u0440\u0430\u0442\u044C \u0432\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0443\u044E
+      \u0440\u0435\u043A\u043B\u0430\u043C\u0443"
+    description: "\u0412\u044B \u0443\u0431\u0435\u0440\u0451\u0442\u0435 \u0432\u0441\u044E
+      \u0432\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0443\u044E \u0440\u0435\u043A\u043B\u0430\u043C\u0443,
+      \u043A\u043E\u0442\u043E\u0440\u0430\u044F \u0431\u043E\u043B\u044C\u0448\u0435
+      \u043D\u0435 \u0431\u0443\u0434\u0435\u0442 \u043C\u0435\u0448\u0430\u0442\u044C
+      \u0438\u0433\u0440\u0430\u0442\u044C \u0432 \u043F\u0435\u0440\u0435\u0440\u044B\u0432\u0430\u0445
+      \u043C\u0435\u0436\u0434\u0443 \u0440\u0438\u0441\u043E\u0432\u0430\u043D\u0438\u0435\u043C"
     imageURI: 
-    priceValue: 20
+    priceValue: 10
     consumed: 1
   metricaEnable: 0
   metricaCounterID: 0
@@ -286,5 +174,5 @@ MonoBehaviour:
   backgroundImageFormat: 3
   pixelRatioEnable: 0
   pixelRatioValue: 1
-  SDKStartDelay: 0
+  loadGameRun: 0
   staticRBTInGame: 0

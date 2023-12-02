@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Unlock
   m_EditorClassIdentifier: 
   ru: "\u0420\u0430\u0437\u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u0442\u044C
-    \u0432\u0441\u0435 \u0443\u0440\u043E\u0432\u043D\u0438"
-  en: Unlock all levels
-  tr: "T\xFCm seviyelerin kilidini a\xE7"
+    \u0432\u0441\u0435 \u0443\u0440\u043E\u0432\u043D\u0438 (50 \u042F\u041D)"
+  en: Unlock all levels (50 YAN)
+  tr: "T\xFCm seviyelerin kilidini a\xE7 (50 JAN)"

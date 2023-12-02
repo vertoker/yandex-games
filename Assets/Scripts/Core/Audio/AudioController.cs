@@ -28,18 +28,22 @@ namespace Core.Audio
 
             _sourcePool = new Stack<AudioSource>(startAudioSourceSize);
             for (var i = 0; i < startAudioSourceSize; i++)
-                _sourcePool.Push(gameObject.AddComponent<AudioSource>());
+                _sourcePool.Push(Create());
             
             // Create All
             foreach (var clip in assets)
+            {
                 clip.SetSource(_sourcePool);
-            
+                clip.SetAddAction(Create);
+            }
+
             // Load All
             _counter = 0;
             var length = assets.Length;
             foreach (var clip in assets)
                 StartCoroutine(GetFile(clip, length));
         }
+        private AudioSource Create() => gameObject.AddComponent<AudioSource>();
         
         private IEnumerator GetFile(AudioWebClip clip, int length)
         {
@@ -69,6 +73,11 @@ namespace Core.Audio
         {
             //if (false)//Application.isFocused)
                 _instance.assets.FirstOrDefault(c => c.SoundName == name)?.Play(_instance);
+        }
+        public static void Play(int index)
+        {
+            //if (false)//Application.isFocused)
+            _instance.assets[index]?.Play(_instance);
         }
     }
 }

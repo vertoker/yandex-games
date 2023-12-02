@@ -13,6 +13,7 @@ namespace Core.Audio
         [SerializeField] private AudioType soundExtension;
         
         private Stack<AudioSource> _stack;
+        private Func<AudioSource> _add;
         private AudioClip _clip;
 
         public AudioWebClip(string clipName)
@@ -28,6 +29,7 @@ namespace Core.Audio
             "Audio", string.Join('.', soundName, soundExtension.ToString().ToLower()));
 
         public void SetSource(Stack<AudioSource> stack) => _stack = stack;
+        public void SetAddAction(Func<AudioSource> add) => _add = add;
         public void SetClip(AudioClip clip) 
         {
             _clip = clip;
@@ -35,9 +37,12 @@ namespace Core.Audio
         
         public void Play(MonoBehaviour processor)
         {
-            var source = _stack.Pop();
+            if (!_stack.TryPop(out var source))
+                source = _add();
+            
             source.clip = _clip;
             source.Play();
+            
             processor.StartCoroutine(Off(source));
         }
         private IEnumerator Off(AudioSource source)
