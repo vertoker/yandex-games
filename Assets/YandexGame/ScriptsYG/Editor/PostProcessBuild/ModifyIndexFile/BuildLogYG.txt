@@ -1,2 +1,2 @@
 Build path: E:/Projects/Unity/Pixel Art Drawer/Build
-Build number: 145
+Build number: 146

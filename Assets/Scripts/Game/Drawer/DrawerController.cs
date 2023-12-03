@@ -22,6 +22,7 @@ namespace Game.Drawer
         [Header("Prefab Groups")]
         [SerializeField] private GameObject gameGroup;
         [SerializeField] private GameObject finishGroup;
+        [SerializeField] private GameObject restart;
         
         [Header("Views")]
         [SerializeField] private ReCenterButton reCenterView;
@@ -103,6 +104,7 @@ namespace Game.Drawer
             
             finishGroup.SetActive(false);
             gameGroup.SetActive(true);
+            restart.SetActive(true);
 
             levelData.points = _pixelsCount = 0;
             progressView.SetPercent(0);
@@ -286,6 +288,7 @@ namespace Game.Drawer
         private void CompleteLevel()
         {
             gameGroup.SetActive(false);
+            restart.SetActive(false);
             finishGroup.SetActive(true);
             resultRenderer.enabled = false;
             reCenterView.CancelAnim();

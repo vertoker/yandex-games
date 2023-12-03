@@ -6483,6 +6483,7 @@ MonoBehaviour:
   blocker: {fileID: 1617228112}
   gameGroup: {fileID: 97094433}
   finishGroup: {fileID: 1983785967}
+  restart: {fileID: 1003745778}
   reCenterView: {fileID: 1243585355}
   progressView: {fileID: 1180071840}
   errorView: {fileID: 1354817914}
