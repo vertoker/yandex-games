@@ -6,14 +6,16 @@ namespace Game.Menu
 {
     public class DeleteAll : MonoBehaviour
     {
+        [SerializeField] private bool deleteBuys;
+        
         public void Delete()
         {
             var data = YandexGame.savesData;
             YandexGame.savesData = new SavesYG
             {
                 isFirstSession = false,
-                unlockEverything = data.unlockEverything,
-                addDisabled = data.addDisabled
+                unlockEverything = !deleteBuys && data.unlockEverything,
+                addDisabled = !deleteBuys && data.addDisabled
             };
             YandexGame.SaveProgress();
             SceneManager.LoadScene(1);

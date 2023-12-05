@@ -508,7 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad29c725166c3c047a6a748931cedcd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDelay: 1
+  startDelay: 0.8
   sceneName: Game
   audioController: {fileID: 1899603926}
 --- !u!4 &1824150086

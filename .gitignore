@@ -53,6 +53,9 @@ build/
 [Bb]uilds/
 
 Build.zip
+Build_*.zip
+Build_**.zip
+Build_***.zip
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

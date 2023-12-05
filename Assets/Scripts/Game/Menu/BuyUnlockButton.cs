@@ -17,6 +17,7 @@ namespace Game.Menu
                 case 2 when YandexGame.savesData.addDisabled:
                     return;
                 default:
+                    YandexGame.PurchaseSuccessEvent += SuccessPurchased;
                     YandexGame.BuyPayments(purchaseID.ToString());
                     break;
             }
@@ -33,17 +34,10 @@ namespace Game.Menu
             }
         }
 
-        private void OnEnable()
-        {
-            YandexGame.PurchaseSuccessEvent += SuccessPurchased;
-        }
-        private void OnDisable()
-        {
-            YandexGame.PurchaseSuccessEvent -= SuccessPurchased;
-        }
-
         private void SuccessPurchased(string id)
         {
+            YandexGame.PurchaseSuccessEvent -= SuccessPurchased;
+            
             switch (id)
             {
                 case "1": YandexGame.savesData.unlockEverything = true; break;

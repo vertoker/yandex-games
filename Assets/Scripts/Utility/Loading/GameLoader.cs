@@ -10,7 +10,7 @@ namespace Utility.Loading
 {
     public class GameLoader : MonoBehaviour
     {
-        [Range(0, 5)] [SerializeField] private float startDelay = 0;
+        [Range(0, 5)] [SerializeField] private float startDelay = 0.5f;
         [SerializeField] private string sceneName = "Game";
         [SerializeField] private AudioController audioController;
 
@@ -22,7 +22,7 @@ namespace Utility.Loading
             remove => _gameLoaded -= value;
         } 
 
-        private int _waitTasks = Application.isEditor ? 3 : 3;
+        private int _waitTasks = 3;
         
         private void OnEnable()
         {
@@ -57,6 +57,7 @@ namespace Utility.Loading
 
         private void Loaded(AsyncOperation operation)
         {
+            YandexGame.GameReadyAPI();
             _gameLoaded?.Invoke();
         }
     }
