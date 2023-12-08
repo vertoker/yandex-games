@@ -1,9 +1,9 @@
 {
-    "idSave": 1,
+    "idSave": 2,
     "isFirstSession": false,
     "language": "ru",
     "promptDone": false,
-    "unlockEverything": false,
+    "unlockEverything": true,
     "addDisabled": false,
     "overallPoints": 0,
     "tempSaves": [],

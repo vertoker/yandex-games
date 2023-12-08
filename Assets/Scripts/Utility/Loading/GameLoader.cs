@@ -22,13 +22,15 @@ namespace Utility.Loading
             remove => _gameLoaded -= value;
         } 
 
-        private int _waitTasks = 3;
+        private int _waitTasks = Application.isEditor ? 5 : 3;
         
         private void OnEnable()
         {
             YandexGame.GetDataEvent += LoadedData;
+            YandexGame.PurchaseSuccessEvent += LoadPurchasesData;
             audioController.AudioLoaded += LoadedData;
             StartCoroutine(WaitDelay());
+            YandexGame.ConsumePurchases();
         }
         private void OnDisable()
         {
@@ -39,6 +41,20 @@ namespace Utility.Loading
         private IEnumerator WaitDelay()
         {
             yield return new WaitForSeconds(startDelay);
+            LoadedData();
+        }
+
+        private void LoadPurchasesData(string id)
+        {
+            switch (id)
+            {
+                case "1":
+                    YandexGame.savesData.unlockEverything = YandexGame.PurchaseByID(id).consumed;
+                    break;
+                case "2":
+                    YandexGame.savesData.addDisabled = YandexGame.PurchaseByID(id).consumed;
+                    break;
+            }
             LoadedData();
         }
 
