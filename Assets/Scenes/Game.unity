@@ -5337,7 +5337,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 153688283}
   m_HandleRect: {fileID: 153688282}
   m_Direction: 2
-  m_Value: 0.99999976
+  m_Value: 1
   m_Size: 0.75
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -8627,7 +8627,7 @@ MonoBehaviour:
   drawerController: {fileID: 1578757572}
   gameUIController: {fileID: 1626516488}
   buttonTemplate: {fileID: 5967843100699003870, guid: 4cbd154113eb7af4fa1c3d0573fb8ed8, type: 3}
-  presets: {fileID: 11400000, guid: b66b39211dd50bc408fe08a74cceef0e, type: 2}
+  presets: {fileID: 11400000, guid: f8e732069f00c9142a3731085a292d8c, type: 2}
 --- !u!1 &1854435107
 GameObject:
   m_ObjectHideFlags: 0
