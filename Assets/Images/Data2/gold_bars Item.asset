@@ -15,6 +15,6 @@ MonoBehaviour:
   imageSource: {fileID: 21300000, guid: a841e6a2dfa831e4e9ff0c4abdfb3ca3, type: 3}
   levelActiveThreshold: 400
   imageTitle: gold_bars
-  successColor: {r: 1, g: 1, b: 1, a: 1}
+  successColor: {r: 0.9450981, g: 0.7568628, b: 0.09019608, a: 1}
   pixelsCount: 310
   percentComplete: 0.8

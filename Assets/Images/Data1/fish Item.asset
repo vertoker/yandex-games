@@ -15,6 +15,6 @@ MonoBehaviour:
   imageSource: {fileID: 21300000, guid: 5105b60e395d43e49975e0b8c4902532, type: 3}
   levelActiveThreshold: 9000
   imageTitle: fish
-  successColor: {r: 1, g: 1, b: 1, a: 1}
+  successColor: {r: 0.80392164, g: 0.5568628, b: 0.3529412, a: 1}
   pixelsCount: 524
   percentComplete: 0.8

@@ -15,6 +15,6 @@ MonoBehaviour:
   imageSource: {fileID: 21300000, guid: 7e196f2742d31b14b86ffbe39e0a1133, type: 3}
   levelActiveThreshold: 1500
   imageTitle: ring2
-  successColor: {r: 1, g: 1, b: 1, a: 1}
+  successColor: {r: 0.5137255, g: 0.61960787, b: 0.6431373, a: 1}
   pixelsCount: 358
   percentComplete: 0.8

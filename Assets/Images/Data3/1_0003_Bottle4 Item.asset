@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f36e9eeff8064085a2f3024aba39c22a, type: 3}
+  m_Name: 1_0003_Bottle4 Item
+  m_EditorClassIdentifier: 
+  imageSource: {fileID: 21300000, guid: 089ca8e0e30818047ab51d88abd09d9e, type: 3}
+  levelActiveThreshold: 0
+  imageTitle: 1_0003_Bottle4
+  successColor: {r: 0.75294125, g: 0.19215688, b: 0.9176471, a: 1}
+  pixelsCount: 343
+  percentComplete: 0.8

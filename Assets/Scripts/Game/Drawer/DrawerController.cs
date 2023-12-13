@@ -36,6 +36,7 @@ namespace Game.Drawer
         
         [Header("Renderers")]
         [SerializeField] private SpriteRenderer backgroundRenderer;
+        [SerializeField] private SpriteRenderer foregroundRenderer;
         [SerializeField] private SpriteRenderer resultRenderer;
         [SerializeField] [Range(0, 1)] private float minBarToFade = 0.2f;
         [SerializeField] private int poolInit = 1000;
@@ -57,6 +58,8 @@ namespace Game.Drawer
         private MenuButton _button;
         
         // cache
+        private ImageEraseCache _imageCacheBackground;
+        private ImageEraseCache _imageCacheForeground;
         private ImageDrawerCache _imageCache;
         private Pool<TextMeshPro> _textPool;
         private Pool<SpriteRenderer> _pixelPool;
@@ -79,6 +82,8 @@ namespace Game.Drawer
         {
             _pixelPool = new Pool<SpriteRenderer>(pixelPrefab, pixelParent, poolInit);
             _textPool = new Pool<TextMeshPro>(textPrefab, textParent, poolInit);
+            _imageCacheBackground = new ImageEraseCache();
+            _imageCacheForeground = new ImageEraseCache();
             _imageCache = new ImageDrawerCache();
         }
 
@@ -122,7 +127,10 @@ namespace Game.Drawer
             buttons.SetupColors(_colors);
             
             _imageCache.Init(preset.ImageSource.texture, _colors.Keys.ToList());
-            backgroundRenderer.sprite = preset.ImageSource;
+            _imageCacheBackground.Init(preset.ImageSource.texture, Color.white);
+            _imageCacheForeground.Init(preset.ImageSource.texture, Color.white);
+            backgroundRenderer.sprite = _imageCacheBackground.Sprite;
+            foregroundRenderer.sprite = _imageCacheForeground.Sprite;
             resultRenderer.sprite = _imageCache.Sprite;
             resultRenderer.enabled = true;
             
@@ -147,8 +155,11 @@ namespace Game.Drawer
             
             _switch = 0;
             
-            buttons.Dispose();
             _imageCache.Dispose();
+            _imageCacheBackground.Dispose();
+            _imageCacheForeground.Dispose();
+            
+            buttons.Dispose();
             _pixelPool.EnqueueAll();
             _textPool.EnqueueAll();
             
@@ -200,6 +211,7 @@ namespace Game.Drawer
         {
             value = (value - MinBarToFade) * (1 / (1 - MinBarToFade));
             resultRenderer.color = new Color(1, 1, 1, value);
+            foregroundRenderer.color = new Color(1, 1, 1, value);
         }
 
         public void GetPixelByPos(Vector2 pos, out int x, out int y)
@@ -255,6 +267,8 @@ namespace Game.Drawer
                 _levelData.points++;
                 pixelData.SetColor(draw, this);
                 _imageCache.PushToHistory(x, y, draw);
+                _imageCacheBackground.Erase(x, y);
+                _imageCacheForeground.Erase(x, y);
                 progressView.SetPercent(_levelData.points / (float)_pixelsCount);
                 AudioController.Play(0);
                 button.Add();

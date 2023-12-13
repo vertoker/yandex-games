@@ -5,37 +5,33 @@ using UnityEngine;
 
 namespace Game.Pool
 {
-    public class ImageDrawerCache
+    public class ImageDrawerCache : IDisposable
     {
         private static readonly Vector2 PivotCenter = new(0.5f, 0.5f);
 
-        private Stack<PixelActionData> _history;
         private List<Color> _colors;
-
-        private int _width, _height;
         private Texture2D _textureSource;
-        private Sprite _spriteCache;
-        
-        public Sprite Sprite => _spriteCache;
-        public int Width => _width;
-        public int Height => _height;
-        public Stack<PixelActionData> History => _history;
+
+        public Sprite Sprite { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+        public Stack<PixelActionData> History { get; private set; }
 
         public Color GetSourcePixel(int x, int y) => _textureSource.GetPixel(x, y);
-        public Color GetResultPixel(int x, int y) => _spriteCache.texture.GetPixel(x, y);
+        public Color GetResultPixel(int x, int y) => Sprite.texture.GetPixel(x, y);
 
         public void Init(Texture2D texture, List<Color> colors)
         {
             _colors = colors;
             _textureSource = texture;
-            _width = texture.width;
-            _height = texture.height;
+            Width = texture.width;
+            Height = texture.height;
             var textureCache = new Texture2D(Width, Height)
             {
                 wrapMode = TextureWrapMode.Clamp,
                 filterMode = FilterMode.Point
             };
-            _history = new Stack<PixelActionData>(Width * Height);
+            History = new Stack<PixelActionData>(Width * Height);
 
             for (var x = 0; x < Width; x++)
             {
@@ -48,18 +44,18 @@ namespace Game.Pool
             textureCache.Apply();
 
             var rect = new Rect(0, 0, Width, Height);
-            _spriteCache = Sprite.Create(textureCache, rect, PivotCenter, 10);
+            Sprite = Sprite.Create(textureCache, rect, PivotCenter, 10);
         }
         public void Dispose()
         {
             _textureSource = null;
-            _spriteCache = null;
+            Sprite = null;
         }
 
         public void SetColor(int x, int y, Color color)
         {
-            _spriteCache.texture.SetPixel(x, y, color);
-            _spriteCache.texture.Apply();
+            Sprite.texture.SetPixel(x, y, color);
+            Sprite.texture.Apply();
         }
         public void PushToHistory(int x, int y, Color color)
         {

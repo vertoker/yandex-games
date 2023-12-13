@@ -15,6 +15,6 @@ MonoBehaviour:
   imageSource: {fileID: 21300000, guid: e5d155bd27560854e855e3eaac092dc4, type: 3}
   levelActiveThreshold: 3000
   imageTitle: diamond
-  successColor: {r: 1, g: 1, b: 1, a: 1}
+  successColor: {r: 0.5372549, g: 0.7411765, b: 0.8313726, a: 1}
   pixelsCount: 386
   percentComplete: 0.8

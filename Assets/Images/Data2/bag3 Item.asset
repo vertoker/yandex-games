@@ -15,6 +15,6 @@ MonoBehaviour:
   imageSource: {fileID: 21300000, guid: b6363b1de03f3404ea8f30f842410dfd, type: 3}
   levelActiveThreshold: 6600
   imageTitle: bag3
-  successColor: {r: 1, g: 1, b: 1, a: 1}
+  successColor: {r: 1, g: 0.9803922, b: 0.39607847, a: 1}
   pixelsCount: 573
   percentComplete: 0.8

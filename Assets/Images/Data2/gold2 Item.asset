@@ -15,6 +15,6 @@ MonoBehaviour:
   imageSource: {fileID: 21300000, guid: 5a38bf41b9a498549b35978f2cdff609, type: 3}
   levelActiveThreshold: 200
   imageTitle: gold2
-  successColor: {r: 1, g: 1, b: 1, a: 1}
+  successColor: {r: 0.9450981, g: 0.7568628, b: 0.09019608, a: 1}
   pixelsCount: 273
   percentComplete: 0.8

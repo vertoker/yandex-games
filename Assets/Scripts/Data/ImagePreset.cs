@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Data
 {
@@ -40,10 +38,9 @@ namespace Data
             
             successColor = colors
                 .OrderByDescending(c => c.Value)
-                .FirstOrDefault(c => c.Key.GetPower() > 0.5f).Key;
-            
-            if (successColor.a == 0)
-                successColor = Color.white;
+                .FirstOrDefault(c => c.Key.GetPower() > 0.5f
+                                     && c.Key.GetPower() < 0.9f
+                                     && c.Key.a > 0.9f).Key;
             
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
