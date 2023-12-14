@@ -150,6 +150,7 @@ namespace Game.Drawer
             _colorsList.Clear();
 
             backgroundRenderer.sprite = null;
+            foregroundRenderer.sprite = null;
             resultRenderer.sprite = null;
             _isBlock = blocker.enabled = false;
             

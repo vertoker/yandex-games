@@ -69,6 +69,11 @@ namespace Game.Menu
             view.SetPercent(YandexGame.savesData.overallPoints / (float)presets.OverallMax, 3);
         }
 
+        private void OnEnable()
+        {
+            YandexGame.savesData.Save();
+        }
+
         private void Update()
         {
             if (settings.activeSelf) return;
