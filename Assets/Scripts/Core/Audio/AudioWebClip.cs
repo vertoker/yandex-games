@@ -47,6 +47,7 @@ namespace Core.Audio
         }
         private IEnumerator Off(AudioSource source)
         {
+            if (source == null) yield break;
             yield return new WaitForSeconds(source.clip.length);
             _stack.Push(source);
         }

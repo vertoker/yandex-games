@@ -73,7 +73,6 @@ namespace Utility.Loading
 
         private void Loaded(AsyncOperation operation)
         {
-            YandexGame.GameReadyAPI();
             _gameLoaded?.Invoke();
         }
     }

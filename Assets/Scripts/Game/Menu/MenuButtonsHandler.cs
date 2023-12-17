@@ -66,7 +66,16 @@ namespace Game.Menu
                 button.Install(preset, levelData, action);
                 _buttons.Add(button);
             }
+            
             view.SetPercent(YandexGame.savesData.overallPoints / (float)presets.OverallMax, 3);
+
+            if (YandexGame.savesData.gameTokFirstActive && YandexGame.savesData.overallPoints == 0)
+            {
+                YandexGame.savesData.gameTokFirstActive = false;
+                parent.GetChild(0).GetComponent<Button>().onClick.Invoke();
+            }
+            YandexGame.SaveProgress();
+            YandexGame.GameReadyAPI();
         }
 
         private void OnEnable()

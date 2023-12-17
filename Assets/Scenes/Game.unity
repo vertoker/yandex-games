@@ -8813,7 +8813,7 @@ MonoBehaviour:
   drawerController: {fileID: 1578757572}
   gameUIController: {fileID: 1626516488}
   buttonTemplate: {fileID: 5967843100699003870, guid: 4cbd154113eb7af4fa1c3d0573fb8ed8, type: 3}
-  presets: {fileID: 11400000, guid: 6d036ad141f75a24eb091075c2335bc0, type: 2}
+  presets: {fileID: 11400000, guid: b66b39211dd50bc408fe08a74cceef0e, type: 2}
 --- !u!1 &1854435107
 GameObject:
   m_ObjectHideFlags: 0
